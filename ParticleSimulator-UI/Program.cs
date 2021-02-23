@@ -10,6 +10,7 @@ namespace ParticleSimulator_UI
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Hello Kresten :)");
         }
     }
 }
