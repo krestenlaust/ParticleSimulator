@@ -12,5 +12,10 @@ namespace ParticleEngine.Particles
         {
             this.Mass = mass;
         }
+
+        public override void DoPhysics()
+        {
+            
+        }
     }
 }

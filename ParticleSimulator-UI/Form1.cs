@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Numerics;
+using System.Diagnostics;
 
 namespace ParticleSimulator_UI
 {
@@ -14,9 +16,12 @@ namespace ParticleSimulator_UI
     {
         private int WorkLoops = 0;
         private static Graphics g;
-        private Rectangle[] dots = new Rectangle[40000];
+        private Vector2[] dots = new Vector2[40000];
         private int currentIndex = 0;
         private bool clicked;
+        private int GameWidth;
+        private int GameHeight;
+        private readonly Stopwatch stopwatch = new Stopwatch();
 
         public FormGame()
         {
@@ -35,29 +40,34 @@ namespace ParticleSimulator_UI
             g.FillRectangle(Brushes.Black, 0, 0, Width, Height - 100);
         }
 
-        private Rectangle GetRect(ref Rectangle rect) => rect;
-        
         private void backgroundWorkerGame_DoWork(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
                 WorkLoops++;
 
+                HashSet<Vector2> drawn = new HashSet<Vector2>();
+
                 for (int i = 0; i < currentIndex; i++)
                 {
-                    dots[i].Y += 1;
+                    if (drawn.Contains(dots[i]))
+                    {
+                        continue;
+                    }
+
+                    drawn.Add(dots[i]);
+
+                    g.FillRectangle(Brushes.Black, dots[i].X, dots[i].Y, 8, 8);
+
+                    dots[i].Y += 10;
+
+                    g.FillRectangle(Brushes.Yellow, dots[i].X, dots[i].Y, 8, 8);
+
                 }
 
-                var fakeDots = (Rectangle[])dots.Clone();
-                for (int i = 0; i < fakeDots.Length; i++)
-                {
-                    g.
-                }
-
-                g.FillRectangles(Brushes.Black, fakeDots);
-                g.FillRectangles(Brushes.OrangeRed, dots);
-
-                Thread.Sleep(1*1000/60/1);
+                stopwatch.Restart();
+                while (stopwatch.ElapsedMilliseconds >= 1000 / 60)
+                    Thread.Sleep(0);
             }
         }
 
@@ -70,9 +80,9 @@ namespace ParticleSimulator_UI
 
             //Thread.Sleep(20);
 
-            Rectangle rect = new Rectangle(
-                (int)Math.Round((decimal)(Cursor.Position.X - Left) % Width / 4) * 4, 
-                (int)Math.Round((decimal)(Cursor.Position.Y - Top) % Height / 4) * 4, 4, 4);
+            Vector2 rect = new Vector2(
+                (int)Math.Round((decimal)(Cursor.Position.X - Left) % Width / 8) * 8,
+                (int)Math.Round((decimal)(Cursor.Position.Y - Top) % Height / 8) * 8);
            
             if (!dots.Contains(rect))
             {

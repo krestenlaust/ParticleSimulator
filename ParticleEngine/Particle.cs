@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace ParticleEngine
 {
-    public class Particle
+    public abstract class Particle
     {
         public float Mass { get; protected set; }
-        public List<Vector2> particles { get; protected set; }
+        public List<Vector2> particlePositions { get; protected set; }
+
+        public abstract void DoPhysics();
     }
 }
