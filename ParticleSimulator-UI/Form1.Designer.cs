@@ -30,19 +30,35 @@ namespace ParticleSimulator_UI
         private void InitializeComponent()
         {
             this.backgroundWorkerGame = new System.ComponentModel.BackgroundWorker();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // backgroundWorkerGame
             // 
             this.backgroundWorkerGame.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerGame_DoWork);
             // 
+            // button1
+            // 
+            this.button1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.button1.Location = new System.Drawing.Point(12, 446);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(114, 28);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Powder";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(727, 525);
+            this.Controls.Add(this.button1);
             this.Name = "FormGame";
             this.Text = "Form1";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormGame_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseUp);
             this.ResumeLayout(false);
 
         }
@@ -50,6 +66,7 @@ namespace ParticleSimulator_UI
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorkerGame;
+        private System.Windows.Forms.Button button1;
     }
 }
 
