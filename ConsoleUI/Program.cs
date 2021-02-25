@@ -27,6 +27,8 @@ namespace ConsoleUI
             Input.Setup(false);
 
             Stopwatch stopwatch = new Stopwatch();
+            Stopwatch physicsStopwatch = new Stopwatch();
+            physicsStopwatch.Start();
 
             while (true)
             {
@@ -41,7 +43,11 @@ namespace ConsoleUI
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x + 2, Mouse.y));
                 }
 
-                Physics.Update();
+                if (physicsStopwatch.ElapsedMilliseconds > 1000 / 30)
+                {
+                    physicsStopwatch.Restart();
+                    Physics.Update();
+                }
 
                 foreach (var particleGroup in Physics.ParticleTypes)
                 {
@@ -61,7 +67,7 @@ namespace ConsoleUI
                     DrawDots(dots, dots.Length, character, color);
                 }
 
-                while (stopwatch.ElapsedMilliseconds <= 1000 / 60)
+                while (stopwatch.ElapsedMilliseconds < 1000 / 60)
                     Thread.Sleep(0);
             }
         }
