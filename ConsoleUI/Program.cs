@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using ConsoleInput;
 using System.Collections.Generic;
+using ParticleEngine;
 
 namespace ConsoleUI
 {
@@ -13,6 +14,7 @@ namespace ConsoleUI
         static int height;
         static Vector2[] dots = new Vector2[10000];
         static int dotsIndex = 0;
+        static int gravity = 1;
 
         static void Main(string[] args)
         {
@@ -24,6 +26,7 @@ namespace ConsoleUI
             Console.BufferWidth = width;
             Console.BufferHeight = height + 1;
             Console.CursorVisible = false;
+            
             Input.Setup(false);
 
             Stopwatch stopwatch = new Stopwatch();
@@ -37,17 +40,22 @@ namespace ConsoleUI
                 if (Mouse.MouseDown[0])
                 {
                     CreateDot(Mouse.x, Mouse.y);
+                    CreateDot(Mouse.x - 1, Mouse.y);
+                    CreateDot(Mouse.x + 1, Mouse.y);
+                }
+
+                if (Mouse.MousePress[1])
+                {
+                    gravity *= -1;
                 }
 
                 Gravity(dots, dotsIndex);
 
-                DrawDots(dots, dotsIndex, '#');
+                DrawDots(dots, dotsIndex, '\x2588');
 
                 while (stopwatch.ElapsedMilliseconds <= 1000 / 60)
                     Thread.Sleep(0);
             }
-
-            Console.ReadLine();
         }
 
         static void CreateDot(int x, int y)
@@ -67,13 +75,27 @@ namespace ConsoleUI
 
             for (int i = 0; i < length; i++)
             {
-                if (dots[i].Y != height - 1)
+                if (dots[i].Y != height - 1 && gravity == 1 || dots[i].Y != 1 && gravity == -1)
                 {
-                    dots[i].Y += 1;
+                    dots[i].Y += 1 * gravity;
 
+                    // below is occupied, check sides
                     if (movedTo.Contains(dots[i]))
                     {
-                        dots[i].Y -= 1;
+                        dots[i].X += 1 * gravity;
+
+                        // check if left side is occupied
+                        if (movedTo.Contains(dots[i]))
+                        {
+                            dots[i].X -= 2 * gravity;
+
+                            // cant move, go to original position
+                            if (movedTo.Contains(dots[i]))
+                            {
+                                dots[i].X += 1 * gravity;
+                                dots[i].Y -= 1 * gravity;
+                            }
+                        }
                     }
                 }
             }
@@ -87,7 +109,14 @@ namespace ConsoleUI
             {
                 Vector2 dot = dots[i];
 
-                newDots[(int)dot.X + (int)dot.Y * width] = character;
+                try
+                {
+                    newDots[(int)dot.X + (int)dot.Y * width] = character;
+                }
+                catch (Exception)
+                {
+
+                }
             }
 
             Console.ForegroundColor = ConsoleColor.Yellow;

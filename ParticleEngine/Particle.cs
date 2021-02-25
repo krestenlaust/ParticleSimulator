@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace ParticleEngine
 {
-    public class Class1
+    public abstract class Particle
     {
+        public List<Vector2> Particles;
+
+        public abstract void DoPhyics();
     }
 }
