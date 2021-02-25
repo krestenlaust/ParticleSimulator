@@ -8,7 +8,7 @@ namespace ParticleEngine
     {
         public Sand()
         {
-            Particles = new List<System.Numerics.Vector2>();
+            Particles = new List<Vector2>();
             Mass = 1;
         }
 

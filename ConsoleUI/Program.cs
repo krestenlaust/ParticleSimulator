@@ -33,7 +33,6 @@ namespace ConsoleUI
                 stopwatch.Restart();
 
                 Input.Update();
-                Physics.Update();
 
                 if (Mouse.MouseDown[0])
                 {
@@ -42,23 +41,32 @@ namespace ConsoleUI
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x + 2, Mouse.y));
                 }
 
+                Physics.Update();
+
+                foreach (var particleGroup in Physics.ParticleTypes)
+                {
+                    Vector2[] dots = particleGroup.Particles.ToArray();
+
+                    char character = '#';
+                    ConsoleColor color = ConsoleColor.White;
+
+                    switch (particleGroup)
+                    {
+                        case Sand _:
+                            character = '*';
+                            color = ConsoleColor.Yellow;
+                            break;
+                    }
+
+                    DrawDots(dots, dots.Length, character, color);
+                }
+
                 while (stopwatch.ElapsedMilliseconds <= 1000 / 60)
                     Thread.Sleep(0);
             }
         }
 
-        static void Gravity(Vector2[] dots, int length)
-        {
-            HashSet<Vector2> movedTo = new HashSet<Vector2>();
-
-            for (int i = 0; i < length; i++)
-            {
-                movedTo.Add(dots[i]);
-            }
-
-        }
-
-        static void DrawDots(Vector2[] dots, int length, char character)
+        static void DrawDots(Vector2[] dots, int length, char character, ConsoleColor color)
         {
             char[] newDots = new char[width * height];
 
@@ -76,7 +84,7 @@ namespace ConsoleUI
                 }
             }
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = color;
             Console.SetCursorPosition(0, 0);
             Console.Write(newDots);
         }
