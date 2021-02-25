@@ -62,7 +62,6 @@ namespace ParticleSimulator_UI
                     dots[i].Y += 10;
 
                     g.FillRectangle(Brushes.Yellow, dots[i].X, dots[i].Y, 8, 8);
-
                 }
 
                 stopwatch.Restart();
@@ -77,8 +76,6 @@ namespace ParticleSimulator_UI
             {
                 return;
             }
-
-            //Thread.Sleep(20);
 
             Vector2 rect = new Vector2(
                 (int)Math.Round((decimal)(Cursor.Position.X - Left) % Width / 8) * 8,
