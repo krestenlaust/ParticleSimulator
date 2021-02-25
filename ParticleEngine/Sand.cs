@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace ParticleEngine
 {
@@ -13,10 +14,7 @@ namespace ParticleEngine
 
         public override void DoPhysics()
         {
-            for (int i = 0; i < Particles.Count; i++)
-            {
 
-            }
         }
     }
 }

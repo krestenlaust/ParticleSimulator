@@ -22,5 +22,14 @@ namespace ParticleEngine
                 }
             }
         }
+
+        public static void Instantiate<T>(Vector2 position)
+        {
+            Particle group = (from particleGroup in particleTypes
+                             where particleGroup is T
+                             select particleGroup).First();
+
+            group.Particles.Add(position);
+        }
     }
 }

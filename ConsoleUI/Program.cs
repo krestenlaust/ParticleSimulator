@@ -12,9 +12,6 @@ namespace ConsoleUI
     {
         static int width;
         static int height;
-        static Vector2[] dots = new Vector2[10000];
-        static int dotsIndex = 0;
-        static int gravity = 1;
 
         static void Main(string[] args)
         {
@@ -40,24 +37,14 @@ namespace ConsoleUI
 
                 if (Mouse.MouseDown[0])
                 {
-                    CreateDot(Mouse.x, Mouse.y);
-                    CreateDot(Mouse.x - 2, Mouse.y);
-                    CreateDot(Mouse.x + 2, Mouse.y);
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x - 2, Mouse.y));
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x + 2, Mouse.y));
                 }
-
-                Gravity(dots, dotsIndex);
-
-                DrawDots(dots, dotsIndex, '\x2588');
 
                 while (stopwatch.ElapsedMilliseconds <= 1000 / 60)
                     Thread.Sleep(0);
             }
-        }
-
-        static void CreateDot(int x, int y)
-        {
-            Console.Title = (dots.Length - dotsIndex).ToString();
-            dots[dotsIndex++] = new Vector2(x, y);
         }
 
         static void Gravity(Vector2[] dots, int length)
@@ -69,32 +56,6 @@ namespace ConsoleUI
                 movedTo.Add(dots[i]);
             }
 
-            for (int i = 0; i < length; i++)
-            {
-                if (dots[i].Y != height - 1 && gravity == 1 || dots[i].Y != 1 && gravity == -1)
-                {
-                    dots[i].Y += 1 * gravity;
-
-                    // below is occupied, check sides
-                    if (movedTo.Contains(dots[i]))
-                    {
-                        dots[i].X += 1 * gravity;
-
-                        // check if left side is occupied
-                        if (movedTo.Contains(dots[i]))
-                        {
-                            dots[i].X -= 2 * gravity;
-
-                            // cant move, go to original position
-                            if (movedTo.Contains(dots[i]))
-                            {
-                                dots[i].X += 1 * gravity;
-                                dots[i].Y -= 1 * gravity;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         static void DrawDots(Vector2[] dots, int length, char character)
