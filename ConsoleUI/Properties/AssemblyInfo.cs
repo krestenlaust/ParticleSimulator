@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ParticleEngine")]
+[assembly: AssemblyTitle("ConsoleUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ParticleEngine")]
+[assembly: AssemblyProduct("ConsoleUI")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9e5900f9-ecd8-4cd1-8a48-169e6b580905")]
+[assembly: Guid("cdef7f71-0e57-4597-b61e-9097a5cb8888")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -44,29 +44,27 @@ namespace ParticleSimulator_UI
         {
             while (true)
             {
-                WorkLoops++;
+                stopwatch.Restart();
 
-                HashSet<Vector2> drawn = new HashSet<Vector2>();
+                WorkLoops++;
 
                 for (int i = 0; i < currentIndex; i++)
                 {
-                    if (drawn.Contains(dots[i]))
-                    {
-                        continue;
-                    }
-
-                    drawn.Add(dots[i]);
-
-                    g.FillRectangle(Brushes.Black, dots[i].X, dots[i].Y, 8, 8);
-
                     dots[i].Y += 10;
 
-                    g.FillRectangle(Brushes.Yellow, dots[i].X, dots[i].Y, 8, 8);
+                    //g.FillRectangle(Brushes.Black, dots[i].X, dots[i].Y, 8, 8);
+                    //
+                    //dots[i].Y += 10;
+                    //
+                    //g.FillRectangle(Brushes.Yellow, dots[i].X, dots[i].Y, 8, 8);
                 }
 
-                stopwatch.Restart();
-                while (stopwatch.ElapsedMilliseconds >= 1000 / 60)
-                    Thread.Sleep(0);
+                gameViewControl1.SetPixels(dots, currentIndex, Color.Black);
+
+                gameViewControl1.RefreshView();
+
+                while (stopwatch.ElapsedMilliseconds < 1000 / 60)
+                    Thread.Sleep(0);   
             }
         }
 
@@ -95,6 +93,26 @@ namespace ParticleSimulator_UI
         private void FormGame_MouseUp(object sender, MouseEventArgs e)
         {
             clicked = false;
+        }
+
+        private void FormGame_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gameViewControl1_MouseMove(object sender, MouseEventArgs e)
+        {
+            FormGame_MouseMove(sender, e);
+        }
+
+        private void gameViewControl1_MouseUp(object sender, MouseEventArgs e)
+        {
+            FormGame_MouseUp(sender, e);
+        }
+
+        private void gameViewControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            FormGame_MouseDown(sender, e);
         }
     }
 }
