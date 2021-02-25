@@ -26,6 +26,7 @@ namespace ParticleEngine
             {
                 for (int i = 0; i < particleGroup.Particles.Count; i++)
                 {
+                    //Gravity
                     Vector2 original = particleGroup.Particles[i];
                     particleGroup.Particles[i] += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
 

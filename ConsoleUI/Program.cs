@@ -5,6 +5,7 @@ using System.Threading;
 using ConsoleInput;
 using System.Collections.Generic;
 using ParticleEngine;
+using ParticleEngine.Particles;
 
 namespace ConsoleUI
 {
@@ -26,6 +27,9 @@ namespace ConsoleUI
             
             Input.Setup(false);
 
+            //Instantiates walls
+            InstantiateBorders();
+
             Stopwatch stopwatch = new Stopwatch();
             Stopwatch physicsStopwatch = new Stopwatch();
             physicsStopwatch.Start();
@@ -38,9 +42,12 @@ namespace ConsoleUI
 
                 if (Mouse.MouseDown[0])
                 {
+                    //Jeg har ændret på brush størrelsen og længden de er adskilt
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x - 2, Mouse.y));
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x + 2, Mouse.y));
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
+                    Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
                 }
 
                 if (physicsStopwatch.ElapsedMilliseconds > 1000 / 30)
@@ -59,8 +66,12 @@ namespace ConsoleUI
                     switch (particleGroup)
                     {
                         case Sand _:
-                            character = '*';
+                            character = '\u2588';
                             color = ConsoleColor.Yellow;
+                            break;
+                        case Block _:
+                            character = '\u2588';
+                            color = ConsoleColor.White;
                             break;
                     }
 
@@ -80,19 +91,31 @@ namespace ConsoleUI
             {
                 Vector2 dot = dots[i];
 
-                try
-                {
-                    newDots[(int)dot.X + (int)dot.Y * width] = character;
-                }
-                catch (Exception)
-                {
+                int index = Math.Abs((int)dot.X + (int)dot.Y * width); //Tilføjelse
 
+                if (newDots.Length > index + 1)
+                {
+                    newDots[index] = character;
                 }
             }
 
             Console.ForegroundColor = color;
             Console.SetCursorPosition(0, 0);
             Console.Write(newDots);
+        }
+
+        static void InstantiateBorders()
+        {
+            for (int i = 0; i < width; i++)
+            {
+                Physics.Instantiate<Block>(new Vector2(i, height - 1));
+                Physics.Instantiate<Block>(new Vector2(i, 0));
+            }
+            for (int n = 0; n < height; n++)
+            {
+                Physics.Instantiate<Block>(new Vector2(0, n));
+                Physics.Instantiate<Block>(new Vector2(width - 1, n));
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ namespace ParticleEngine
     public abstract class Particle
     {
         public int Mass;
+        public double AngleOfReposeRad;
 
         public List<Vector2> Particles;
 
