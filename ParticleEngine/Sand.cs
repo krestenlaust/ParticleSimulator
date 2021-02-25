@@ -8,6 +8,7 @@ namespace ParticleEngine
         public Sand()
         {
             Particles = new List<System.Numerics.Vector2>();
+            Mass = 1;
         }
 
         public override void DoPhysics()

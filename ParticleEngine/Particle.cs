@@ -9,6 +9,8 @@ namespace ParticleEngine
 {
     public abstract class Particle
     {
+        public int Mass;
+
         public List<Vector2> Particles;
 
         public abstract void DoPhysics();

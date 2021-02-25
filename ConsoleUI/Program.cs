@@ -36,17 +36,13 @@ namespace ConsoleUI
                 stopwatch.Restart();
 
                 Input.Update();
+                Physics.Update();
 
                 if (Mouse.MouseDown[0])
                 {
                     CreateDot(Mouse.x, Mouse.y);
                     CreateDot(Mouse.x - 2, Mouse.y);
                     CreateDot(Mouse.x + 2, Mouse.y);
-                }
-
-                if (Mouse.MousePress[1])
-                {
-                    gravity *= -1;
                 }
 
                 Gravity(dots, dotsIndex);
