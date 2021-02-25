@@ -11,6 +11,6 @@ namespace ParticleEngine
     {
         public List<Vector2> Particles;
 
-        public abstract void DoPhyics();
+        public abstract void DoPhysics();
     }
 }

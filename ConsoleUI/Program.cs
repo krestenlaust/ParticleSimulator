@@ -40,8 +40,8 @@ namespace ConsoleUI
                 if (Mouse.MouseDown[0])
                 {
                     CreateDot(Mouse.x, Mouse.y);
-                    CreateDot(Mouse.x - 1, Mouse.y);
-                    CreateDot(Mouse.x + 1, Mouse.y);
+                    CreateDot(Mouse.x - 2, Mouse.y);
+                    CreateDot(Mouse.x + 2, Mouse.y);
                 }
 
                 if (Mouse.MousePress[1])
