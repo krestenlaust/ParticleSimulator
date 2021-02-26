@@ -6,6 +6,7 @@ using ConsoleInput;
 using System.Collections.Generic;
 using ParticleEngine;
 using ParticleEngine.Particles;
+using System.Text;
 
 namespace ConsoleUI
 {
@@ -14,6 +15,7 @@ namespace ConsoleUI
         static int width;
         static int height;
         static char[] screenBuffer;
+        static ConsoleColor[] colorBuffer;
 
         static void Main(string[] args)
         {
@@ -21,6 +23,7 @@ namespace ConsoleUI
             height = 45;
 
             screenBuffer = new char[width * height];
+            colorBuffer = new ConsoleColor[width * height];
 
             Console.WindowWidth = width;
             Console.WindowHeight = height + 1;
@@ -64,18 +67,20 @@ namespace ConsoleUI
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
                     char character = '#';
+                    ConsoleColor color = ConsoleColor.White;
 
                     switch (particleGroup)
                     {
                         case Sand _:
                             character = '#';
+                            color = ConsoleColor.Yellow;
                             break;
                         case Block _:
                             character = '\u2588';
                             break;
                     }
 
-                    DrawDots(dots, dots.Length, character);
+                    DrawDots(dots, dots.Length, character, color);
                 }
 
                 ApplyBuffer();
@@ -85,7 +90,7 @@ namespace ConsoleUI
             }
         }
 
-        static void DrawDots(Vector2[] dots, int length, char character)
+        static void DrawDots(Vector2[] dots, int length, char character, ConsoleColor color)
         {
             for (int i = 0; i < length; i++)
             {
@@ -96,6 +101,7 @@ namespace ConsoleUI
                 if (screenBuffer.Length > index + 1)
                 {
                     screenBuffer[index] = character;
+                    colorBuffer[index] = color;
                 }
             }
         }
@@ -103,9 +109,15 @@ namespace ConsoleUI
         public static void ApplyBuffer()
         {
             Console.SetCursorPosition(0, 0);
-            Console.Write(screenBuffer);
+
+            for (int i = 0; i < screenBuffer.Length; i++)
+            {
+                Console.ForegroundColor = colorBuffer[i];
+                Console.Write(screenBuffer[i]);
+            }
 
             screenBuffer = new char[width * height];
+            colorBuffer = new ConsoleColor[width * height];
         }
 
         static void InstantiateBorders()
