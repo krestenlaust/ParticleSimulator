@@ -77,11 +77,11 @@ namespace ConsoleUI
                     {
                         case Sand _:
                             character = '\u2588';
-                            ansiCode = "\x1b[33m";
+                            ansiCode = "\u001b[33m";
                             break;
                         case Block _:
                             character = '\u2588';
-                            ansiCode = "\x1b[37m";
+                            ansiCode = "\u001b[37m";
                             break;
                     }
 
@@ -115,7 +115,7 @@ namespace ConsoleUI
         {
             Console.SetCursorPosition(0, 0);
 
-            StringBuilder sb = new StringBuilder(screenBuffer.Length * 2);
+            StringBuilder sb = new StringBuilder(screenBuffer.Length + ansiBuffer.Length * 5);
 
             for (int i = 0; i < screenBuffer.Length; i++)
             {
