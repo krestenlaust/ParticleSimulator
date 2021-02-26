@@ -90,6 +90,42 @@ namespace ConsoleUI
             }
         }
 
+        [DllImport("Kernel32.dll")]
+        static extern IntPtr GetStdHandle(UInt32 nStdHandle);
+
+        public struct COORD
+        {
+            short X;
+            short Y;
+        };
+
+        public struct CONSOLE_FONT_INFOEX
+        {
+            public ulong cbSize;
+            public UInt32 nFont;
+            public COORD dwFontSize;
+            public UInt32 FontFamily;
+            public UInt32 FontWeight;
+            IntPtr shit;
+        };
+
+        [DllImport("Kernel32.dll")]
+        static extern Boolean SetCurrentConsoleFontEx(UInt32 hConsoleOutput, Boolean bMaximumWindow, ref CONSOLE_FONT_INFOEX pConsoleCurrentFontEx);
+
+        bool SetFontSize(int width, int height)
+        {
+            CONSOLE_FONT_INFOEX fontInfo;
+            fontInfo.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+            fontInfo.dwFontSize.X = width;
+            fontInfo.dwFontSize.Y = height;
+            fontInfo.FontFamily = TMPF_TRUETYPE;
+
+            if (SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), false, &fontInfo))
+                return true;
+
+            return false;
+        }
+
         static void DrawDots(Vector2[] dots, int length, char character, ConsoleColor color)
         {
             for (int i = 0; i < length; i++)
