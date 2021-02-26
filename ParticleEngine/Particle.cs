@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.      Collections.Generic;
 using System.Numerics;
 
 namespace ParticleEngine
@@ -6,7 +6,7 @@ namespace ParticleEngine
     public abstract class Particle
     {
         public int Mass;
-        public double AngleOfReposeRad;
+        public float AngleOfReposeRad;
 
         public List<Vector2> Particles;
 

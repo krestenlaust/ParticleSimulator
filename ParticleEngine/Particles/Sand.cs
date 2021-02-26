@@ -10,7 +10,7 @@ namespace ParticleEngine.Particles
         {
             Particles = new List<Vector2>();
             Mass = 1;
-            AngleOfReposeRad = (34 / 360) * 2 * Math.PI; //Pres til fysik implemention - 34 grader for sand
+            AngleOfReposeRad = 34 / 180 * (float)Math.PI; //Pres til fysik implemention - 34 grader for sand
         }
 
         public override void DoPhysics()
