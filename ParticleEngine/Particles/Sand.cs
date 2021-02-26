@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace ParticleEngine
+namespace ParticleEngine.Particles
 {
     public class Sand : Particle
     {
@@ -10,11 +10,12 @@ namespace ParticleEngine
         {
             Particles = new List<Vector2>();
             Mass = 1;
+            AngleOfReposeRad = (34 / 360) * 2 * Math.PI; //Pres til fysik implemention - 34 grader for sand
         }
 
         public override void DoPhysics()
         {
-
+            
         }
     }
 }
