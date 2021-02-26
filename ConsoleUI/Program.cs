@@ -13,11 +13,14 @@ namespace ConsoleUI
     {
         static int width;
         static int height;
+        static char[] screenBuffer;
 
         static void Main(string[] args)
         {
             width = 100;
             height = 45;
+
+            screenBuffer = new char[width * height];
 
             Console.WindowWidth = width;
             Console.WindowHeight = height + 1;
@@ -61,47 +64,48 @@ namespace ConsoleUI
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
                     char character = '#';
-                    ConsoleColor color = ConsoleColor.White;
 
                     switch (particleGroup)
                     {
                         case Sand _:
-                            character = '\u2588';
-                            color = ConsoleColor.Yellow;
+                            character = '#';
                             break;
                         case Block _:
                             character = '\u2588';
-                            color = ConsoleColor.White;
                             break;
                     }
 
-                    DrawDots(dots, dots.Length, character, color);
+                    DrawDots(dots, dots.Length, character);
                 }
+
+                ApplyBuffer();
 
                 while (stopwatch.ElapsedMilliseconds < 1000 / 60)
                     Thread.Sleep(0);
             }
         }
 
-        static void DrawDots(Vector2[] dots, int length, char character, ConsoleColor color)
+        static void DrawDots(Vector2[] dots, int length, char character)
         {
-            char[] newDots = new char[width * height];
-
             for (int i = 0; i < length; i++)
             {
                 Vector2 dot = dots[i];
 
                 int index = Math.Abs((int)dot.X + (int)dot.Y * width); //Tilføjelse
 
-                if (newDots.Length > index + 1)
+                if (screenBuffer.Length > index + 1)
                 {
-                    newDots[index] = character;
+                    screenBuffer[index] = character;
                 }
             }
+        }
 
-            Console.ForegroundColor = color;
+        public static void ApplyBuffer()
+        {
             Console.SetCursorPosition(0, 0);
-            Console.Write(newDots);
+            Console.Write(screenBuffer);
+
+            screenBuffer = new char[width * height];
         }
 
         static void InstantiateBorders()

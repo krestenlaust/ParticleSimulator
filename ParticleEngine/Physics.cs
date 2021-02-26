@@ -9,10 +9,11 @@ namespace ParticleEngine
     {
         public static List<Particle> ParticleTypes = new List<Particle>();
         private const float GRAVITATIONAL_CONSTANT = 1;
+        private static HashSet<Vector2> collidingDots = new HashSet<Vector2>();
 
         public static void Update()
         {
-            HashSet<Vector2> collidingDots = new HashSet<Vector2>(10000);
+            collidingDots.Clear();
 
             foreach (var particleGroup in ParticleTypes)
             {
