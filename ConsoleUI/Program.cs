@@ -3,7 +3,6 @@ using System.Numerics;
 using System.Diagnostics;
 using System.Threading;
 using ConsoleInput;
-using System.Collections.Generic;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System.Text;
@@ -15,7 +14,7 @@ namespace ConsoleUI
         static int width;
         static int height;
         static char[] screenBuffer;
-        static ConsoleColor[] colorBuffer;
+        static string[] ansiBuffer;
 
         static void Main(string[] args)
         {
@@ -23,22 +22,31 @@ namespace ConsoleUI
             height = 45;
 
             screenBuffer = new char[width * height];
-            colorBuffer = new ConsoleColor[width * height];
+            ansiBuffer = new string[width * height];
 
             Console.WindowWidth = width;
             Console.WindowHeight = height + 1;
             Console.BufferWidth = width;
             Console.BufferHeight = height + 1;
             Console.CursorVisible = false;
-            
+
+            WinAPI.GetConsoleMode(WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle), out uint lpMode);
+            WinAPI.SetConsoleMode(
+                WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle),
+                (int)WinAPI.ConsoleMode.ENABLE_VIRTUAL_TERMINAL_PROCESSING | lpMode
+                );
+
+            WinAPI.GetConsoleMode(WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle), out lpMode);
+            Console.Title = lpMode.ToString();
+
+            //WinAPI.SetFontSize(10, 10);
+
             Input.Setup(false);
 
             //Instantiates walls
             InstantiateBorders();
 
             Stopwatch stopwatch = new Stopwatch();
-            Stopwatch physicsStopwatch = new Stopwatch();
-            physicsStopwatch.Start();
 
             while (true)
             {
@@ -56,31 +64,28 @@ namespace ConsoleUI
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
                 }
 
-                if (physicsStopwatch.ElapsedMilliseconds > 1000 / 30)
-                {
-                    physicsStopwatch.Restart();
-                    Physics.Update();
-                }
+                Physics.Update();
 
                 foreach (var particleGroup in Physics.ParticleTypes)
                 {
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
                     char character = '#';
-                    ConsoleColor color = ConsoleColor.White;
+                    string ansiCode = "";
 
                     switch (particleGroup)
                     {
                         case Sand _:
-                            character = '#';
-                            color = ConsoleColor.Yellow;
+                            character = '\u2588';
+                            ansiCode = "\x1b[33m";
                             break;
                         case Block _:
                             character = '\u2588';
+                            ansiCode = "\x1b[37m";
                             break;
                     }
 
-                    DrawDots(dots, dots.Length, character, color);
+                    DrawDots(dots, dots.Length, character, ansiCode);
                 }
 
                 ApplyBuffer();
@@ -90,43 +95,7 @@ namespace ConsoleUI
             }
         }
 
-        [DllImport("Kernel32.dll")]
-        static extern IntPtr GetStdHandle(UInt32 nStdHandle);
-
-        public struct COORD
-        {
-            short X;
-            short Y;
-        };
-
-        public struct CONSOLE_FONT_INFOEX
-        {
-            public ulong cbSize;
-            public UInt32 nFont;
-            public COORD dwFontSize;
-            public UInt32 FontFamily;
-            public UInt32 FontWeight;
-            IntPtr shit;
-        };
-
-        [DllImport("Kernel32.dll")]
-        static extern Boolean SetCurrentConsoleFontEx(UInt32 hConsoleOutput, Boolean bMaximumWindow, ref CONSOLE_FONT_INFOEX pConsoleCurrentFontEx);
-
-        bool SetFontSize(int width, int height)
-        {
-            CONSOLE_FONT_INFOEX fontInfo;
-            fontInfo.cbSize = sizeof(CONSOLE_FONT_INFOEX);
-            fontInfo.dwFontSize.X = width;
-            fontInfo.dwFontSize.Y = height;
-            fontInfo.FontFamily = TMPF_TRUETYPE;
-
-            if (SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), false, &fontInfo))
-                return true;
-
-            return false;
-        }
-
-        static void DrawDots(Vector2[] dots, int length, char character, ConsoleColor color)
+        static void DrawDots(Vector2[] dots, int length, char character, string ansiCode)
         {
             for (int i = 0; i < length; i++)
             {
@@ -137,7 +106,7 @@ namespace ConsoleUI
                 if (screenBuffer.Length > index + 1)
                 {
                     screenBuffer[index] = character;
-                    colorBuffer[index] = color;
+                    ansiBuffer[index] = ansiCode;
                 }
             }
         }
@@ -146,14 +115,22 @@ namespace ConsoleUI
         {
             Console.SetCursorPosition(0, 0);
 
+            StringBuilder sb = new StringBuilder(screenBuffer.Length * 2);
+
             for (int i = 0; i < screenBuffer.Length; i++)
             {
-                Console.ForegroundColor = colorBuffer[i];
-                Console.Write(screenBuffer[i]);
+                if (ansiBuffer[i] != "")
+                {
+                    sb.Append(ansiBuffer[i]);
+                }
+
+                sb.Append(screenBuffer[i]);
             }
 
+            Console.Write(sb);
+
             screenBuffer = new char[width * height];
-            colorBuffer = new ConsoleColor[width * height];
+            ansiBuffer = new string[width * height];
         }
 
         static void InstantiateBorders()
