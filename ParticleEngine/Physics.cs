@@ -37,6 +37,11 @@ namespace ParticleEngine
             }
         }
 
+        /// <summary>
+        /// Instantiates a particle of type <c>T</c>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="position"></param>
         public static void Instantiate<T>(Vector2 position) where T : Particle, new()
         {
             Particle group = (from particleGroup in ParticleTypes
