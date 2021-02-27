@@ -11,25 +11,10 @@ namespace ConsoleUI
 {
     class Program
     {
-        static int width;
-        static int height;
-        static char[] screenBuffer;
-        static char[] ansiBuffer;
-
         static void Main(string[] args)
         {
             // Define console screen sizes to allow easy line wrapping.
-            width = 100;
-            height = 45;
-
-            screenBuffer = new char[width * height];
-            ansiBuffer = new char[width * height * 5];
-
-            Console.WindowWidth = width;
-            Console.WindowHeight = height + 1;
-            Console.BufferWidth = width;
-            Console.BufferHeight = height + 1;
-            Console.CursorVisible = false;
+            ScreenBuffer.Setup(100, 45);
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
@@ -86,74 +71,27 @@ namespace ConsoleUI
                             break;
                     }
 
-                    DrawDots(dots, dots.Length, character, ansiCode);
+                    ScreenBuffer.DrawDots(dots, dots.Length, character, ansiCode);
                 }
 
-                ApplyBuffer();
+                ScreenBuffer.ApplyBuffer();
 
                 while (stopwatch.ElapsedMilliseconds < 1000 / 60)
                     Thread.Sleep(0);
             }
         }
 
-        static void DrawDots(Vector2[] dots, int length, char character, char[] ansiCode)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                Vector2 dot = dots[i];
-
-                // TODO: Patrick, det her kan gøres bedre 🤔...
-                int index = Math.Abs((int)dot.X + (int)dot.Y * width); //Tilføjelse
-
-                if (screenBuffer.Length > index + 1)
-                {
-                    screenBuffer[index] = character;
-                    ansiBuffer[index * 5] = ansiCode[0];
-                    ansiBuffer[index * 5 + 1] = ansiCode[1];
-                    ansiBuffer[index * 5 + 2] = ansiCode[2];
-                    ansiBuffer[index * 5 + 3] = ansiCode[3];
-                    ansiBuffer[index * 5 + 4] = ansiCode[4];
-                }
-            }
-        }
-
-        public static void ApplyBuffer()
-        {
-            Console.SetCursorPosition(0, 0);
-
-            StringBuilder sb = new StringBuilder(screenBuffer.Length + ansiBuffer.Length * 5);
-
-            for (int i = 0; i < screenBuffer.Length; i++)
-            {
-                if (ansiBuffer[i * 5] != '\0')
-                {
-                    sb.Append(ansiBuffer[i * 5]);
-                    sb.Append(ansiBuffer[i * 5 + 1]);
-                    sb.Append(ansiBuffer[i * 5 + 2]);
-                    sb.Append(ansiBuffer[i * 5 + 3]);
-                    sb.Append(ansiBuffer[i * 5 + 4]);
-                }
-
-                sb.Append(screenBuffer[i]);
-            }
-
-            Console.Write(sb);
-
-            screenBuffer = new char[width * height];
-            ansiBuffer = new char[width * height * 5];
-        }
-
         static void InstantiateBorders()
         {
-            for (int i = 0; i < width; i++)
+            for (int i = 0; i < ScreenBuffer.Width; i++)
             {
-                Physics.Instantiate<Block>(new Vector2(i, height - 1));
+                Physics.Instantiate<Block>(new Vector2(i, ScreenBuffer.Height - 1));
                 Physics.Instantiate<Block>(new Vector2(i, 0));
             }
-            for (int n = 0; n < height; n++)
+            for (int n = 0; n < ScreenBuffer.Height; n++)
             {
                 Physics.Instantiate<Block>(new Vector2(0, n));
-                Physics.Instantiate<Block>(new Vector2(width - 1, n));
+                Physics.Instantiate<Block>(new Vector2(ScreenBuffer.Width - 1, n));
             }
         }
     }
