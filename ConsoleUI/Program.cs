@@ -14,7 +14,7 @@ namespace ConsoleUI
         static int width;
         static int height;
         static char[] screenBuffer;
-        static string[] ansiBuffer;
+        static char[] ansiBuffer;
 
         static void Main(string[] args)
         {
@@ -23,7 +23,7 @@ namespace ConsoleUI
             height = 45;
 
             screenBuffer = new char[width * height];
-            ansiBuffer = new string[width * height];
+            ansiBuffer = new char[width * height * 5];
 
             Console.WindowWidth = width;
             Console.WindowHeight = height + 1;
@@ -69,17 +69,20 @@ namespace ConsoleUI
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
                     char character = '#';
-                    string ansiCode = "";
+                    char[] ansiCode;
 
                     switch (particleGroup)
                     {
                         case Sand _:
                             character = '\u2588';
-                            ansiCode = "\u001b[33m";
+                            ansiCode = "\u001b[33m".ToCharArray();
                             break;
                         case Block _:
                             character = '\u2588';
-                            ansiCode = "\u001b[37m";
+                            ansiCode = "\u001b[37m".ToCharArray();
+                            break;
+                        default:
+                            ansiCode = null;
                             break;
                     }
 
@@ -93,7 +96,7 @@ namespace ConsoleUI
             }
         }
 
-        static void DrawDots(Vector2[] dots, int length, char character, string ansiCode)
+        static void DrawDots(Vector2[] dots, int length, char character, char[] ansiCode)
         {
             for (int i = 0; i < length; i++)
             {
@@ -105,7 +108,11 @@ namespace ConsoleUI
                 if (screenBuffer.Length > index + 1)
                 {
                     screenBuffer[index] = character;
-                    ansiBuffer[index] = ansiCode;
+                    ansiBuffer[index * 5] = ansiCode[0];
+                    ansiBuffer[index * 5 + 1] = ansiCode[1];
+                    ansiBuffer[index * 5 + 2] = ansiCode[2];
+                    ansiBuffer[index * 5 + 3] = ansiCode[3];
+                    ansiBuffer[index * 5 + 4] = ansiCode[4];
                 }
             }
         }
@@ -118,9 +125,13 @@ namespace ConsoleUI
 
             for (int i = 0; i < screenBuffer.Length; i++)
             {
-                if (ansiBuffer[i] != "")
+                if (ansiBuffer[i * 5] != '\0')
                 {
-                    sb.Append(ansiBuffer[i]);
+                    sb.Append(ansiBuffer[i * 5]);
+                    sb.Append(ansiBuffer[i * 5 + 1]);
+                    sb.Append(ansiBuffer[i * 5 + 2]);
+                    sb.Append(ansiBuffer[i * 5 + 3]);
+                    sb.Append(ansiBuffer[i * 5 + 4]);
                 }
 
                 sb.Append(screenBuffer[i]);
@@ -129,7 +140,7 @@ namespace ConsoleUI
             Console.Write(sb);
 
             screenBuffer = new char[width * height];
-            ansiBuffer = new string[width * height];
+            ansiBuffer = new char[width * height * 5];
         }
 
         static void InstantiateBorders()
