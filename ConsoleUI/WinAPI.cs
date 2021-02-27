@@ -9,25 +9,13 @@ namespace ConsoleUI
 {
     public static class WinAPI
     {
-        [DllImport("Kernel32.dll")]
-        public static extern IntPtr GetStdHandle(int nStdHandle);
-
-        [DllImport("Kernel32.dll")]
-        private static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX pConsoleCurrentFontEx);
-
-        [DllImport("Kernel32.dll")]
-        public static extern bool SetConsoleMode(IntPtr hConsole, uint dwMode);
-
-        [DllImport("Kernel32.dll")]
-        public static extern bool GetConsoleMode(IntPtr hConsole, out uint lpMode);
-
-        public enum ConsoleMode : uint
+        private enum ConsoleMode : uint
         {
             ENABLE_PROCESSED_OUTPUT = 0x0001,
             ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
         }
 
-        public enum StdHandle : int
+        private enum StdHandle : int
         {
             OutputHandle = -11,
             InputHandle = -10
@@ -59,7 +47,37 @@ namespace ConsoleUI
             public string FaceName;
         }
 
-        
+        [DllImport("Kernel32.dll")]
+        private static extern IntPtr GetStdHandle(int nStdHandle);
+
+        [DllImport("Kernel32.dll")]
+        private static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX pConsoleCurrentFontEx);
+
+        [DllImport("Kernel32.dll")]
+        private static extern bool SetConsoleMode(IntPtr hConsole, uint dwMode);
+
+        [DllImport("Kernel32.dll")]
+        private static extern bool GetConsoleMode(IntPtr hConsole, out uint lpMode);
+
+        /// <summary>
+        /// Enables console output mode "VIRTUAL_TERMINAL_PROCESSING" to enable processing of ANSI colors.
+        /// </summary>
+        public static void EnableANSIProcessing()
+        {
+            IntPtr outHandle = GetStdHandle((int)StdHandle.OutputHandle);
+
+            // Gets current console modes to add a mode to it.
+            GetConsoleMode(outHandle, out uint lpMode);
+            // Setting console mode, including old settings.
+            SetConsoleMode(outHandle, (int)ConsoleMode.ENABLE_VIRTUAL_TERMINAL_PROCESSING | lpMode);
+        }
+
+        /// <summary>
+        /// Updates the console font size.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
         public static bool SetFontSize(short width, short height)
         {
             CONSOLE_FONT_INFO_EX fontInfo = new CONSOLE_FONT_INFO_EX();
@@ -68,11 +86,9 @@ namespace ConsoleUI
             fontInfo.FontFamily = 0x04;
             fontInfo.cbSize = (uint)Marshal.SizeOf(fontInfo);
 
-            if (SetCurrentConsoleFontEx(GetStdHandle((int)StdHandle.OutputHandle), false, ref fontInfo))
-                return true;
+            IntPtr outHandle = GetStdHandle((int)StdHandle.OutputHandle);
 
-            return false;
+            return SetCurrentConsoleFontEx(outHandle, false, ref fontInfo);
         }
-
     }
 }

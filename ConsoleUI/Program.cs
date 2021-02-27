@@ -18,6 +18,7 @@ namespace ConsoleUI
 
         static void Main(string[] args)
         {
+            // Define console screen sizes to allow easy line wrapping.
             width = 100;
             height = 45;
 
@@ -30,33 +31,30 @@ namespace ConsoleUI
             Console.BufferHeight = height + 1;
             Console.CursorVisible = false;
 
-            WinAPI.GetConsoleMode(WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle), out uint lpMode);
-            WinAPI.SetConsoleMode(
-                WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle),
-                (int)WinAPI.ConsoleMode.ENABLE_VIRTUAL_TERMINAL_PROCESSING | lpMode
-                );
-
-            WinAPI.GetConsoleMode(WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle), out lpMode);
-            Console.Title = lpMode.ToString();
-
+            // Call Windows API to enable our specific console needs.
+            WinAPI.EnableANSIProcessing();
             //WinAPI.SetFontSize(10, 10);
 
+            // Call console input library.
             Input.Setup(false);
 
-            //Instantiates walls
+            // Instantiates game borders.
             InstantiateBorders();
 
+            // Stopwatch to measure game loop time.
             Stopwatch stopwatch = new Stopwatch();
 
             while (true)
             {
                 stopwatch.Restart();
 
+                // Call console input library to update input-logic.
                 Input.Update();
 
                 if (Mouse.MouseDown[0])
                 {
-                    //Jeg har ændret på brush størrelsen og længden de er adskilt
+                    // Jeg har ændret på brush størrelsen og længden de er adskilt.
+                    // ok - Kresten
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
