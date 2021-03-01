@@ -33,7 +33,7 @@ namespace ParticleEngine
                     //Applies gravity
                     resultingForce += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
 
-                    if (collidingDots.Contains(particleGroup.Particles[i])) //Removes it again if it shouldn't have been applied
+                    if (collidingDots.Contains(particleGroup.Particles[i] + resultingForce)) //Removes it again if it shouldn't have been applied
                     {
                         resultingForce -= new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
                     }
@@ -44,9 +44,15 @@ namespace ParticleEngine
                     //Angle of repose
                     if (updraftVector.Y <= 0) //If the particle is going downward
                     {
+                        /*for (int i = 0; i < Math.Tan(); i++)
+                        {
+                            if ()
+                            {
 
+                            }
+                        }*/
+                        
                     }
-
 
                     //Applies the resulting force
                     particleGroup.Particles[i] += resultingForce;
