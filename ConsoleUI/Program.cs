@@ -16,7 +16,7 @@ namespace ConsoleUI
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
-            WinAPI.SetFontSize(15, 15);
+            WinAPI.SetFontSize(14, 14);
 
             // Set up the window style
             WinAPI.SetupStyle();
