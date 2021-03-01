@@ -28,8 +28,8 @@ namespace ConsoleUI
             for (int i = 0; i < length; i++)
             {
                 Vector2 dot = dots[i];
-
-                // TODO: Patrick, det her kan gøres bedre 🤔...
+                
+                // TODO: Patrick, det her kan gøres bedre 🤔... 🤢
                 int index = Math.Abs((int)dot.X + (int)dot.Y * Width); //Tilføjelse
 
                 if (buffer.Length > index + 1)
