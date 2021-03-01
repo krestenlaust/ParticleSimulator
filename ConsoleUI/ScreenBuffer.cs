@@ -32,15 +32,16 @@ namespace ConsoleUI
             {
                 Vector2 dot = dots[i];
                 
-                // TODO: Patrick, det her kan gøres bedre 🤔... 🤢
-                int index = Math.Abs((int)dot.X + (int)dot.Y * Width); //Tilføjelse
+                int index = (int)dot.X + (int)dot.Y * Width;
 
-                if (buffer.Length > index + 1)
+                if (buffer.Length <= index || index < 0)
                 {
-                    buffer[index] = character;
-                    ansiBuffer[index * 2] = ansiCode[0];
-                    ansiBuffer[index * 2 + 1] = ansiCode[1];
+                    continue;
                 }
+
+                buffer[index] = character;
+                ansiBuffer[index * 2] = ansiCode[0];
+                ansiBuffer[index * 2 + 1] = ansiCode[1];
             }
         }
 
