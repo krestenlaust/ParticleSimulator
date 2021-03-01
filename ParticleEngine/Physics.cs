@@ -11,6 +11,9 @@ namespace ParticleEngine
         public static List<ParticleGroup> ParticleTypes = new List<ParticleGroup>();
         private static Dictionary<Vector2, ParticleGroup> collidingDots = new Dictionary<Vector2, ParticleGroup>();
 
+        private static Vector2 updraftVector;
+        private static ParticleGroup particleGroup;
+
         private static Random randomNumber = new Random(42352352);
 
         public static void Update()
@@ -47,37 +50,11 @@ namespace ParticleEngine
                     }
 
                     //TODO: Updraft
-                    Vector2 updraftVector = new Vector2(0, -1);
+                    updraftVector = new Vector2(0, -1);
 
-                    //Angle of repose
-                    if (updraftVector.Y <= 0) //If the particle is going downward
-                    {
-                        int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad));
-                        for (int n = 0; n < maxLengthAway * 2; n++)
-                        {
-                            Vector2 checkVector;
-                            if (randomNumber.Next(2) == 1)
-                            {
-                                checkVector = new Vector2(n, 1);
-                            }
-                            else
-                            {
-                                checkVector = new Vector2(-n, 1);
-                            }
-
-                            /*if (checkVector < 0 || checkVector > screenwidthnoget) 
-                            {
-
-                            }*/
-
-                            if (!collidingDots.TryGetValue(particleGroup.Particles[i] + checkVector, out _) && 
-                                collidingDots.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
-                            {
-                                resultingForce += checkVector;
-                            }
-                        }
-                    }
-
+                    // Adding the force from the particle's repose angle
+                    resultingForce += CheckRepose(i);
+                    
                     //Applies the resulting force
                     particleGroup.Particles[i] += resultingForce;
                 }
@@ -90,6 +67,41 @@ namespace ParticleEngine
                 group.OnCollide(otherParticle, otherGroup, particle);
                 otherGroup.OnCollide(particle, group, otherParticle);
             }
+        }
+
+        public static Vector2 CheckRepose(int i)
+        {
+            //Angle of repose
+            if (updraftVector.Y <= 0) //If the particle is going downward
+            {
+                int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); //Calculates the length from
+                for (int n = 0; n < maxLengthAway * 2; n++)
+                {
+                    Vector2 checkVector; 
+                    //Chooses the direction it should check first
+                    if (randomNumber.Next(2) == 1)
+                    {
+                        checkVector = new Vector2(n, 1);
+                    }
+                    else
+                    {
+                        checkVector = new Vector2(-n, 1);
+                    }
+
+                    /*if (checkVector < 0 || checkVector > screenwidthnoget) 
+                    {
+
+                    }*/
+
+                    // Checks if the checking spot is empty and that the particle actually have another particle underneath
+                    if (!collidingDots.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
+                        collidingDots.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
+                    {
+                        return checkVector;
+                    }
+                }
+            }
+            return Vector2.Zero;
         }
 
         /// <summary>
