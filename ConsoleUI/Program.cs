@@ -4,6 +4,7 @@ using System.Threading;
 using ConsoleInput;
 using ParticleEngine;
 using ParticleEngine.Particles;
+using System;
 
 namespace ConsoleUI
 {
@@ -17,6 +18,9 @@ namespace ConsoleUI
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
             //WinAPI.SetFontSize(10, 10);
+
+            // Set up the window style
+            SetupStyle();
 
             // Call console input library.
             Input.Setup(false);
@@ -78,6 +82,15 @@ namespace ConsoleUI
                 while (stopwatch.ElapsedMilliseconds < 1000 / 60)
                     Thread.Sleep(0);
             }
+        }
+
+        static void SetupStyle()
+        {
+            IntPtr hWindow = WinAPI.GetConsoleWindow(); // Get handle to console window
+            long style = WinAPI.GetWindowLongA(hWindow, WinAPI.GWL_STYLE); // Retrieve style
+            style ^= (long)WinAPI.WindowStyles.WS_SIZEBOX; // Zero the WS_SIZEBOX bit to prevent resizing
+            style ^= (long)WinAPI.WindowStyles.WS_MAXIMIZEBOX; // Zero the WS_MAXIMIZEBOX bit to remove the maximize button
+            WinAPI.SetWindowLongA(hWindow, WinAPI.GWL_STYLE, style); // Set the modified style
         }
 
         static void InstantiateBorders()

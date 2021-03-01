@@ -47,6 +47,15 @@ namespace ConsoleUI
             public string FaceName;
         }
 
+        public const int GWL_STYLE = -16;
+
+        public enum WindowStyles : long
+        {
+            WS_MAXIMIZEBOX = 0x00010000L,
+            WS_SIZEBOX = 0x00040000L
+        }
+
+
         [DllImport("Kernel32.dll")]
         private static extern IntPtr GetStdHandle(int nStdHandle);
 
@@ -58,6 +67,16 @@ namespace ConsoleUI
 
         [DllImport("Kernel32.dll")]
         private static extern bool GetConsoleMode(IntPtr hConsole, out uint lpMode);
+
+        [DllImport("Kernel32.dll")]
+        public static extern IntPtr GetConsoleWindow();
+
+        [DllImport("User32.dll")]
+        public static extern long GetWindowLongA(IntPtr hWindow, int nIndex);
+
+        [DllImport("User32.dll")]
+        public static extern long SetWindowLongA(IntPtr hWindow, int nIndex, long dwNewLong);
+    
 
         /// <summary>
         /// Enables console output mode "VIRTUAL_TERMINAL_PROCESSING" to enable processing of ANSI colors.
