@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace ParticleEngine
 {
-    public abstract class Particle
+    public abstract class ParticleGroup
     {
         public int Mass;
         public float AngleOfReposeRad;

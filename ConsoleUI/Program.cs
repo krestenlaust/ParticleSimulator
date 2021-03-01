@@ -48,6 +48,10 @@ namespace ConsoleUI
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
                 }
+                else if (Mouse.MouseDown[1])
+                {
+                    Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
+                }
 
                 Physics.Update();
 
