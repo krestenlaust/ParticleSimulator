@@ -48,7 +48,7 @@ namespace ConsoleUI
         {
             Console.SetCursorPosition(0, 0);
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(buffer.Length * 6);
 
             for (int i = 0; i < buffer.Length; i++)
             {
@@ -60,7 +60,7 @@ namespace ConsoleUI
                     sb.Append('m');
                 }
 
-                sb.Append(buffer[i]);
+                sb.Append(buffer[i] == '\0' ? ' ' : buffer[i]);
             }
 
             Console.Write(sb);
