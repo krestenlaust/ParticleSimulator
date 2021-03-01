@@ -70,8 +70,8 @@ namespace ParticleEngine
 
                             }*/
 
-                            if (!collidingDots.Contains(particleGroup.Particles[i] + checkVector) && 
-                                collidingDots.Contains(particleGroup.Particles[i] + new Vector2(0, 1)))
+                            if (!collidingDots.TryGetValue(particleGroup.Particles[i] + checkVector, out _) && 
+                                collidingDots.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
                             {
                                 resultingForce += checkVector;
                             }
