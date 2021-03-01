@@ -27,14 +27,29 @@ namespace ParticleEngine
             {
                 for (int i = 0; i < particleGroup.Particles.Count; i++)
                 {
-                    //Gravity
-                    Vector2 original = particleGroup.Particles[i];
-                    particleGroup.Particles[i] += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
+                    //The vector that will take all the physics in and move the particle each frame the resulting force at what ever direction it should go
+                    Vector2 resultingForce = new Vector2(0,0);
 
-                    if (collidingDots.Contains(particleGroup.Particles[i]))
+                    //Applies gravity
+                    resultingForce += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
+
+                    if (collidingDots.Contains(particleGroup.Particles[i])) //Removes it again if it shouldn't have been applied
                     {
-                        particleGroup.Particles[i] = original;
+                        resultingForce -= new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
                     }
+
+                    //TODO: Updraft
+                    Vector2 updraftVector = new Vector2(0, -1);
+
+                    //Angle of repose
+                    if (updraftVector.Y <= 0) //If the particle is going downward
+                    {
+
+                    }
+
+
+                    //Applies the resulting force
+                    particleGroup.Particles[i] += resultingForce;
                 }
             }
         }
