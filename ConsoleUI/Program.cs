@@ -4,7 +4,6 @@ using System.Threading;
 using ConsoleInput;
 using ParticleEngine;
 using ParticleEngine.Particles;
-using System;
 
 namespace ConsoleUI
 {
@@ -20,7 +19,7 @@ namespace ConsoleUI
             WinAPI.SetFontSize(15, 15);
 
             // Set up the window style
-            SetupStyle();
+            WinAPI.SetupStyle();
 
             // Call console input library.
             Input.Setup(false);
@@ -57,24 +56,24 @@ namespace ConsoleUI
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
                     char character = '#';
-                    char[] ansiCode;
+                    ANSIColor color;
 
                     switch (particleGroup)
                     {
                         case Sand _:
                             character = '\u2588';
-                            ansiCode = new char[] { '3', '3' };
+                            color = new ANSIColor(ANSIColor.Color.Yellow, ANSIColor.Ground.Fore, false);
                             break;
                         case Block _:
                             character = '\u2588';
-                            ansiCode = new char[] { '3', '7' };
+                            color = new ANSIColor(ANSIColor.Color.Magenta, ANSIColor.Ground.Fore, false);
                             break;
                         default:
-                            ansiCode = null;
+                            color = new ANSIColor();
                             break;
                     }
 
-                    ScreenBuffer.DrawDots(dots, dots.Length, character, ansiCode);
+                    ScreenBuffer.DrawDots(dots, dots.Length, character, color);
                 }
 
                 ScreenBuffer.ApplyBuffer();
@@ -82,15 +81,6 @@ namespace ConsoleUI
                 while (stopwatch.ElapsedMilliseconds < 1000 / 60)
                     Thread.Sleep(0);
             }
-        }
-
-        static void SetupStyle()
-        {
-            IntPtr hWindow = WinAPI.GetConsoleWindow(); // Get handle to console window
-            long style = WinAPI.GetWindowLongA(hWindow, WinAPI.GWL_STYLE); // Retrieve style
-            style ^= (long)WinAPI.WindowStyles.WS_SIZEBOX; // Zero the WS_SIZEBOX bit to prevent resizing
-            style ^= (long)WinAPI.WindowStyles.WS_MAXIMIZEBOX; // Zero the WS_MAXIMIZEBOX bit to remove the maximize button
-            WinAPI.SetWindowLongA(hWindow, WinAPI.GWL_STYLE, style); // Set the modified style
         }
 
         static void InstantiateBorders()
