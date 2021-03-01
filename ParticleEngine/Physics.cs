@@ -11,6 +11,8 @@ namespace ParticleEngine
         public static List<Particle> ParticleTypes = new List<Particle>();
         private static HashSet<Vector2> collidingDots = new HashSet<Vector2>();
 
+        private static Random randomNumber = new Random(42352352);
+
         public static void Update()
         {
             collidingDots.Clear();
@@ -44,14 +46,33 @@ namespace ParticleEngine
                     //Angle of repose
                     if (updraftVector.Y <= 0) //If the particle is going downward
                     {
-                        /*for (int i = 0; i < Math.Tan(); i++)
+                        if (particleGroup is Particles.Sand)
                         {
-                            if ()
+
+                        }
+                        int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad));
+                        for (int n = 0; n < maxLengthAway * 2; n++)
+                        {
+                            Vector2 checkVector;
+                            if (randomNumber.Next(2) == 1)
+                            {
+                                checkVector = new Vector2(n, 1);
+                            }
+                            else
+                            {
+                                checkVector = new Vector2(-n, 1);
+                            }
+
+                            /*if (checkVector < 0 || checkVector > screenwidthnoget) //Jeg har brug for at vide størrelsen på vores ting fra consoleUI eller få en nem måde at spørge den om en vector er indenfor.
                             {
 
+                            }*/
+
+                            if (!collidingDots.Contains(particleGroup.Particles[i] + checkVector) && collidingDots.Contains(new Vector2(particleGroup.Particles[i].X, particleGroup.Particles[i].Y + 1)))
+                            {
+                                resultingForce += checkVector;
                             }
-                        }*/
-                        
+                        }
                     }
 
                     //Applies the resulting force
