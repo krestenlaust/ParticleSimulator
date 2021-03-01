@@ -1,11 +1,9 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Diagnostics;
 using System.Threading;
 using ConsoleInput;
 using ParticleEngine;
 using ParticleEngine.Particles;
-using System.Text;
 
 namespace ConsoleUI
 {
