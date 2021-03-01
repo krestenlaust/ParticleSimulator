@@ -65,12 +65,13 @@ namespace ParticleEngine
                                 checkVector = new Vector2(-n, 1);
                             }
 
-                            /*if (checkVector < 0 || checkVector > screenwidthnoget) //Jeg har brug for at vide størrelsen på vores ting fra consoleUI eller få en nem måde at spørge den om en vector er indenfor.
+                            /*if (checkVector < 0 || checkVector > screenwidthnoget) 
                             {
 
                             }*/
 
-                            if (!collidingDots.TryGetValue(particleGroup.Particles[i] + checkVector, out _) && collidingDots.TryGetValue(new Vector2(particleGroup.Particles[i].X, particleGroup.Particles[i].Y + 1), out _))
+                            if (!collidingDots.Contains(particleGroup.Particles[i] + checkVector) && 
+                                collidingDots.Contains(particleGroup.Particles[i] + new Vector2(0, 1)))
                             {
                                 resultingForce += checkVector;
                             }
