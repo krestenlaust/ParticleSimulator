@@ -7,8 +7,8 @@ namespace ParticleEngine
 {
     public static class Physics
     {
-        public static List<Particle> ParticleTypes = new List<Particle>();
         private const float GRAVITATIONAL_CONSTANT = 1;
+        public static List<Particle> ParticleTypes = new List<Particle>();
         private static HashSet<Vector2> collidingDots = new HashSet<Vector2>();
 
         public static void Update()

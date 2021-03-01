@@ -16,7 +16,7 @@ namespace ConsoleUI
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
-            //WinAPI.SetFontSize(10, 10);
+            WinAPI.SetFontSize(15, 15);
 
             // Call console input library.
             Input.Setup(false);
@@ -82,15 +82,16 @@ namespace ConsoleUI
 
         static void InstantiateBorders()
         {
-            for (int i = 0; i < ScreenBuffer.Width; i++)
+            for (int n = 0; n < ScreenBuffer.Width; n++)
             {
-                Physics.Instantiate<Block>(new Vector2(i, ScreenBuffer.Height - 1));
-                Physics.Instantiate<Block>(new Vector2(i, 0));
+                Physics.Instantiate<Block>(new Vector2(n, ScreenBuffer.Height - 1));
+                Physics.Instantiate<Block>(new Vector2(n, 0));
             }
+
             for (int n = 0; n < ScreenBuffer.Height; n++)
             {
-                Physics.Instantiate<Block>(new Vector2(0, n));
                 Physics.Instantiate<Block>(new Vector2(ScreenBuffer.Width - 1, n));
+                Physics.Instantiate<Block>(new Vector2(0, n));
             }
         }
     }
