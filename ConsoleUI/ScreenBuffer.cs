@@ -9,7 +9,7 @@ namespace ConsoleUI
         public static int Width { get; private set; }
         public static int Height { get; private set; }
         private static char[] buffer;
-        private static char[] ansiBuffer;
+        private static ANSIColor[] ansiBuffer;
 
         public static void Setup(int width, int height)
         {
@@ -17,7 +17,7 @@ namespace ConsoleUI
             Height = height;
 
             buffer = new char[width * height];
-            ansiBuffer = new char[width * height * 2];
+            ansiBuffer = new ANSIColor[width * height];
             
             Console.WindowWidth = Width;
             Console.WindowHeight = Height + 1;
@@ -40,8 +40,7 @@ namespace ConsoleUI
                 }
 
                 buffer[index] = character;
-                ansiBuffer[index * 2] = color.CharArrayRepresentation[0];
-                ansiBuffer[index * 2 + 1] = color.CharArrayRepresentation[1];
+                ansiBuffer[index] = color;
             }
         }
 
@@ -49,15 +48,15 @@ namespace ConsoleUI
         {
             Console.SetCursorPosition(0, 0);
 
+            // Allocate half of max, 1 buffer length for every char, and 5 chars for every color.
             StringBuilder sb = new StringBuilder(buffer.Length * 6);
 
             for (int i = 0; i < buffer.Length; i++)
             {
-                if (ansiBuffer[i * 2] != '\0')
+                if (ansiBuffer[i].Value != 0)
                 {
                     sb.Append("\u001b[");
-                    sb.Append(ansiBuffer[i * 2]);
-                    sb.Append(ansiBuffer[i * 2 + 1]);
+                    sb.Append(ansiBuffer[i].ToString());
                     sb.Append('m');
                 }
 
@@ -67,7 +66,7 @@ namespace ConsoleUI
             Console.Write(sb);
 
             buffer = new char[Width * Height];
-            ansiBuffer = new char[Width * Height * 2];
+            ansiBuffer = new ANSIColor[Width * Height];
         }
     }
 }

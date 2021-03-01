@@ -29,12 +29,13 @@ namespace ConsoleUI
             Back = 10
         }
 
-        public char[] CharArrayRepresentation { get; private set; }
+        public readonly byte Value;
 
         public ANSIColor(Color color, Ground ground, bool bright)
         {
-            int codeValue = (byte)color + (byte)ground + (bright ? 60 : 0);
-            CharArrayRepresentation = codeValue.ToString().ToCharArray();
+            Value = (byte)((byte)color + (byte)ground + (bright ? 60 : 0));
         }
+
+        public override string ToString() => Value.ToString();
     }
 }
