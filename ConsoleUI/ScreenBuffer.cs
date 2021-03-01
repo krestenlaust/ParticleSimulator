@@ -10,6 +10,7 @@ namespace ConsoleUI
         public static int Height { get; private set; }
         private static char[] buffer;
         private static ANSIColor[] ansiBuffer;
+        private static readonly char[] ANSICodePrefix = new char[] { '\u001b', '[' };
 
         public static void Setup(int width, int height)
         {
@@ -55,7 +56,7 @@ namespace ConsoleUI
             {
                 if (ansiBuffer[i].Value != 0)
                 {
-                    sb.Append("\u001b[");
+                    sb.Append(ANSICodePrefix);
                     sb.Append(ansiBuffer[i].ToString());
                     sb.Append('m');
                 }

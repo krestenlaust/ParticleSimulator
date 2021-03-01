@@ -8,7 +8,7 @@ namespace ParticleEngine
     public static class Physics
     {
         private const float GRAVITATIONAL_CONSTANT = 1;
-        public static List<Particle> ParticleTypes = new List<Particle>();
+        public static List<ParticleGroup> ParticleTypes = new List<ParticleGroup>();
         private static HashSet<Vector2> collidingDots = new HashSet<Vector2>();
 
         private static Random randomNumber = new Random(42352352);
@@ -86,9 +86,9 @@ namespace ParticleEngine
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="position"></param>
-        public static void Instantiate<T>(Vector2 position) where T : Particle, new()
+        public static void Instantiate<T>(Vector2 position) where T : ParticleGroup, new()
         {
-            Particle group = (from particleGroup in ParticleTypes
+            ParticleGroup group = (from particleGroup in ParticleTypes
                              where particleGroup is T
                              select particleGroup).FirstOrDefault();
 

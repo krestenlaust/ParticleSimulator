@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace ParticleEngine.Particles
 {
-    public class Sand : Particle
+    public class Sand : ParticleGroup
     {
         public Sand()
         {

@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Particle.cs" />
+    <Compile Include="ParticleGroup.cs" />
     <Compile Include="Particles\Block.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParticleEngine.Particles
 {
-    public class Block : Particle
+    public class Block : ParticleGroup
     {
         public Block()
         {
