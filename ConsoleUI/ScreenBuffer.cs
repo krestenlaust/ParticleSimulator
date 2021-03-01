@@ -38,8 +38,8 @@ namespace ConsoleUI
                 if (buffer.Length > index + 1)
                 {
                     buffer[index] = character;
-                    ansiBuffer[index] = ansiCode[0];
-                    ansiBuffer[index + 1] = ansiCode[1];
+                    ansiBuffer[index * 2] = ansiCode[0];
+                    ansiBuffer[index * 2 + 1] = ansiCode[1];
                 }
             }
         }
