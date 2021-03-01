@@ -61,11 +61,11 @@ namespace ConsoleUI
                     {
                         case Sand _:
                             character = '\u2588';
-                            ansiCode = "\u001b[33m".ToCharArray();
+                            ansiCode = new char[] { '3', '3' };
                             break;
                         case Block _:
                             character = '\u2588';
-                            ansiCode = "\u001b[37m".ToCharArray();
+                            ansiCode = new char[] { '3', '7' };
                             break;
                         default:
                             ansiCode = null;

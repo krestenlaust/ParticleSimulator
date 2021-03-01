@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Text;
 
 namespace ConsoleUI
 {
@@ -8,13 +9,15 @@ namespace ConsoleUI
         public static int Width { get; private set; }
         public static int Height { get; private set; }
         private static char[] buffer;
+        private static char[] ansiBuffer;
 
         public static void Setup(int width, int height)
         {
             Width = width;
             Height = height;
 
-            buffer = new char[width * height * 6];
+            buffer = new char[width * height];
+            ansiBuffer = new char[width * height * 2];
             
             Console.WindowWidth = Width;
             Console.WindowHeight = Height + 1;
@@ -34,12 +37,9 @@ namespace ConsoleUI
 
                 if (buffer.Length > index + 1)
                 {
-                    buffer[index * 6] = character;
-                    buffer[index * 6 + 1] = ansiCode[0];
-                    buffer[index * 6 + 2] = ansiCode[1];
-                    buffer[index * 6 + 3] = ansiCode[2];
-                    buffer[index * 6 + 4] = ansiCode[3];
-                    buffer[index * 6 + 5] = ansiCode[4];
+                    buffer[index] = character;
+                    ansiBuffer[index] = ansiCode[0];
+                    ansiBuffer[index + 1] = ansiCode[1];
                 }
             }
         }
@@ -48,9 +48,25 @@ namespace ConsoleUI
         {
             Console.SetCursorPosition(0, 0);
 
-            Console.Write(buffer);
+            StringBuilder sb = new StringBuilder();
 
-            buffer = new char[Width * Height * 6];
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (ansiBuffer[i * 2] != '\0')
+                {
+                    sb.Append("\u001b[");
+                    sb.Append(ansiBuffer[i * 2]);
+                    sb.Append(ansiBuffer[i * 2 + 1]);
+                    sb.Append('m');
+                }
+
+                sb.Append(buffer[i]);
+            }
+
+            Console.Write(sb);
+
+            buffer = new char[Width * Height];
+            ansiBuffer = new char[Width * Height * 2];
         }
     }
 }
