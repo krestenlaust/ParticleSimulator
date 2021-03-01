@@ -9,7 +9,7 @@ namespace ParticleEngine
     {
         private const float GRAVITATIONAL_CONSTANT = 1;
         public static List<ParticleGroup> ParticleTypes = new List<ParticleGroup>();
-        private static HashSet<Vector2> collidingDots = new HashSet<Vector2>();
+        private static Dictionary<Vector2, ParticleGroup> collidingDots = new Dictionary<Vector2, ParticleGroup>();
 
         private static Random randomNumber = new Random(42352352);
 
@@ -21,9 +21,11 @@ namespace ParticleEngine
             {
                 foreach (var particle in particleGroup.Particles)
                 {
-                    collidingDots.Add(particle);
+                    collidingDots[particle] = particleGroup;
                 }
             }
+
+            Stack<(Vector2, ParticleGroup, Vector2, ParticleGroup)> parameters = new Stack<(Vector2, ParticleGroup, Vector2, ParticleGroup)>();
 
             foreach (var particleGroup in ParticleTypes)
             {
@@ -35,8 +37,12 @@ namespace ParticleEngine
                     //Applies gravity
                     resultingForce += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
 
-                    if (collidingDots.Contains(particleGroup.Particles[i] + resultingForce)) //Removes it again if it shouldn't have been applied
+                    //Removes it again if it shouldn't have been applied
+                    if (collidingDots.TryGetValue(particleGroup.Particles[i] + resultingForce, out ParticleGroup otherParticleGroup))
                     {
+                        parameters.Push((particleGroup.Particles[i] + resultingForce, otherParticleGroup,
+                            particleGroup.Particles[i], particleGroup));
+
                         resultingForce -= new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
                     }
 
@@ -46,10 +52,6 @@ namespace ParticleEngine
                     //Angle of repose
                     if (updraftVector.Y <= 0) //If the particle is going downward
                     {
-                        if (particleGroup is Particles.Sand)
-                        {
-
-                        }
                         int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad));
                         for (int n = 0; n < maxLengthAway * 2; n++)
                         {
@@ -68,7 +70,7 @@ namespace ParticleEngine
 
                             }*/
 
-                            if (!collidingDots.Contains(particleGroup.Particles[i] + checkVector) && collidingDots.Contains(new Vector2(particleGroup.Particles[i].X, particleGroup.Particles[i].Y + 1)))
+                            if (!collidingDots.TryGetValue(particleGroup.Particles[i] + checkVector, out _) && collidingDots.TryGetValue(new Vector2(particleGroup.Particles[i].X, particleGroup.Particles[i].Y + 1), out _))
                             {
                                 resultingForce += checkVector;
                             }
@@ -78,6 +80,14 @@ namespace ParticleEngine
                     //Applies the resulting force
                     particleGroup.Particles[i] += resultingForce;
                 }
+            }
+
+            while (parameters.Count > 0)
+            {
+                (Vector2 otherParticle, ParticleGroup otherGroup, Vector2 particle, ParticleGroup group) = parameters.Pop();
+
+                group.OnCollide(otherParticle, otherGroup, particle);
+                otherGroup.OnCollide(particle, group, otherParticle);
             }
         }
 

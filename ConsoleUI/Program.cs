@@ -52,6 +52,12 @@ namespace ConsoleUI
                 {
                     Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
                 }
+                else if (Mouse.MouseDown[2])
+                {
+                    Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x, Mouse.y));
+                    Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x - 1, Mouse.y));
+                    Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x + 1, Mouse.y));
+                }
 
                 Physics.Update();
 
@@ -59,18 +65,19 @@ namespace ConsoleUI
                 {
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
-                    char character = '#';
+                    char character = '\u2588';
                     ANSIColor color;
 
                     switch (particleGroup)
                     {
                         case Sand _:
-                            character = '\u2588';
                             color = new ANSIColor(ANSIColor.Color.Yellow, ANSIColor.Ground.Fore, false);
                             break;
                         case Block _:
-                            character = '\u2588';
-                            color = new ANSIColor(ANSIColor.Color.Magenta, ANSIColor.Ground.Fore, false);
+                            color = new ANSIColor(ANSIColor.Color.White, ANSIColor.Ground.Fore, false);
+                            break;
+                        case AcidPowder _:
+                            color = new ANSIColor(ANSIColor.Color.Green, ANSIColor.Ground.Fore, true);
                             break;
                         default:
                             color = new ANSIColor();
