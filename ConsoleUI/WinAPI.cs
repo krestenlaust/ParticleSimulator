@@ -47,9 +47,9 @@ namespace ConsoleUI
             public string FaceName;
         }
 
-        public const int GWL_STYLE = -16;
+        private const int GWL_STYLE = -16;
 
-        public enum WindowStyles : long
+        private enum WindowStyles : long
         {
             WS_MAXIMIZEBOX = 0x00010000L,
             WS_SIZEBOX = 0x00040000L
@@ -69,13 +69,13 @@ namespace ConsoleUI
         private static extern bool GetConsoleMode(IntPtr hConsole, out uint lpMode);
 
         [DllImport("Kernel32.dll")]
-        public static extern IntPtr GetConsoleWindow();
+        private static extern IntPtr GetConsoleWindow();
 
         [DllImport("User32.dll")]
-        public static extern long GetWindowLongA(IntPtr hWindow, int nIndex);
+        private static extern long GetWindowLongA(IntPtr hWindow, int nIndex);
 
         [DllImport("User32.dll")]
-        public static extern long SetWindowLongA(IntPtr hWindow, int nIndex, long dwNewLong);
+        private static extern long SetWindowLongA(IntPtr hWindow, int nIndex, long dwNewLong);
     
 
         /// <summary>
@@ -89,6 +89,15 @@ namespace ConsoleUI
             GetConsoleMode(outHandle, out uint lpMode);
             // Setting console mode, including old settings.
             SetConsoleMode(outHandle, (int)ConsoleMode.ENABLE_VIRTUAL_TERMINAL_PROCESSING | lpMode);
+        }
+
+        public static void SetupStyle()
+        {
+            IntPtr hWindow = GetConsoleWindow(); // Get handle to console window
+            long style = GetWindowLongA(hWindow, GWL_STYLE); // Retrieve style
+            style ^= (long)WindowStyles.WS_SIZEBOX; // Zero the WS_SIZEBOX bit to prevent resizing
+            style ^= (long)WindowStyles.WS_MAXIMIZEBOX; // Zero the WS_MAXIMIZEBOX bit to remove the maximize button
+            SetWindowLongA(hWindow, GWL_STYLE, style); // Set the modified style
         }
 
         /// <summary>

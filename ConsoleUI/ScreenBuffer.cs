@@ -26,7 +26,7 @@ namespace ConsoleUI
             Console.CursorVisible = false;
         }
 
-        public static void DrawDots(Vector2[] dots, int length, char character, char[] ansiCode)
+        public static void DrawDots(Vector2[] dots, int length, char character, ANSIColor color)
         {
             for (int i = 0; i < length; i++)
             {
@@ -40,8 +40,8 @@ namespace ConsoleUI
                 }
 
                 buffer[index] = character;
-                ansiBuffer[index * 2] = ansiCode[0];
-                ansiBuffer[index * 2 + 1] = ansiCode[1];
+                ansiBuffer[index * 2] = color.CharArrayRepresentation[0];
+                ansiBuffer[index * 2 + 1] = color.CharArrayRepresentation[1];
             }
         }
 
