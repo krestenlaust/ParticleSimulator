@@ -29,8 +29,63 @@ namespace ConsoleUI
             Back = 10
         }
 
+        public enum Special : byte
+        {
+            Default = 0,
+            AddUnderline = 4,
+            RemoveUnderline = 24,
+            AddBold = 1,
+            RemoveBold = 22,
+            SwapForegroundBackground = 7,
+            UnSwapForegroundBackground = 27
+        }
+
         public readonly byte Value;
 
+        /// <summary>
+        /// Foreground color.
+        /// </summary>
+        /// <param name="color"></param>
+        public ANSIColor(Color color)
+        {
+            Value = (byte)color;
+        }
+
+        /// <summary>
+        /// Foreground color, bright or non-bright color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="bright"></param>
+        public ANSIColor(Color color, bool bright)
+        {
+            Value = (byte)((byte)color + (bright ? 60 : 0));
+        }
+
+        /// <summary>
+        /// Foreground or background color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="ground"></param>
+        public ANSIColor(Color color, Ground ground)
+        {
+            Value = (byte)((byte)color + (byte)ground);
+        }
+
+        /// <summary>
+        /// Special cases like underline.
+        /// </summary>
+        /// <param name="special"></param>
+        public ANSIColor(Special special)
+        {
+            Value = (byte)special;
+        }
+
+        /// <summary>
+        /// Foreground or background, bright or non-bright color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="ground"></param>
+        /// <param name="bright"></param>
         public ANSIColor(Color color, Ground ground, bool bright)
         {
             Value = (byte)((byte)color + (byte)ground + (bright ? 60 : 0));

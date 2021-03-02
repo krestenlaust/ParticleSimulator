@@ -71,13 +71,13 @@ namespace ConsoleUI
                     switch (particleGroup)
                     {
                         case Sand _:
-                            color = new ANSIColor(ANSIColor.Color.Yellow, ANSIColor.Ground.Fore, false);
+                            color = new ANSIColor(ANSIColor.Color.Yellow);
                             break;
                         case Block _:
-                            color = new ANSIColor(ANSIColor.Color.White, ANSIColor.Ground.Fore, false);
+                            color = new ANSIColor(ANSIColor.Color.White);
                             break;
                         case AcidPowder _:
-                            color = new ANSIColor(ANSIColor.Color.Green, ANSIColor.Ground.Fore, true);
+                            color = new ANSIColor(ANSIColor.Color.Green, true);
                             break;
                         default:
                             color = new ANSIColor();

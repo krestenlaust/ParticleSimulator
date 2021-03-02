@@ -15,9 +15,8 @@ namespace ParticleEngine.Particles
             Mass = 0;
         }
 
-        public override void DoPhysics()
+        public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
         {
-            
         }
     }
 }

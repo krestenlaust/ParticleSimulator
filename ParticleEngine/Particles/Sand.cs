@@ -13,9 +13,8 @@ namespace ParticleEngine.Particles
             AngleOfReposeRad = 34f / 180f * (float)Math.PI; //Pres til fysik implemention - 34 grader for sand
         }
 
-        public override void DoPhysics()
+        public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
         {
-            
         }
     }
 }

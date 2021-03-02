@@ -10,11 +10,6 @@ namespace ParticleEngine
         public float AngleOfReposeRad;
         public List<Vector2> Particles;
 
-        public virtual void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
-        {
-
-        }
-
-        public abstract void DoPhysics();
+        public abstract void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle);
     }
 }
