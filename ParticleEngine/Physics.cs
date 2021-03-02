@@ -9,7 +9,10 @@ namespace ParticleEngine
     {
         private const float GRAVITATIONAL_CONSTANT = 1;
         public static List<ParticleGroup> ParticleTypes = new List<ParticleGroup>();
-        private static Dictionary<Vector2, ParticleGroup> collidingDots = new Dictionary<Vector2, ParticleGroup>();
+        
+        private static Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
+        private static Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
+            new Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)>();
 
         private static Vector2 updraftVector;
         private static ParticleGroup particleGroup;
@@ -18,18 +21,24 @@ namespace ParticleEngine
 
         public static void Update()
         {
-            collidingDots.Clear();
+            // Draw new collision map.
+            collisionMap.Clear();
 
+            // Generates collection of all particle positions to check collision and handle reactions.
             foreach (var particleGroup in ParticleTypes)
             {
                 foreach (var particle in particleGroup.Particles)
                 {
-                    collidingDots[particle] = particleGroup;
+                    collisionMap[particle] = particleGroup;
                 }
             }
 
-            Stack<(Vector2, ParticleGroup, Vector2, ParticleGroup)> parameters = new Stack<(Vector2, ParticleGroup, Vector2, ParticleGroup)>();
+            // Collection of parameters to call OnCollision, afterwards, using. They have to be executed at once since
+            // OnCollision can mutate the collection of particles (remove/add particles), and you can't do that while 
+            // iterating that collection ("foreach particleGroup in particleTypes").
+            collisions.Clear();
 
+            // Iterate all particles to perform physics.
             foreach (var particleGroup in ParticleTypes)
             {
                 for (int i = 0; i < particleGroup.Particles.Count; i++)
@@ -41,11 +50,8 @@ namespace ParticleEngine
                     resultingForce += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
 
                     //Removes it again if it shouldn't have been applied
-                    if (collidingDots.TryGetValue(particleGroup.Particles[i] + resultingForce, out ParticleGroup otherParticleGroup))
+                    if (IsColliding(particleGroup.Particles[i] + resultingForce, particleGroup.Particles[i], particleGroup))
                     {
-                        parameters.Push((particleGroup.Particles[i] + resultingForce, otherParticleGroup,
-                            particleGroup.Particles[i], particleGroup));
-
                         resultingForce -= new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
                     }
 
@@ -60,13 +66,34 @@ namespace ParticleEngine
                 }
             }
 
-            while (parameters.Count > 0)
+            // Iterate all observed collisions and call their respective ParticleGroup handler.
+            while (collisions.Count > 0)
             {
-                (Vector2 otherParticle, ParticleGroup otherGroup, Vector2 particle, ParticleGroup group) = parameters.Pop();
+                (Vector2 otherParticle, ParticleGroup otherGroup, Vector2 particle, ParticleGroup group) = collisions.Dequeue();
 
                 group.OnCollide(otherParticle, otherGroup, particle);
                 otherGroup.OnCollide(particle, group, otherParticle);
             }
+        }
+
+        /// <summary>
+        /// Returns whether a collision has occured and adds to collision queue of it has.
+        /// </summary>
+        /// <param name="checkPosition"></param>
+        /// <param name="originalParticlePosition"></param>
+        /// <param name="originalParticleGroup"></param>
+        /// <returns></returns>
+        private static bool IsColliding(Vector2 checkPosition, Vector2 originalParticlePosition, ParticleGroup originalParticleGroup)
+        {
+            if (collisionMap.TryGetValue(checkPosition, out ParticleGroup otherGroup))
+            {
+                // Queue if a collision has occured.
+                collisions.Enqueue((originalParticlePosition, originalParticleGroup, checkPosition, otherGroup));
+
+                return true;
+            }
+
+            return false;
         }
 
         public static Vector2 CheckRepose(int i, ParticleGroup particleGroup)
@@ -94,8 +121,8 @@ namespace ParticleEngine
                     }*/
 
                     // Checks if the checking spot is empty and that the particle actually have another particle underneath
-                    if (!collidingDots.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
-                        collidingDots.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
+                    if (!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
+                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
                     {
                         return checkVector;
                     }
