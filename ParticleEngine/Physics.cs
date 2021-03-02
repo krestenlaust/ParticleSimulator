@@ -53,7 +53,7 @@ namespace ParticleEngine
                     updraftVector = new Vector2(0, -1);
 
                     // Adding the force from the particle's repose angle
-                    resultingForce += CheckRepose(i);
+                    resultingForce += CheckRepose(i, particleGroup);
                     
                     //Applies the resulting force
                     particleGroup.Particles[i] += resultingForce;
@@ -69,7 +69,7 @@ namespace ParticleEngine
             }
         }
 
-        public static Vector2 CheckRepose(int i)
+        public static Vector2 CheckRepose(int i, ParticleGroup particleGroup)
         {
             //Angle of repose
             if (updraftVector.Y <= 0) //If the particle is going downward
