@@ -7,11 +7,12 @@ namespace ParticleEngine.Particles
 {
     public class AcidPowder : ParticleGroup
     {
-        public AcidPowder()
+        public AcidPowder() : base(
+            1, 
+            34f / 180f * (float)Math.PI
+            )
         {
-            Particles = new List<Vector2>();
-            Mass = 1;
-            AngleOfReposeRad = 34f / 180f * (float)Math.PI; //Pres til fysik implemention - 34 grader for sand
+
         }
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)

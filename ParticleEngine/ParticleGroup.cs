@@ -6,9 +6,16 @@ namespace ParticleEngine
 {
     public abstract class ParticleGroup
     {
-        public int Mass;
-        public float AngleOfReposeRad;
-        public List<Vector2> Particles;
+        public readonly int Mass;
+        public readonly float AngleOfReposeRad;
+        public readonly List<Vector2> Particles;
+
+        public ParticleGroup(int mass, float angleOfReposeRad)
+        {
+            Particles = new List<Vector2>();
+            Mass = mass;
+            AngleOfReposeRad = angleOfReposeRad;
+        }
 
         public abstract void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle);
     }

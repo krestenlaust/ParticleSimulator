@@ -9,10 +9,8 @@ namespace ParticleEngine.Particles
 {
     public class Block : ParticleGroup
     {
-        public Block()
+        public Block() : base(0, 0)
         {
-            Particles = new List<Vector2>();
-            Mass = 0;
         }
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)

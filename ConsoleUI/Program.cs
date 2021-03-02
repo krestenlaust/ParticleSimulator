@@ -4,6 +4,7 @@ using System.Threading;
 using ConsoleInput;
 using ParticleEngine;
 using ParticleEngine.Particles;
+using System;
 
 namespace ConsoleUI
 {
@@ -58,6 +59,12 @@ namespace ConsoleUI
                     Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x - 1, Mouse.y));
                     Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x + 1, Mouse.y));
                 }
+                else if (Console.CapsLock)
+                {
+                    Physics.Instantiate<Gas>(new Vector2(Mouse.x, Mouse.y));
+                    Physics.Instantiate<Gas>(new Vector2(Mouse.x - 1, Mouse.y));
+                    Physics.Instantiate<Gas>(new Vector2(Mouse.x + 1, Mouse.y));
+                }
 
                 Physics.Update();
 
@@ -74,10 +81,13 @@ namespace ConsoleUI
                             color = new ANSIColor(ANSIColor.Color.Yellow);
                             break;
                         case Block _:
-                            color = new ANSIColor(ANSIColor.Color.White);
+                            color = new ANSIColor(ANSIColor.Color.Blue);
                             break;
                         case AcidPowder _:
                             color = new ANSIColor(ANSIColor.Color.Green, true);
+                            break;
+                        case Gas _:
+                            color = new ANSIColor(ANSIColor.Color.White);
                             break;
                         default:
                             color = new ANSIColor();

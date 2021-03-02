@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ParticleEngine.Particles
 {
-    public class Sand : ParticleGroup
+    public class Gas : ParticleGroup
     {
-        public Sand() : base(1, 
-            34f / 180f * (float)Math.PI //Pres til fysik implemention - 34 grader for sand
-            )
+        public Gas() : base(-1, 60f / 180f * (float)Math.PI)
         {
 
         }
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
         {
+
         }
     }
 }

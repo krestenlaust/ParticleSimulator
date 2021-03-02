@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleUI
+﻿namespace ConsoleUI
 {
     /// <summary>
     /// Based on these codes: https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
