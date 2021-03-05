@@ -71,7 +71,7 @@ namespace ConsoleUI
 
                 Physics.Update();
 
-                Parallel.ForEach(Physics.ParticleTypes, particleGroup =>
+                Parallel.ForEach(Physics.ParticleGroups, particleGroup =>
                 {
                     Vector2[] dots = particleGroup.Particles.ToArray();
 

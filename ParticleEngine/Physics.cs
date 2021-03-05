@@ -8,7 +8,7 @@ namespace ParticleEngine
     public static class Physics
     {
         private const float GRAVITATIONAL_CONSTANT = 1;
-        public static List<ParticleGroup> ParticleTypes = new List<ParticleGroup>();
+        private static List<ParticleGroup> particleGroups = new List<ParticleGroup>();
         
         private static Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
         private static Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
@@ -25,7 +25,7 @@ namespace ParticleEngine
             collisionMap.Clear();
 
             // Generates collection of all particle positions to check collision and handle reactions.
-            foreach (var particleGroup in ParticleTypes)
+            foreach (var particleGroup in particleGroups)
             {
                 foreach (var particle in particleGroup.Particles)
                 {
@@ -39,7 +39,7 @@ namespace ParticleEngine
             collisions.Clear();
 
             // Iterate all particles to perform physics.
-            foreach (var particleGroup in ParticleTypes)
+            foreach (var particleGroup in particleGroups)
             {
                 for (int i = 0; i < particleGroup.Particles.Count; i++)
                 {
@@ -73,6 +73,11 @@ namespace ParticleEngine
 
                 group.OnCollide(otherParticle, otherGroup, particle);
                 otherGroup.OnCollide(particle, group, otherParticle);
+            }
+
+            foreach (var group in particleGroups)
+            {
+                group.OnUpdate(particleGroups);
             }
         }
 
@@ -143,15 +148,20 @@ namespace ParticleEngine
             if (group is null)
             {
                 group = new T();
-                ParticleTypes.Add(group);
+                particleGroups.Add(group);
             }
 
             group.Particles.Add(position);
         }
 
+        /// <summary>
+        /// Gets a particlegroup of type <c>T</c>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup
         {
-            return (from particleGroup in ParticleTypes
+            return (from particleGroup in particleGroups
                     where particleGroup is T
                     select particleGroup).FirstOrDefault();
         }
