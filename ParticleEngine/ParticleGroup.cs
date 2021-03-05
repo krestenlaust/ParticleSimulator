@@ -1,5 +1,4 @@
-﻿using ParticleEngine.Particles;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 
 namespace ParticleEngine

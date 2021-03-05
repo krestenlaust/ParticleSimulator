@@ -18,5 +18,10 @@ namespace ParticleEngine.Particles
         {
 
         }
+
+        public override void OnUpdate(List<ParticleGroup> particleGroups)
+        {
+
+        }
     }
 }

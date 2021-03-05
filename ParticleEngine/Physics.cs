@@ -8,7 +8,7 @@ namespace ParticleEngine
     public static class Physics
     {
         private const float GRAVITATIONAL_CONSTANT = 1;
-        private static List<ParticleGroup> particleGroups = new List<ParticleGroup>();
+        public static List<ParticleGroup> ParticleGroups = new List<ParticleGroup>();
         
         private static Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
         private static Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
@@ -25,7 +25,7 @@ namespace ParticleEngine
             collisionMap.Clear();
 
             // Generates collection of all particle positions to check collision and handle reactions.
-            foreach (var particleGroup in particleGroups)
+            foreach (var particleGroup in ParticleGroups)
             {
                 foreach (var particle in particleGroup.Particles)
                 {
@@ -39,7 +39,7 @@ namespace ParticleEngine
             collisions.Clear();
 
             // Iterate all particles to perform physics.
-            foreach (var particleGroup in particleGroups)
+            foreach (var particleGroup in ParticleGroups)
             {
                 for (int i = 0; i < particleGroup.Particles.Count; i++)
                 {
@@ -75,9 +75,9 @@ namespace ParticleEngine
                 otherGroup.OnCollide(particle, group, otherParticle);
             }
 
-            foreach (var group in particleGroups)
+            foreach (var group in ParticleGroups)
             {
-                group.OnUpdate(particleGroups);
+                group.OnUpdate(ParticleGroups);
             }
         }
 
@@ -148,7 +148,7 @@ namespace ParticleEngine
             if (group is null)
             {
                 group = new T();
-                particleGroups.Add(group);
+                ParticleGroups.Add(group);
             }
 
             group.Particles.Add(position);
@@ -161,7 +161,7 @@ namespace ParticleEngine
         /// <returns></returns>
         public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup
         {
-            return (from particleGroup in particleGroups
+            return (from particleGroup in ParticleGroups
                     where particleGroup is T
                     select particleGroup).FirstOrDefault();
         }
