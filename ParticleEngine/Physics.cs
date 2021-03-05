@@ -138,10 +138,8 @@ namespace ParticleEngine
         /// <param name="position"></param>
         public static void Instantiate<T>(Vector2 position) where T : ParticleGroup, new()
         {
-            ParticleGroup group = (from particleGroup in ParticleTypes
-                             where particleGroup is T
-                             select particleGroup).FirstOrDefault();
-
+            ParticleGroup group = GetParticleGroup<T>();
+            
             if (group is null)
             {
                 group = new T();
@@ -149,6 +147,13 @@ namespace ParticleEngine
             }
 
             group.Particles.Add(position);
+        }
+
+        public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup
+        {
+            return (from particleGroup in ParticleTypes
+                    where particleGroup is T
+                    select particleGroup).FirstOrDefault();
         }
     }
 }

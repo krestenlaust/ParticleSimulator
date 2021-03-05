@@ -105,10 +105,10 @@ namespace ConsoleUI
 
                 ScreenBuffer.ApplyBuffer();
 
-                Console.Title = $"Performance: {Math.Floor(1000f / FramesPerSecondCap / stopwatch.ElapsedMilliseconds * 100)}%";
-
                 while (stopwatch.ElapsedMilliseconds < 1000 / FramesPerSecondCap)
                     Thread.Sleep(0);
+
+                Console.Title = $"Performance: {Math.Floor(1000f / FramesPerSecondCap / stopwatch.ElapsedMilliseconds * 100)}%";
             }
         }
 
