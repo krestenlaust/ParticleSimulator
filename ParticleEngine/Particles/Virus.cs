@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+
+namespace ParticleEngine.Particles
+{
+    public class Virus : ParticleGroup
+    {
+        public Virus() : base(1, 1)
+        {
+
+        }
+
+        public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
+        {
+            if (otherParticleGroup is Virus || otherParticleGroup is Block)
+            {
+                return;
+            }
+
+            otherParticleGroup.Particles.Remove(otherParticle);
+            Particles.Add(otherParticle);
+            otherParticleGroup.Particles.Add(particle);
+        }
+    }
+}
