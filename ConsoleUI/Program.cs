@@ -5,11 +5,14 @@ using ConsoleInput;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;
+using System.Threading.Tasks;
 
 namespace ConsoleUI
 {
     class Program
     {
+        const int FramesPerSecondCap = 30;
+
         static void Main(string[] args)
         {
             // Define console screen sizes to allow easy line wrapping.
@@ -68,7 +71,7 @@ namespace ConsoleUI
 
                 Physics.Update();
 
-                foreach (var particleGroup in Physics.ParticleTypes)
+                Parallel.ForEach(Physics.ParticleTypes, particleGroup =>
                 {
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
@@ -98,11 +101,13 @@ namespace ConsoleUI
                     }
 
                     ScreenBuffer.DrawDots(dots, dots.Length, character, color);
-                }
+                });
 
                 ScreenBuffer.ApplyBuffer();
 
-                while (stopwatch.ElapsedMilliseconds < 1000 / 60)
+                Console.Title = $"Performance: {Math.Floor(1000f / FramesPerSecondCap / stopwatch.ElapsedMilliseconds * 100)}%";
+
+                while (stopwatch.ElapsedMilliseconds < 1000 / FramesPerSecondCap)
                     Thread.Sleep(0);
             }
         }

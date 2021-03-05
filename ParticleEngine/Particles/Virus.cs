@@ -21,7 +21,6 @@ namespace ParticleEngine.Particles
 
             otherParticleGroup.Particles.Remove(otherParticle);
             Particles.Add(otherParticle);
-            otherParticleGroup.Particles.Add(particle);
         }
     }
 }
