@@ -46,6 +46,7 @@ namespace ConsoleUI
                     // Jeg har ændret på brush størrelsen og længden de er adskilt.
                     // ok - Kresten
                     // jeg sætter mit navn på det her nu :)
+                    // ikke i orden - Kresten
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
                     Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
@@ -65,8 +66,6 @@ namespace ConsoleUI
                 else if (Console.CapsLock)
                 {
                     Physics.Instantiate<Virus>(new Vector2(Mouse.x, Mouse.y));
-                    //Physics.Instantiate<Virus>(new Vector2(Mouse.x - 1, Mouse.y));
-                    //Physics.Instantiate<Virus>(new Vector2(Mouse.x + 1, Mouse.y));
                 }
 
                 Physics.Update();

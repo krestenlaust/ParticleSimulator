@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace ParticleEngine.Particles
@@ -9,8 +8,7 @@ namespace ParticleEngine.Particles
     {
         public AcidPowder() : base(
             1, 
-            34f / 180f * (float)Math.PI
-            )
+            34f / 180f * (float)Math.PI)
         {
 
         }
