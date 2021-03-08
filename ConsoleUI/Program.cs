@@ -60,8 +60,6 @@ namespace ConsoleUI
                 else if (Mouse.MouseDown[2])
                 {
                     Physics.Instantiate<Acid>(new Vector2(Mouse.x, Mouse.y));
-                    Physics.Instantiate<Acid>(new Vector2(Mouse.x - 1, Mouse.y));
-                    Physics.Instantiate<Acid>(new Vector2(Mouse.x + 1, Mouse.y));
                 }
                 else if (Console.CapsLock)
                 {

@@ -10,7 +10,7 @@ namespace ParticleEngine.Particles
 
         public Acid() : base(
             1, 
-            34f / 180f * (float)Math.PI)
+            0 * 34f / 180f * (float)Math.PI)
         {
 
         }
@@ -22,9 +22,7 @@ namespace ParticleEngine.Particles
                 Queue<(Vector2, Vector2)> flytteDimser = new Queue<(Vector2, Vector2)>();
 
                 // Shitty liquid physics, flyt det til Physics klassen
-                bool fuldstændigtilfældigtal = randomNumber.Next(2) == 1;
-
-                if (fuldstændigtilfældigtal)
+                if (randomNumber.Next(2) == 1)
                 {
                     if (!Physics.IsOccupied(new Vector2(particle.X - 1, particle.Y))
                         && !Particles.Contains(new Vector2(particle.X - 1, particle.Y)))
