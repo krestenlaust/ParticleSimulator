@@ -75,7 +75,8 @@ namespace ParticleEngine
                 otherGroup.OnCollide(particle, group, otherParticle);
             }
 
-            foreach (var group in ParticleGroups)
+            List<ParticleGroup> groups = ParticleGroups.ToList();
+            foreach (var group in groups)
             {
                 group.OnUpdate(ParticleGroups);
             }
@@ -100,6 +101,13 @@ namespace ParticleEngine
 
             return false;
         }
+
+        /// <summary>
+        /// Brug IsColliding hvis du kan.
+        /// </summary>
+        /// <param name="checkPosition"></param>
+        /// <returns></returns>
+        public static bool IsOccupied(Vector2 checkPosition) => collisionMap.ContainsKey(checkPosition);
 
         public static Vector2 CheckRepose(int i, ParticleGroup particleGroup)
         {

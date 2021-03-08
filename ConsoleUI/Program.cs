@@ -59,13 +59,13 @@ namespace ConsoleUI
                 }
                 else if (Mouse.MouseDown[2])
                 {
-                    Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x, Mouse.y));
-                    Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x - 1, Mouse.y));
-                    Physics.Instantiate<AcidPowder>(new Vector2(Mouse.x + 1, Mouse.y));
+                    Physics.Instantiate<Acid>(new Vector2(Mouse.x, Mouse.y));
+                    Physics.Instantiate<Acid>(new Vector2(Mouse.x - 1, Mouse.y));
+                    Physics.Instantiate<Acid>(new Vector2(Mouse.x + 1, Mouse.y));
                 }
                 else if (Console.CapsLock)
                 {
-                    Physics.Instantiate<Virus>(new Vector2(Mouse.x, Mouse.y));
+                    Physics.Instantiate<Gas>(new Vector2(Mouse.x, Mouse.y));
                 }
 
                 Physics.Update();
@@ -85,7 +85,7 @@ namespace ConsoleUI
                         case Block _:
                             color = new ANSIColor(ANSIColor.Color.Blue);
                             break;
-                        case AcidPowder _:
+                        case Acid _:
                             color = new ANSIColor(ANSIColor.Color.Green);
                             break;
                         case Gas _:

@@ -9,12 +9,12 @@ namespace ParticleEngine.Particles
     {
         public Virus() : base(1, 1)
         {
-
+            
         }
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
         {
-            if (otherParticleGroup is Virus || otherParticleGroup is Block)
+            if (otherParticleGroup is Virus || otherParticleGroup is Block || otherParticleGroup is Acid)
             {
                 return;
             }

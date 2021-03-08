@@ -8,7 +8,6 @@ namespace ParticleEngine.Particles
     {
         public Gas() : base(-1, 60f / 180f * (float)Math.PI)
         {
-
         }
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)

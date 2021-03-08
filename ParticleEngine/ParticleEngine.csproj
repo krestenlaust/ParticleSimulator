@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParticleGroup.cs" />
-    <Compile Include="Particles\AcidPowder.cs" />
+    <Compile Include="Particles\Acid.cs" />
     <Compile Include="Particles\Block.cs" />
     <Compile Include="Particles\Gas.cs" />
     <Compile Include="Particles\Virus.cs" />
