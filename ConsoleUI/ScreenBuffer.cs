@@ -60,11 +60,12 @@ namespace ConsoleUI
                     sb.Append(ansiBuffer[i].ToString());
                     sb.Append('m');
                 }
-
+                
                 sb.Append(buffer[i] == '\0' ? ' ' : buffer[i]);
             }
 
-            Console.Write(sb);
+            Console.Write(sb.ToString());
+            //WinAPI.WriteConsoleNative(sb.ToString());
 
             buffer = new char[Width * Height];
             ansiBuffer = new ANSIColor[Width * Height];

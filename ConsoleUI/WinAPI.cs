@@ -76,7 +76,17 @@ namespace ConsoleUI
 
         [DllImport("User32.dll")]
         private static extern long SetWindowLongA(IntPtr hWindow, int nIndex, long dwNewLong);
-    
+
+        [DllImport("kernel32.dll")]
+        private static extern bool WriteConsoleOutputCharacter(IntPtr hConsoleOutput,
+            string lpCharacter, uint nLength, COORD dwWriteCoord,
+            out uint lpNumberOfCharsWritten);
+
+        public static void WriteConsoleNative(string characters)
+        {
+            IntPtr outHandle = GetStdHandle((int)StdHandle.OutputHandle);
+            WriteConsoleOutputCharacter(outHandle, characters, (uint)characters.Length, new COORD(0, 0), out uint writtenChars);
+        }
 
         /// <summary>
         /// Enables console output mode "VIRTUAL_TERMINAL_PROCESSING" to enable processing of ANSI colors.

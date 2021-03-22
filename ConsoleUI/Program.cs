@@ -16,11 +16,11 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             // Define console screen sizes to allow easy line wrapping.
-            ScreenBuffer.Setup(100, 45);
+            ScreenBuffer.Setup(90, 40);
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
-            WinAPI.SetFontSize(14, 14);
+            WinAPI.SetFontSize(16, 16);
 
             // Set up the window style
             WinAPI.SetupStyle();
@@ -79,17 +79,21 @@ namespace ConsoleUI
                     {
                         case Sand _:
                             color = new ANSIColor(ANSIColor.Color.Yellow);
+                            character = '*';
                             break;
                         case Block _:
                             color = new ANSIColor(ANSIColor.Color.Blue);
                             break;
                         case Acid _:
                             color = new ANSIColor(ANSIColor.Color.Green);
+                            character = '_';
                             break;
                         case Gas _:
                             color = new ANSIColor(ANSIColor.Color.White);
+                            character = '(';
                             break;
                         case Virus _:
+                            character = '.';
                             color = new ANSIColor(ANSIColor.Color.Magenta);
                             break;
                         default:
@@ -102,10 +106,11 @@ namespace ConsoleUI
 
                 ScreenBuffer.ApplyBuffer();
 
+                //Console.Title = $"Performance: {Math.Floor(1000f / FramesPerSecondCap / stopwatch.ElapsedMilliseconds * 100)}%";
+                Console.Title = $"FPS: {Math.Floor(1 / stopwatch.Elapsed.TotalSeconds)}";
+
                 while (stopwatch.ElapsedMilliseconds < 1000 / FramesPerSecondCap)
                     Thread.Sleep(0);
-
-                Console.Title = $"Performance: {Math.Floor(1000f / FramesPerSecondCap / stopwatch.ElapsedMilliseconds * 100)}%";
             }
         }
 
