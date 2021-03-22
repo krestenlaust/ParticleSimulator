@@ -54,18 +54,28 @@ namespace ConsoleUI
 
             for (int i = 0; i < buffer.Length; i++)
             {
-                if (ansiBuffer[i].Value != 0)
+                /*if (ansiBuffer[i].Value != 0)
                 {
                     sb.Append(ANSICodePrefix);
                     sb.Append(ansiBuffer[i].ToString());
                     sb.Append('m');
-                }
-                
+                }*/
+
                 sb.Append(buffer[i] == '\0' ? ' ' : buffer[i]);
             }
 
-            Console.Write(sb.ToString());
+            //Console.Write(sb.ToString());
             //WinAPI.WriteConsoleNative(sb.ToString());
+
+            WinAPI.CharInfo[] chars = new WinAPI.CharInfo[buffer.Length];
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                var Char = new WinAPI.CharUnion { AsciiChar = (byte)buffer[i] };
+                var Attributes = (short)((short)((short)ANSIColor.Color.White + (short)ANSIColor.Color.Black + 42)); // fiks farve pls :)
+                chars[i].Char = Char;
+                chars[i].Attributes = Attributes;
+            }
+            WinAPI.WriteColorFast(chars);
 
             buffer = new char[Width * Height];
             ansiBuffer = new ANSIColor[Width * Height];
