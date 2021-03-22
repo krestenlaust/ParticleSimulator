@@ -20,7 +20,7 @@ namespace ConsoleUI
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
-            WinAPI.SetFontSize(16, 16);
+            //WinAPI.SetFontSize(16, 16);
 
             // Set up the window style
             WinAPI.SetupStyle();
@@ -79,21 +79,21 @@ namespace ConsoleUI
                     {
                         case Sand _:
                             color = new ANSIColor(ANSIColor.Color.Yellow);
-                            character = '*';
+                            //character = '*';
                             break;
                         case Block _:
                             color = new ANSIColor(ANSIColor.Color.Blue);
                             break;
                         case Acid _:
                             color = new ANSIColor(ANSIColor.Color.Green);
-                            character = '_';
+                            //character = '_';
                             break;
                         case Gas _:
                             color = new ANSIColor(ANSIColor.Color.White);
-                            character = '(';
+                            //character = '(';
                             break;
                         case Virus _:
-                            character = '.';
+                            //character = '.';
                             color = new ANSIColor(ANSIColor.Color.Magenta);
                             break;
                         default:

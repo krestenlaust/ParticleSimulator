@@ -66,13 +66,14 @@ namespace ConsoleUI
             }
 
             //Console.Write(sb.ToString());
-            WinAPI.WriteConsoleNative(sb.ToString());
-
+            //WinAPI.WriteConsoleNative(sb.ToString());
+            
+            short Attributes = (short)((short)ConsoleColor.White + (short)ConsoleColor.Black * 16); // fiks farve pls :)
             WinAPI.CharInfo[] chars = new WinAPI.CharInfo[buffer.Length];
             for (int i = 0; i < buffer.Length; i++)
             {
                 var Char = new WinAPI.CharUnion { AsciiChar = (byte)buffer[i] };
-                var Attributes = (short)((short)((short)ANSIColor.Color.White + (short)ANSIColor.Color.Black + 42)); // fiks farve pls :)
+
                 chars[i].Char = Char;
                 chars[i].Attributes = Attributes;
             }
