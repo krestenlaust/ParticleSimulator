@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Text;
 
 namespace ConsoleUI
 {
@@ -8,17 +7,14 @@ namespace ConsoleUI
     {
         public static int Width { get; private set; }
         public static int Height { get; private set; }
-        private static char[] buffer;
-        private static ANSIColor[] ansiBuffer;
-        private static readonly char[] ANSICodePrefix = new char[] { '\u001b', '[' };
+        private static WinAPI.CharInfo[] buffer;
 
         public static void Setup(int width, int height)
         {
             Width = width;
             Height = height;
 
-            buffer = new char[width * height];
-            ansiBuffer = new ANSIColor[width * height];
+            buffer = new WinAPI.CharInfo[Width * Height];
             
             Console.WindowWidth = Width;
             Console.WindowHeight = Height + 1;
@@ -27,7 +23,7 @@ namespace ConsoleUI
             Console.CursorVisible = false;
         }
 
-        public static void DrawDots(Vector2[] dots, int length, char character, ANSIColor color)
+        public static void DrawDots(Vector2[] dots, int length, char character, PixelColor color)
         {
             for (int i = 0; i < length; i++)
             {
@@ -40,47 +36,20 @@ namespace ConsoleUI
                     continue;
                 }
 
-                buffer[index] = character;
-                ansiBuffer[index] = color;
+                var charUnion = new WinAPI.CharUnion { AsciiChar = (byte)character };
+
+                buffer[index] = new WinAPI.CharInfo { 
+                    Char = charUnion, 
+                    Attributes = color.AttributeValue 
+                };
             }
         }
 
         public static void ApplyBuffer()
         {
-            Console.SetCursorPosition(0, 0);
+            WinAPI.WriteColorFast(buffer);
 
-            // Allocate half of max, 1 buffer length for every char, and 5 chars for every color.
-            StringBuilder sb = new StringBuilder(buffer.Length * 6);
-
-            for (int i = 0; i < buffer.Length; i++)
-            {
-                /*
-                if (ansiBuffer[i].Value != 0)
-                {
-                    sb.Append(ANSICodePrefix);
-                    sb.Append(ansiBuffer[i].ToString());
-                    sb.Append('m');
-                }*/
-                
-                sb.Append(buffer[i] == '\0' ? ' ' : buffer[i]);
-            }
-
-            //Console.Write(sb.ToString());
-            //WinAPI.WriteConsoleNative(sb.ToString());
-            
-            short Attributes = (short)((short)ConsoleColor.White + (short)ConsoleColor.Black * 16); // fiks farve pls :)
-            WinAPI.CharInfo[] chars = new WinAPI.CharInfo[buffer.Length];
-            for (int i = 0; i < buffer.Length; i++)
-            {
-                var Char = new WinAPI.CharUnion { AsciiChar = (byte)buffer[i] };
-
-                chars[i].Char = Char;
-                chars[i].Attributes = Attributes;
-            }
-            WinAPI.WriteColorFast(chars);
-
-            buffer = new char[Width * Height];
-            ansiBuffer = new ANSIColor[Width * Height];
+            buffer = new WinAPI.CharInfo[Width * Height];
         }
     }
 }

@@ -73,31 +73,27 @@ namespace ConsoleUI
                     Vector2[] dots = particleGroup.Particles.ToArray();
 
                     char character = '\u2588';
-                    ANSIColor color;
+                    PixelColor color;
 
                     switch (particleGroup)
                     {
                         case Sand _:
-                            color = new ANSIColor(ANSIColor.Color.Yellow);
-                            //character = '*';
+                            color = new PixelColor(ConsoleColor.Yellow);
                             break;
                         case Block _:
-                            color = new ANSIColor(ANSIColor.Color.Blue);
+                            color = new PixelColor(ConsoleColor.Blue);
                             break;
                         case Acid _:
-                            color = new ANSIColor(ANSIColor.Color.Green);
-                            //character = '_';
+                            color = new PixelColor(ConsoleColor.Green);
                             break;
                         case Gas _:
-                            color = new ANSIColor(ANSIColor.Color.White);
-                            //character = '(';
+                            color = new PixelColor(ConsoleColor.White);
                             break;
                         case Virus _:
-                            //character = '.';
-                            color = new ANSIColor(ANSIColor.Color.Magenta);
+                            color = new PixelColor(ConsoleColor.Magenta);
                             break;
                         default:
-                            color = new ANSIColor();
+                            color = new PixelColor();
                             break;
                     }
 
@@ -106,7 +102,6 @@ namespace ConsoleUI
 
                 ScreenBuffer.ApplyBuffer();
 
-                //Console.Title = $"Performance: {Math.Floor(1000f / FramesPerSecondCap / stopwatch.ElapsedMilliseconds * 100)}%";
                 Console.Title = $"FPS: {Math.Floor(1 / stopwatch.Elapsed.TotalSeconds)}";
 
                 while (stopwatch.ElapsedMilliseconds < 1000 / FramesPerSecondCap)
