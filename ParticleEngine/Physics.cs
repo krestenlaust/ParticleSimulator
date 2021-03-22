@@ -9,7 +9,9 @@ namespace ParticleEngine
     {
         private const float GRAVITATIONAL_CONSTANT = 1;
         public static List<ParticleGroup> ParticleGroups = new List<ParticleGroup>();
-        
+
+        private static Dictionary<Vector2, Vector2> airPressure = new Dictionary<Vector2, Vector2>();
+
         private static Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
         private static Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
             new Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)>();

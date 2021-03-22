@@ -54,18 +54,19 @@ namespace ConsoleUI
 
             for (int i = 0; i < buffer.Length; i++)
             {
-                /*if (ansiBuffer[i].Value != 0)
+                /*
+                if (ansiBuffer[i].Value != 0)
                 {
                     sb.Append(ANSICodePrefix);
                     sb.Append(ansiBuffer[i].ToString());
                     sb.Append('m');
                 }*/
-
+                
                 sb.Append(buffer[i] == '\0' ? ' ' : buffer[i]);
             }
 
             //Console.Write(sb.ToString());
-            //WinAPI.WriteConsoleNative(sb.ToString());
+            WinAPI.WriteConsoleNative(sb.ToString());
 
             WinAPI.CharInfo[] chars = new WinAPI.CharInfo[buffer.Length];
             for (int i = 0; i < buffer.Length; i++)
