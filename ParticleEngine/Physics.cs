@@ -133,11 +133,12 @@ namespace ParticleEngine
 
                 for (int n = 0; n < maxLengthAway * 2; n++)
                 {
-                    Vector2 checkVector = new Vector2(dir * n, 1);
+                    Vector2 checkVector = new Vector2(dir * n, particleGroup.Mass * GRAVITATIONAL_CONSTANT);
                     
+                    // ryk tjek under
+
                     // Checks if the checking spot is empty and that the particle actually have another particle underneath
-                    if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup) && IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass), particleGroup.Particles[i], particleGroup))/*(!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
-                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))*/
+                    if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup) && IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass * GRAVITATIONAL_CONSTANT), particleGroup.Particles[i], particleGroup))
                     {
                         return checkVector;
                     }
