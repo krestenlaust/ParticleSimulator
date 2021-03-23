@@ -11,7 +11,7 @@ namespace ConsoleUI
 {
     class Program
     {
-        const int FramesPerSecondCap = 30;
+        const int FramesPerSecondCap = 60;
 
         static void Main(string[] args)
         {
@@ -55,7 +55,7 @@ namespace ConsoleUI
                 }
                 else if (Mouse.MouseDown[1])
                 {
-                    Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
+                    Physics.Instantiate<Water>(new Vector2(Mouse.x, Mouse.y));
                 }
                 else if (Mouse.MouseDown[2])
                 {
@@ -91,6 +91,9 @@ namespace ConsoleUI
                             break;
                         case Virus _:
                             color = new PixelColor(ConsoleColor.Magenta);
+                            break;
+                        case Water _:
+                            color = new PixelColor(ConsoleColor.DarkBlue);
                             break;
                         default:
                             color = new PixelColor();
