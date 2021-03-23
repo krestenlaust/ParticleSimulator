@@ -57,7 +57,6 @@ namespace ConsoleUI
             WS_SIZEBOX = 0x00040000L
         }
 
-
         [DllImport("Kernel32.dll")]
         private static extern IntPtr GetStdHandle(int nStdHandle);
 
@@ -93,34 +92,21 @@ namespace ConsoleUI
         /* Hurtigere console write */
         [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern SafeFileHandle CreateFile(
-       string fileName,
-       [MarshalAs(UnmanagedType.U4)] uint fileAccess,
-       [MarshalAs(UnmanagedType.U4)] uint fileShare,
-       IntPtr securityAttributes,
-       [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
-       [MarshalAs(UnmanagedType.U4)] int flags,
-       IntPtr template);
+        string fileName,
+        [MarshalAs(UnmanagedType.U4)] uint fileAccess,
+        [MarshalAs(UnmanagedType.U4)] uint fileShare,
+        IntPtr securityAttributes,
+        [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
+        [MarshalAs(UnmanagedType.U4)] int flags,
+        IntPtr template);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool WriteConsoleOutput(
-          SafeFileHandle hConsoleOutput,
-          CharInfo[] lpBuffer,
-          Coord dwBufferSize,
-          Coord dwBufferCoord,
-          ref SmallRect lpWriteRegion);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct Coord
-        {
-            public short X;
-            public short Y;
-
-            public Coord(short X, short Y)
-            {
-                this.X = X;
-                this.Y = Y;
-            }
-        };
+        SafeFileHandle hConsoleOutput,
+        CharInfo[] lpBuffer,
+        COORD dwBufferSize,
+        COORD dwBufferCoord,
+        ref SmallRect lpWriteRegion);
 
         [StructLayout(LayoutKind.Explicit)]
         public struct CharUnion
@@ -144,16 +130,19 @@ namespace ConsoleUI
             public short Right;
             public short Bottom;
         }
-
+        /// Writes to the console faster with color supported.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static void WriteColorFast(CharInfo[] buffer)
         {
             // få fat i et håndtag til stdout i en fandens fart
             SafeFileHandle stdOut = CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero); 
             if (!stdOut.IsInvalid)
             {
-                Coord bufferSize = new Coord((short)ScreenBuffer.Width, (short)ScreenBuffer.Height);
+                COORD bufferSize = new COORD((short)ScreenBuffer.Width, (short)ScreenBuffer.Height);
                 SmallRect writeArea = new SmallRect() { Left = 0, Top = 0, Right = (short)ScreenBuffer.Width, Bottom = (short)ScreenBuffer.Height };
-                WriteConsoleOutput(stdOut, buffer, bufferSize, new Coord(0, 0), ref writeArea);
+                WriteConsoleOutput(stdOut, buffer, bufferSize, new COORD(0, 0), ref writeArea);
             }
         }
         /* hurtigere console write slut */
