@@ -57,6 +57,8 @@ namespace ParticleEngine
                         resultingForce -= new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
                     }
 
+                    
+
                     //TODO: Updraft
                     updraftVector = new Vector2(0, -1);
 
@@ -117,30 +119,38 @@ namespace ParticleEngine
             if (updraftVector.Y <= 0) //If the particle is going downward
             {
                 int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); //Calculates the length from
+
+                int dir = 1;
+                //Chooses the direction it should check first
+                if (randomNumber.Next(2) == 1)
+                {
+                    dir = 1;
+                }
+                else
+                {
+                    dir = -1;
+                }
+
                 for (int n = 0; n < maxLengthAway * 2; n++)
                 {
-                    Vector2 checkVector; 
-                    //Chooses the direction it should check first
-                    if (randomNumber.Next(2) == 1)
-                    {
-                        checkVector = new Vector2(n, 1);
-                    }
-                    else
-                    {
-                        checkVector = new Vector2(-n, 1);
-                    }
-
-                    /*if (checkVector < 0 || checkVector > screenwidthnoget) 
-                    {
-
-                    }*/
-
+                    Vector2 checkVector = new Vector2(dir * n, 1);
+                    
                     // Checks if the checking spot is empty and that the particle actually have another particle underneath
-                    if (!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
-                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
+                    if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup) && IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass), particleGroup.Particles[i], particleGroup))/*(!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
+                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))*/
                     {
                         return checkVector;
                     }
+
+                    checkVector = new Vector2(dir * -n, 1);
+
+                    // Checks if the checking spot is empty and that the particle actually have another particle underneath
+                    if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup) && IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass), particleGroup.Particles[i], particleGroup))/*(!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
+                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))*/
+                    {
+                        return checkVector;
+                    }
+
                 }
             }
             return Vector2.Zero;
