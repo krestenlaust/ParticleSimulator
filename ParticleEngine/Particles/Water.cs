@@ -6,7 +6,7 @@ namespace ParticleEngine.Particles
 {
     public class Water : ParticleGroup
     {
-        public Water() : base(1, 85 / 180f * (float)Math.PI)
+        public Water() : base(1, 89.9f / 180f * (float)Math.PI)
         {
 
         }
