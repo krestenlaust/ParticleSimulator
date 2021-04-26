@@ -134,8 +134,16 @@ namespace ConsoleUI
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void WriteColorFast(CharInfo[] buffer)
+        public static void WriteColorFast(CharInfo[] buffer, char unicodeChar = '0')
         {
+            if (unicodeChar != '0')
+            {
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    buffer[i].Char.UnicodeChar = unicodeChar;
+                }
+            }
+
             // få fat i et håndtag til stdout i en fandens fart
             SafeFileHandle stdOut = CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero); 
             if (!stdOut.IsInvalid)
