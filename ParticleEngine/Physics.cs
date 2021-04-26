@@ -57,8 +57,6 @@ namespace ParticleEngine
                         resultingForce -= new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
                     }
 
-                    
-
                     //TODO: Updraft
                     updraftVector = new Vector2(0, -1);
 

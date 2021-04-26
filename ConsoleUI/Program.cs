@@ -61,10 +61,6 @@ namespace ConsoleUI
                 {
                     Physics.Instantiate<Acid>(new Vector2(Mouse.x, Mouse.y));
                 }
-                else if (Console.CapsLock)
-                {
-                    Physics.Instantiate<Gas>(new Vector2(Mouse.x, Mouse.y));
-                }
 
                 Physics.Update();
 
@@ -85,9 +81,6 @@ namespace ConsoleUI
                             break;
                         case Acid _:
                             color = new PixelColor(ConsoleColor.Green);
-                            break;
-                        case Gas _:
-                            color = new PixelColor(ConsoleColor.White);
                             break;
                         case Virus _:
                             color = new PixelColor(ConsoleColor.Magenta);
