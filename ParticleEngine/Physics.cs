@@ -148,7 +148,18 @@ namespace ParticleEngine
                     {
                         return checkVector;
                     }
+<<<<<<< Updated upstream
 
+=======
+                    else // Checks the other direction
+                    {
+                        // Checks if the checking spot is empty and that the particle actually have another particle underneath
+                        if (!IsColliding(particleGroup.Particles[i] + new Vector2(dir * -n, particleGroup.Mass * GRAVITATIONAL_CONSTANT), particleGroup.Particles[i], particleGroup))
+                        {
+                            return checkVector;
+                        }
+                    }
+>>>>>>> Stashed changes
                 }
             }
             return Vector2.Zero;
