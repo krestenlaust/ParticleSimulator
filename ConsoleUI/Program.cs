@@ -41,29 +41,13 @@ namespace ConsoleUI
                 // Call console input library to update input-logic.
                 Input.Update();
 
-                if (Mouse.MouseDown[0])
-                {
-                    // Jeg har ændret på brush størrelsen og længden de er adskilt.
-                    // ok - Kresten
-                    // jeg sætter mit navn på det her nu :)
-                    // ikke i orden - Kresten
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
-                    Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
-                }
-                else if (Mouse.MouseDown[1])
-                {
-                    Physics.Instantiate<Water>(new Vector2(Mouse.x, Mouse.y));
-                }
-                else if (Mouse.MouseDown[2])
-                {
-                    Physics.Instantiate<Acid>(new Vector2(Mouse.x, Mouse.y));
-                }
+                HandleInput();
 
                 Physics.Update();
 
+                // Parrallel foreach virker ligesom alm. foreach, men den eksekvere den eksekvere sin delegate
+                // flere gange delvist forskudt af hinanden og delvist overlappende.
+                // Den bruges for at behandle partikelgrupperne hurtigere da de er uafhængige af hinanden i denne fase.
                 Parallel.ForEach(Physics.ParticleGroups, particleGroup =>
                 {
                     Vector2[] dots = particleGroup.Particles.ToArray();
@@ -102,6 +86,30 @@ namespace ConsoleUI
 
                 while (stopwatch.ElapsedMilliseconds < 1000 / FramesPerSecondCap)
                     Thread.Sleep(0);
+            }
+        }
+
+        static void HandleInput()
+        {
+            if (Mouse.MouseDown[0])
+            {
+                // Jeg har ændret på brush størrelsen og længden de er adskilt.
+                // ok - Kresten
+                // jeg sætter mit navn på det her nu :)
+                // ikke i orden - Kresten
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
+            }
+            else if (Mouse.MouseDown[1])
+            {
+                Physics.Instantiate<Water>(new Vector2(Mouse.x, Mouse.y));
+            }
+            else if (Mouse.MouseDown[2])
+            {
+                Physics.Instantiate<Acid>(new Vector2(Mouse.x, Mouse.y));
             }
         }
 
