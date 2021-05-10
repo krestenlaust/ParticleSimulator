@@ -41,8 +41,9 @@ namespace ConsoleUI
                 buffer[index] = new WinAPI.CharInfo { 
                     Char = charUnion, 
                     Attributes = color.AttributeValue 
-                };
+                };              
             }
+            WinAPI.WriteColorFast(buffer, character);
         }
 
         public static void ApplyBuffer()
