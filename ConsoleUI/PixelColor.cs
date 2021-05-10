@@ -8,8 +8,8 @@ namespace ConsoleUI
         public ConsoleColor BackgroundColor => (ConsoleColor)backgroundValue;
         public short AttributeValue => (short)(foregroundValue + backgroundValue * 16);
 
-        private byte foregroundValue;
-        private byte backgroundValue;
+        private readonly byte foregroundValue;
+        private readonly byte backgroundValue;
 
         public PixelColor(ConsoleColor foregroundColor)
         {

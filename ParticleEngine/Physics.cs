@@ -162,6 +162,21 @@ namespace ParticleEngine
         }
 
         /// <summary>
+        /// Swaps two particles.
+        /// </summary>
+        /// <param name="particle1"></param>
+        /// <param name="particle2"></param>
+        /// <param name="group1"></param>
+        /// <param name="group2"></param>
+        public static void SwapParticles(Vector2 particle1, Vector2 particle2, ParticleGroup group1, ParticleGroup group2)
+        {
+            group1.Particles.Remove(particle1);
+            group2.Particles.Remove(particle2);
+            group1.Particles.Add(particle2);
+            group2.Particles.Add(particle1);
+        }
+
+        /// <summary>
         /// Instantiates a particle of type <c>T</c>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
