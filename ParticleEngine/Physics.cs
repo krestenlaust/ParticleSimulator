@@ -17,7 +17,6 @@ namespace ParticleEngine
             new Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)>();
 
         private static Vector2 updraftVector;
-        private static ParticleGroup particleGroup;
 
         private static Random randomNumber = new Random(42352352);
 
@@ -61,8 +60,10 @@ namespace ParticleEngine
                     updraftVector = new Vector2(0, -1);
 
                     // Adding the force from the particle's repose angle
-                    resultingForce += CheckRepose(i, particleGroup);
-                    
+                    //resultingForce += CheckRepose(i, particleGroup);
+
+                    resultingForce += SedimentaryForce();
+
                     //Applies the resulting force
                     particleGroup.Particles[i] += resultingForce;
                 }
@@ -82,6 +83,12 @@ namespace ParticleEngine
             {
                 group.OnUpdate(ParticleGroups);
             }
+        }
+
+        private static Vector2 SedimentaryForce()
+        {
+
+            return Vector2.Zero;
         }
 
         /// <summary>
@@ -113,7 +120,59 @@ namespace ParticleEngine
 
         public static Vector2 CheckRepose(int i, ParticleGroup particleGroup)
         {
-            //Angle of repose
+            if (updraftVector.Y <= 0) //If the particle is going downward
+            {
+                int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); //Calculates the length from
+
+                int dir;
+                //Chooses the direction it should check first
+                if (randomNumber.Next(2) == 1)
+                {
+                    dir = 1;
+                }
+                else
+                {
+                    dir = -1;
+                }
+
+                bool checkingDir1 = true;
+                bool checkingDir2 = true;
+
+                for (int n = 0; n < maxLengthAway * 2; n++) //Checking one spot further out each time
+                {
+                    Vector2 checkVector = new Vector2(dir * n, 1);
+                    Vector2 otherCheckVector = new Vector2(dir * -n, 1);
+
+                    // Checks if the checking spot have another particle underneath
+                    if (IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass), particleGroup.Particles[i], particleGroup))
+                    {
+                        continue;
+                    }
+
+                    // Checks if the spot is empty and that it should check this direction
+                    if (checkingDir1 && !IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup))
+                    {
+                        return checkVector;
+                    }
+                    else if (!IsColliding(particleGroup.Particles[i] + checkVector + new Vector2(0, -1), particleGroup.Particles[i], particleGroup)) //Checks if there is room to the side in order to make it move
+                    {
+                        checkingDir1 = false;
+                    }
+
+                    // Checks if the spot is empty and that it should check this direction
+                    if (checkingDir2 && !IsColliding(particleGroup.Particles[i] + otherCheckVector, particleGroup.Particles[i], particleGroup))
+                    {
+                        return otherCheckVector;
+                    }
+                    else if (!IsColliding(particleGroup.Particles[i] + otherCheckVector + new Vector2(0, -1), particleGroup.Particles[i], particleGroup)) //Checks if there is room to the side in order to make it move
+                    {
+                        checkingDir2 = false;
+                    }
+                }
+
+            }
+            return Vector2.Zero;
+            /*// Angle of repose
             if (updraftVector.Y <= 0) //If the particle is going downward
             {
                 int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); //Calculates the length from
@@ -132,10 +191,10 @@ namespace ParticleEngine
                 for (int n = 0; n < maxLengthAway * 2; n++)
                 {
                     Vector2 checkVector = new Vector2(dir * n, 1);
-                    
+
                     // Checks if the checking spot is empty and that the particle actually have another particle underneath
                     if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup) && IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass), particleGroup.Particles[i], particleGroup))/*(!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
-                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))*/
+                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
                     {
                         return checkVector;
                     }
@@ -144,7 +203,7 @@ namespace ParticleEngine
 
                     // Checks if the checking spot is empty and that the particle actually have another particle underneath
                     if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup) && IsColliding(particleGroup.Particles[i] + new Vector2(0, particleGroup.Mass), particleGroup.Particles[i], particleGroup))/*(!collisionMap.TryGetValue(particleGroup.Particles[i] + checkVector, out _) &&
-                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))*/
+                        collisionMap.TryGetValue(particleGroup.Particles[i] + new Vector2(0, 1), out _))
                     {
                         return checkVector;
                     }
@@ -157,8 +216,7 @@ namespace ParticleEngine
                         }
                     }
                 }
-            }
-            return Vector2.Zero;
+            }*/
         }
 
         /// <summary>
