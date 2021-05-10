@@ -48,7 +48,7 @@ namespace ConsoleUI
 
         public static void ApplyBuffer()
         {
-            WinAPI.WriteColorFast(buffer, '1');
+            WinAPI.WriteColorFast(buffer);
 
             buffer = new WinAPI.CharInfo[Width * Height];
         }

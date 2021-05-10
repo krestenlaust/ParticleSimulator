@@ -8,7 +8,7 @@ namespace ConsoleUI
 {
     public static class UIManager
     {
-        private static readonly List<Control> controls;
+        private static readonly List<Control> controls = new List<Control>();
 
         public static void AddControl(Control control)
         {
