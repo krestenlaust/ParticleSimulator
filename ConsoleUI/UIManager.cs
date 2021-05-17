@@ -79,13 +79,16 @@ namespace ConsoleUI
                     }
                     break;
             }
-
+            
             switch (control.InternalMouseButtonState)
             {
                 case Control.MouseButtonState.Down:
                     if (Mouse.MouseDown[0])
                     {
-                        control.UpdateButtonState(Control.MouseButtonState.Hold);
+                        if (cursorInside)
+                        {
+                            control.UpdateButtonState(Control.MouseButtonState.Hold);
+                        }
                     }
                     else
                     {
@@ -105,7 +108,7 @@ namespace ConsoleUI
                     }
                     break;
                 case Control.MouseButtonState.None:
-                    if (Mouse.MouseDown[0])
+                    if (Mouse.MouseDown[0] && cursorInside)
                     {
                         control.UpdateButtonState(Control.MouseButtonState.Down);
                     }

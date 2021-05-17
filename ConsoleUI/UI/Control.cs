@@ -41,18 +41,14 @@ namespace ConsoleUI.UI
             // Er punktet til venstre-for eller ovenover elementet, kan det ikke være på det.
             if (pointX < X || pointY < Y)
             {
-                //Console.Title = $"Point ({pointX}, {pointY}); Control ({X}, {Y}) ({Width}, {Height}); false";
                 return false;
             }
 
             // Er punktet indenfor bredden og højden af elementet.
             if (pointX - X > Width || pointY - Y > Height)
             {
-                //Console.Title = $"Point ({pointX}, {pointY}); Control ({X}, {Y}) ({Width}, {Height}); false";
                 return false;
             }
-
-            //Console.Title = $"Point ({pointX}, {pointY}); Control ({X}, {Y}) ({Width}, {Height}); true";
 
             return true;
         }

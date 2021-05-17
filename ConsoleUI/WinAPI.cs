@@ -74,6 +74,9 @@ namespace ConsoleUI
         [DllImport("User32.dll")]
         private static extern long SetWindowLongA(IntPtr hWindow, int nIndex, long dwNewLong);
 
+        [DllImport("Kernel32.dll")]
+        public static extern bool SetConsoleOutputCP(uint CodePageID);
+
         [DllImport("kernel32.dll")]
         private static extern bool WriteConsoleOutputCharacter(IntPtr hConsoleOutput,
             string lpCharacter, uint nLength, COORD dwWriteCoord,
@@ -130,7 +133,7 @@ namespace ConsoleUI
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void WriteColorFast(CharInfo[] buffer, char unicodeChar = '0')
+        public static void WriteColorFast(CharInfo[] buffer)
         {
             /*
             if (unicodeChar != '0')

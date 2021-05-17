@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using ConsoleUI.UI.Controls;
 using ConsoleUI.UI;
+using System.Text;
 
 namespace ConsoleUI
 {
@@ -23,6 +24,7 @@ namespace ConsoleUI
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
             //WinAPI.SetFontSize(16, 16);
+            WinAPI.SetConsoleOutputCP(437);
 
             // Set up the window style
             WinAPI.SetupStyle();
@@ -31,12 +33,11 @@ namespace ConsoleUI
             Input.Setup(false);
 
             // Set up game
-            UIManager.Controls.Add(new GameControl(false)
+            UIManager.Controls.Add(new GameControl(true)
             {
                 Width = UIManager.Width,
                 Height = UIManager.Height - 20
             });
-
 
             LabelControl helloworldLabel = new LabelControl("Hello world")
             {

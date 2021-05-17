@@ -8,7 +8,7 @@ namespace ConsoleUI.UI.Controls
 {
     public class GameControl : Control
     {
-        public const char DOT_REPRESENTATION = '\u2588';
+        public const char DOT_REPRESENTATION = '\u26db';
 
         public GameControl(bool borders)
         {
