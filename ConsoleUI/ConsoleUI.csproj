@@ -69,7 +69,7 @@
     <Compile Include="PixelColor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenBuffer.cs" />
+    <Compile Include="UIManager.cs" />
     <Compile Include="WinAPI.cs" />
   </ItemGroup>
   <ItemGroup>

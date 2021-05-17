@@ -145,8 +145,8 @@ namespace ConsoleUI
             SafeFileHandle stdOut = CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero); 
             if (!stdOut.IsInvalid)
             {
-                COORD bufferSize = new COORD((short)ScreenBuffer.Width, (short)ScreenBuffer.Height);
-                SmallRect writeArea = new SmallRect() { Left = 0, Top = 0, Right = (short)ScreenBuffer.Width, Bottom = (short)ScreenBuffer.Height };
+                COORD bufferSize = new COORD((short)UIManager.Width, (short)UIManager.Height);
+                SmallRect writeArea = new SmallRect() { Left = 0, Top = 0, Right = (short)UIManager.Width, Bottom = (short)UIManager.Height };
                 WriteConsoleOutput(stdOut, buffer, bufferSize, new COORD(0, 0), ref writeArea);
             }
         }

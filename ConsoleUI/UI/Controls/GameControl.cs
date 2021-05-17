@@ -75,15 +75,15 @@ namespace ConsoleUI.UI.Controls
 
         private static void InstantiateBorders()
         {
-            for (int n = 0; n < ScreenBuffer.Width; n++)
+            for (int n = 0; n < UIManager.Width; n++)
             {
-                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(n, ScreenBuffer.Height - 1));
+                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(n, UIManager.Height - 1));
                 Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(n, 0));
             }
 
-            for (int n = 0; n < ScreenBuffer.Height; n++)
+            for (int n = 0; n < UIManager.Height; n++)
             {
-                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(ScreenBuffer.Width - 1, n));
+                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(UIManager.Width - 1, n));
                 Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(0, n));
             }
         }
