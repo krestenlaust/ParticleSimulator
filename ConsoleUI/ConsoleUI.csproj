@@ -62,8 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\Controls\ButtonControl.cs" />
     <Compile Include="UI\Controls\LabelControl.cs" />
-    <Compile Include="UI\TableSegment.cs" />
+    <Compile Include="UI\ScreenSegment.cs" />
     <Compile Include="UI\Control.cs" />
     <Compile Include="UI\Controls\GameControl.cs" />
     <Compile Include="PixelColor.cs" />

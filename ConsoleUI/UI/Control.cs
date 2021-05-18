@@ -32,7 +32,7 @@ namespace ConsoleUI.UI
         internal HoverState InternalHoverState { get; private set; } = HoverState.None;
         internal MouseButtonState InternalMouseButtonState { get; private set; } = MouseButtonState.None;
 
-        public abstract void Draw(TableSegment<WinAPI.CharInfo> segment);
+        public abstract void Draw(ScreenSegment segment);
         public delegate void HoverStateChanged(Control source, HoverState newState);
         public delegate void MouseButtonStateChanged(Control source, MouseButtonState newState);
 

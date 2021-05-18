@@ -18,7 +18,7 @@ namespace ConsoleUI.UI.Controls
             }
         }
 
-        public override void Draw(TableSegment<WinAPI.CharInfo> segment)
+        public override void Draw(ScreenSegment segment)
         {
             foreach (var particleGroup in Physics.ParticleGroups)
             {
@@ -52,13 +52,13 @@ namespace ConsoleUI.UI.Controls
             }
         }
 
-        public void DrawDots(TableSegment<WinAPI.CharInfo> screenSegment, Vector2[] dots, int length, char character, PixelColor color)
+        public void DrawDots(ScreenSegment screenSegment, Vector2[] dots, int length, char character, PixelColor color)
         {
             for (int i = 0; i < length; i++)
             {
                 Vector2 dot = dots[i];
 
-                if (screenSegment.Width < (int)dot.X || (int)dot.X < 0 || screenSegment.Height < dot.Y || dot.Y < 0)
+                if (screenSegment.Width <= (int)dot.X || (int)dot.X < 0 || screenSegment.Height <= dot.Y || dot.Y < 0)
                 {
                     continue;
                 }

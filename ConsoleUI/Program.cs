@@ -47,6 +47,15 @@ namespace ConsoleUI
             helloworldLabel.OnHoverStateChanged += HelloworldLabel_OnHoverStateChanged;
             UIManager.Controls.Add(helloworldLabel);
 
+            ButtonControl testButton = new ButtonControl()
+            {
+                Y = UIManager.Height - 10,
+                Width = 10,
+                Height = 5,
+                Text = "Hi"
+            };
+            UIManager.Controls.Add(testButton);
+
             // Continue setting up engine
             // Stopwatch to measure game loop time.
             Stopwatch stopwatch = new Stopwatch();

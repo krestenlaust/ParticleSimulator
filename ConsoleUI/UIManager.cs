@@ -130,7 +130,7 @@ namespace ConsoleUI
         private static void RenderControl(Control control)
         {
             // Partionere en del af skærmen som vil blive "udlejet" til en control så den kan tegne sig selv.
-            TableSegment<WinAPI.CharInfo> screenSegment = new TableSegment<WinAPI.CharInfo>(buffer, Width, control.Width, control.Height, control.X, control.Y);
+            ScreenSegment screenSegment = new ScreenSegment(buffer, Width, control.Width, control.Height, control.X, control.Y);
             control.Draw(screenSegment);
         }
 
