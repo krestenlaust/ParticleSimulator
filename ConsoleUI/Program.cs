@@ -23,7 +23,7 @@ namespace ConsoleUI
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
-            //WinAPI.SetFontSize(16, 16);
+            WinAPI.SetFontSize(16, 16);
             WinAPI.SetConsoleOutputCP(437);
 
             // Set up the window style
@@ -50,7 +50,7 @@ namespace ConsoleUI
             ButtonControl testButton = new ButtonControl()
             {
                 Y = UIManager.Height - 10,
-                Width = 10,
+                Width = 15,
                 Height = 5,
                 Text = "Hi"
             };

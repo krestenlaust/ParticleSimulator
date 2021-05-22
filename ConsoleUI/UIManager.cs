@@ -61,7 +61,11 @@ namespace ConsoleUI
                     }
                     break;
                 case Control.HoverState.Stay:
-                    if (!cursorInside)
+                    if (cursorInside)
+                    {
+                        control.UpdateHoverState(Control.HoverState.Stay);
+                    }
+                    else
                     {
                         control.UpdateHoverState(Control.HoverState.Exit);
                     }

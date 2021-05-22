@@ -45,7 +45,7 @@ namespace ParticleEngine
                 for (int i = 0; i < particleGroup.Particles.Count; i++)
                 {
                     //The vector that will take all the physics in and move the particle each frame the resulting force at what ever direction it should go
-                    Vector2 resultingForce = new Vector2(0,0);
+                    Vector2 resultingForce = new Vector2(0, 0);
 
                     //Applies gravity
                     resultingForce += new Vector2(0, particleGroup.Mass) * GRAVITATIONAL_CONSTANT;
