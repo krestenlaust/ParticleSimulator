@@ -5,10 +5,8 @@ using ConsoleInput;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;
-using System.Threading.Tasks;
 using ConsoleUI.UI.Controls;
 using ConsoleUI.UI;
-using System.Text;
 
 namespace ConsoleUI
 {
