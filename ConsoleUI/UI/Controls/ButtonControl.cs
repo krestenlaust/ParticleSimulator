@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleUI.UI.Controls
 {
     public class ButtonControl : Control
     {
+        /// <summary>
+        /// En simpel delegate til at lytte efter kliks. Man kan vælge bruge det event der er på forældre <c>Control</c>  i stedet.
+        /// </summary>
+        public Action OnClick;
         private readonly char borderChar;
         private readonly PixelColor borderHoverColor;
         private readonly PixelColor borderDefaultColor;
@@ -46,11 +47,6 @@ namespace ConsoleUI.UI.Controls
 
         internal override void UpdateHoverState(HoverState newState)
         {
-            if (newState == HoverState.Stay)
-            {
-                Debug.WriteLine("Helo");
-            }
-
             switch (newState)
             {
                 case HoverState.Enter:
@@ -81,6 +77,7 @@ namespace ConsoleUI.UI.Controls
                 case MouseButtonState.Release:
                     pressed = false;
 
+                    OnClick?.Invoke();
                     //borderColor = borderPressedColor;
                     break;
                 default:
@@ -103,7 +100,7 @@ namespace ConsoleUI.UI.Controls
                 segment[segment.Width - 1, y] = UIManager.ConvertPixel(borderChar, borderColor);
 
                 // center
-                if ((y-1) / 2f == 0.5f)
+                if (Math.Floor(Height / 2f) == y)
                 {
                     text.Width = Math.Min(text.Text.Length, Width - 2);
                     ScreenSegment subSegment = new ScreenSegment(segment, text.Width, 1, 2, y);

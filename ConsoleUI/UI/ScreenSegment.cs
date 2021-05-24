@@ -46,21 +46,39 @@ namespace ConsoleUI.UI
         {
             get
             {
+                // Hvis området er udenfor det der er blevet tildelt.
                 if (x >= Width || x < 0 || y >= Height || y < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
-                return internalArray[CalculateIndex(x, y)];
+                int calculatedIndex = CalculateIndex(x, y);
+                
+                // Hvis det faktiske indeks er udenfor. Dette sker fx. når et element er ude i siden.
+                if (calculatedIndex < 0 || calculatedIndex >= internalArray.Length)
+                {
+                    return new WinAPI.CharInfo { };
+                }
+
+                return internalArray[calculatedIndex];
             }
             set
             {
+                // Hvis området er udenfor det der er blevet tildelt.
                 if (x >= Width || x < 0 || y >= Height || y < 0)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
-                internalArray[CalculateIndex(x, y)] = value;
+                int calculatedIndex = CalculateIndex(x, y);
+
+                // Hvis det faktiske indeks er udenfor.
+                if (calculatedIndex < 0 || calculatedIndex >= internalArray.Length)
+                {
+                    return;
+                }
+
+                internalArray[calculatedIndex] = value;
             }
         }
 
