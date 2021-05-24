@@ -1,8 +1,12 @@
-﻿using ParticleEngine;
+﻿using ConsoleInput;
+using ConsoleUI;
+using ConsoleUI.UI;
+using ParticleEngine;
+using ParticleEngine.Particles;
 using System;
 using System.Numerics;
 
-namespace ConsoleUI.UI.Controls
+namespace GameImplementation
 {
     public class GameControl : Control
     {
@@ -26,19 +30,19 @@ namespace ConsoleUI.UI.Controls
 
                 switch (particleGroup)
                 {
-                    case ParticleEngine.Particles.Sand _:
+                    case Sand _:
                         color = new PixelColor(ConsoleColor.Yellow);
                         break;
-                    case ParticleEngine.Particles.Block _:
+                    case Block _:
                         color = new PixelColor(ConsoleColor.Blue);
                         break;
-                    case ParticleEngine.Particles.Acid _:
+                    case Acid _:
                         color = new PixelColor(ConsoleColor.Green);
                         break;
-                    case ParticleEngine.Particles.Virus _:
+                    case Virus _:
                         color = new PixelColor(ConsoleColor.Magenta);
                         break;
-                    case ParticleEngine.Particles.Water _:
+                    case Water _:
                         color = new PixelColor(ConsoleColor.DarkBlue);
                         break;
                     default:
@@ -71,18 +75,44 @@ namespace ConsoleUI.UI.Controls
             }
         }
 
+        protected override void UpdateButtonState(MouseButtonState newState)
+        {
+            if (Mouse.MouseDown[0])
+            {
+                // Jeg har ændret på brush størrelsen og længden de er adskilt.
+                // ok - Kresten
+                // jeg sætter mit navn på det her nu :)
+                // ikke i orden - Kresten
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
+                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
+            }
+            else if (Mouse.MouseDown[1])
+            {
+                Physics.Instantiate<Water>(new Vector2(Mouse.x, Mouse.y));
+            }
+            else if (Mouse.MouseDown[2])
+            {
+                Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
+            }
+
+            base.UpdateButtonState(newState);
+        }
+
         private static void InstantiateBorders()
         {
             for (int n = 0; n < UIManager.Width; n++)
             {
-                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(n, UIManager.Height - 1));
-                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(n, 0));
+                Physics.Instantiate<Block>(new Vector2(n, UIManager.Height - 1));
+                Physics.Instantiate<Block>(new Vector2(n, 0));
             }
 
             for (int n = 0; n < UIManager.Height; n++)
             {
-                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(UIManager.Width - 1, n));
-                Physics.Instantiate<ParticleEngine.Particles.Block>(new Vector2(0, n));
+                Physics.Instantiate<Block>(new Vector2(UIManager.Width - 1, n));
+                Physics.Instantiate<Block>(new Vector2(0, n));
             }
         }
     }

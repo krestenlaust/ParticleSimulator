@@ -51,7 +51,7 @@ namespace ConsoleUI.UI
             return true;
         }
 
-        internal virtual void UpdateHoverState(HoverState newState)
+        protected internal virtual void UpdateHoverState(HoverState newState)
         {
             InternalHoverState = newState;
 
@@ -63,7 +63,7 @@ namespace ConsoleUI.UI
             OnHoverStateChanged?.Invoke(this, newState);
         }
 
-        internal virtual void UpdateButtonState(MouseButtonState newState)
+        protected internal virtual void UpdateButtonState(MouseButtonState newState)
         {
             InternalMouseButtonState = newState;
 

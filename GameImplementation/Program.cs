@@ -132,27 +132,6 @@ namespace GameImplementation
 
         static void Update()
         {
-            if (Mouse.MouseDown[0])
-            {
-                // Jeg har ændret på brush størrelsen og længden de er adskilt.
-                // ok - Kresten
-                // jeg sætter mit navn på det her nu :)
-                // ikke i orden - Kresten
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
-            }
-            else if (Mouse.MouseDown[1])
-            {
-                Physics.Instantiate<Water>(new Vector2(Mouse.x, Mouse.y));
-            }
-            else if (Mouse.MouseDown[2])
-            {
-                Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
-            }
-
             if (Keyboard.KeyDown(Keyboard.VK.ESCAPE) && UIManager.CurrentScene != mainMenu)
             {
                 UIManager.ChangeScene(UIManager.CurrentScene == gameScene ? pauseMenu : gameScene);
@@ -163,7 +142,6 @@ namespace GameImplementation
         {
             // Define console screen sizes to allow easy line wrapping.
             UIManager.Setup(90, 40);
-
             // Call console input library.
             Input.Setup(false);
 

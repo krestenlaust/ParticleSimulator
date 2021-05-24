@@ -70,7 +70,6 @@
     <Compile Include="UI\Scene.cs" />
     <Compile Include="UI\ScreenSegment.cs" />
     <Compile Include="UI\Control.cs" />
-    <Compile Include="UI\Controls\GameControl.cs" />
     <Compile Include="PixelColor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIManager.cs" />

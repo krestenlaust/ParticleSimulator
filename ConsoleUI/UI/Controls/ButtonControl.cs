@@ -45,7 +45,7 @@ namespace ConsoleUI.UI.Controls
             borderColor = this.borderDefaultColor;
         }
 
-        internal override void UpdateHoverState(HoverState newState)
+        protected internal override void UpdateHoverState(HoverState newState)
         {
             switch (newState)
             {
@@ -65,7 +65,7 @@ namespace ConsoleUI.UI.Controls
             base.UpdateHoverState(newState);
         }
 
-        internal override void UpdateButtonState(MouseButtonState newState)
+        protected internal override void UpdateButtonState(MouseButtonState newState)
         {
             switch (newState)
             {
