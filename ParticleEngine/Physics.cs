@@ -8,15 +8,14 @@ namespace ParticleEngine
     public static class Physics
     {
         public const float GRAVITATIONAL_CONSTANT = 1;
-        public static List<ParticleGroup> ParticleGroups = new List<ParticleGroup>();
+        public static readonly List<ParticleGroup> ParticleGroups = new List<ParticleGroup>();
 
-        private static Dictionary<Vector2, Vector2> airPressure = new Dictionary<Vector2, Vector2>();
-        private static Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
-        private static Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
+        private static readonly Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
+        private static readonly Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
             new Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)>();
 
         private static Vector2 updraftVector;
-        private static Random randomNumber = new Random(42352352);
+        private static readonly Random randomNumber = new Random(42352352);
 
         public static void Update()
         {
@@ -85,7 +84,6 @@ namespace ParticleEngine
 
         private static Vector2 SedimentaryForce()
         {
-
             return Vector2.Zero;
         }
 

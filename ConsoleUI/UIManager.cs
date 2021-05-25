@@ -115,46 +115,7 @@ namespace ConsoleUI
                 return;
             }
 
-            if (Mouse.MousePress[0])
-            {
-                control.UpdateButtonState(Control.MouseButtonState.Down);
-            }
-            else if (Mouse.MouseDown[0])
-            {
-                control.UpdateButtonState(Control.MouseButtonState.Hold);
-            }
-            else if (Mouse.MouseUp[0])
-            {
-                control.UpdateButtonState(Control.MouseButtonState.Release);
-            }
-            /*
-            switch (control.InternalMouseButtonState)
-            {
-                case Control.MouseButtonState.Down:
-                    if (Mouse.MouseDown[0])
-                    {
-                        
-                        //if (cursorInside)
-                        //{
-                            control.UpdateButtonState(Control.MouseButtonState.Hold);
-                        //}
-                    }
-                    else
-                    {
-                        control.UpdateButtonState(Control.MouseButtonState.Release);
-                    }
-                    break;
-                case Control.MouseButtonState.Hold when !Mouse.MouseDown[0]:
-                    control.UpdateButtonState(Control.MouseButtonState.Release);
-                    break;
-                case Control.MouseButtonState.Release when !Mouse.MouseDown[0]:
-                    control.UpdateButtonState(Control.MouseButtonState.None);
-                    break;
-                case Control.MouseButtonState.None when Mouse.MouseDown[0] && cursorInside:
-                    control.UpdateButtonState(Control.MouseButtonState.Down);
-                    break;
-            }
-            */
+            control.UpdateButtonState();
         }
 
         /// <summary>

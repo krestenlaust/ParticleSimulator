@@ -75,7 +75,7 @@ namespace GameImplementation
             }
         }
 
-        protected override void UpdateButtonState(MouseButtonState newState)
+        protected override void UpdateButtonState()
         {
             if (Mouse.MouseDown[0])
             {
@@ -98,7 +98,7 @@ namespace GameImplementation
                 Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
             }
 
-            base.UpdateButtonState(newState);
+            base.UpdateButtonState();
         }
 
         private static void InstantiateBorders()

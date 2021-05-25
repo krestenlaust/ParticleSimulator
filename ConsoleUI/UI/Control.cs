@@ -13,26 +13,21 @@ namespace ConsoleUI.UI
             Stay,
             Exit,
         }
-        public enum MouseButtonState
-        {
-            None,
-            Down,
-            Hold,
-            Release,
-        }
-
+        
         public int Zindex;
         public int X, Y;
         public int Width = 1, Height = 1;
         public event HoverStateChanged OnHoverStateChanged;
+        /// <summary>
+        /// Kaldt når <c>Mouse</c>-klassen ændrer tilstand; når en knap opdatereres (klip, hold, løft).
+        /// </summary>
         public event MouseButtonStateChanged OnMouseButtonStateChanged;
 
         internal HoverState InternalHoverState { get; private set; } = HoverState.None;
-        internal MouseButtonState InternalMouseButtonState { get; private set; } = MouseButtonState.None;
 
         public abstract void Draw(ScreenSegment segment);
         public delegate void HoverStateChanged(Control source, HoverState newState);
-        public delegate void MouseButtonStateChanged(Control source, MouseButtonState newState);
+        public delegate void MouseButtonStateChanged(Control source);
 
         public bool IsPointInside(int pointX, int pointY)
         {
@@ -51,6 +46,10 @@ namespace ConsoleUI.UI
             return true;
         }
 
+        /// <summary>
+        /// Kaldt når musen flytter sig ud eller ind i et ui-element. Den bliver også kaldt hele den tid den er indenfor.
+        /// </summary>
+        /// <param name="newState"></param>
         protected internal virtual void UpdateHoverState(HoverState newState)
         {
             InternalHoverState = newState;
@@ -63,16 +62,9 @@ namespace ConsoleUI.UI
             OnHoverStateChanged?.Invoke(this, newState);
         }
 
-        protected internal virtual void UpdateButtonState(MouseButtonState newState)
-        {
-            InternalMouseButtonState = newState;
-
-            if (newState == MouseButtonState.None)
-            {
-                return;
-            }
-
-            OnMouseButtonStateChanged?.Invoke(this, newState);
-        }
+        /// <summary>
+        /// Kaldt mens musen er over en kontrol. Brug <c>Mouse</c>-klassen for at tilgå musens tilstand.
+        /// </summary>
+        protected internal virtual void UpdateButtonState() => OnMouseButtonStateChanged?.Invoke(this);
     }
 }
