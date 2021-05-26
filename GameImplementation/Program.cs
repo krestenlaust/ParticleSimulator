@@ -14,10 +14,14 @@ namespace GameImplementation
     class Program
     {
         const int FramesPerSecondCap = 60;
+        const int ControlHorizontalMargin = 2;
+        const int ButtonVerticalMargin = 2;
+        const int ButtonWidth = 10;
         static Scene mainMenu;
         static Scene gameScene;
         static Scene pauseMenu;
         static Scene creditsScene;
+        static GameControl gameControl;
         static bool running = true;
 
         /// <summary>
@@ -112,16 +116,45 @@ namespace GameImplementation
 
             // Set up game scene
             gameScene = new Scene();
-            gameScene.Controls.Add(new GameControl(true, UIManager.Width, UIManager.Height - 15));
-
-            ButtonControl testButton = new ButtonControl()
+            gameControl = new GameControl(true, UIManager.Width, UIManager.Height - 10);
+            gameScene.Controls.Add(gameControl);
+            gameScene.Controls.Add(new LabelControl("Use left mouse button to place 1 particle, and right to place many.") { 
+                X = ControlHorizontalMargin,
+                Y = gameControl.Height
+            });
+            PixelColor pressedColor = new PixelColor(ConsoleColor.Gray);
+            int buttonCount = 0;
+            // - Sand
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Yellow), new PixelColor(ConsoleColor.DarkYellow), pressedColor) {
+                OnClick = () => gameControl.SelectParticleType<Sand>(),
+                Text = "Sand",
+                Width = 10,
+                Height = 3,
+                X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
+                Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
+            });
+            // - Water
+            buttonCount++;
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Blue), new PixelColor(ConsoleColor.DarkBlue), pressedColor)
             {
-                Y = UIManager.Height - 10,
-                Width = 15,
-                Height = 5,
-                Text = "Hi"
-            };
-            gameScene.Controls.Add(testButton);
+                OnClick = () => gameControl.SelectParticleType<Water>(),
+                Text = "Water",
+                Width = 10,
+                Height = 3,
+                X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
+                Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
+            });
+            // - Block
+            buttonCount++;
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Cyan), new PixelColor(ConsoleColor.DarkCyan), pressedColor)
+            {
+                OnClick = () => gameControl.SelectParticleType<Block>(),
+                Text = "Block",
+                Width = 10,
+                Height = 3,
+                X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
+                Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
+            });
 
             UIManager.ChangeScene(mainMenu);
         }

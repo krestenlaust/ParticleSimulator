@@ -19,6 +19,9 @@ namespace GameImplementation
             {
                 InstantiateBorders();
             }
+
+            // Select sand as default.
+            SelectParticleType<Sand>();
         }
 
         public void SelectParticleType<T>() where T : ParticleGroup, new()
@@ -40,7 +43,7 @@ namespace GameImplementation
                         color = new PixelColor(ConsoleColor.Yellow);
                         break;
                     case Block _:
-                        color = new PixelColor(ConsoleColor.Blue);
+                        color = new PixelColor(ConsoleColor.DarkCyan);
                         break;
                     case Acid _:
                         color = new PixelColor(ConsoleColor.Green);
@@ -49,7 +52,7 @@ namespace GameImplementation
                         color = new PixelColor(ConsoleColor.Magenta);
                         break;
                     case Water _:
-                        color = new PixelColor(ConsoleColor.DarkBlue);
+                        color = new PixelColor(ConsoleColor.Blue);
                         break;
                     default:
                         color = new PixelColor();
@@ -83,29 +86,26 @@ namespace GameImplementation
 
         protected override void UpdateButtonState()
         {
+            // SelectedParticleType burde aldrig være null, men hvis den er, så return.
+            if (selectedParticleType is null)
+            {
+                base.UpdateButtonState();
+                return;
+            }
+
+            // Place 1 particle.
             if (Mouse.MouseDown[0])
             {
-                // Jeg har ændret på brush størrelsen og længden de er adskilt.
-                // ok - Kresten
-                // jeg sætter mit navn på det her nu :)
-                // ikke i orden - Kresten
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x - 1, Mouse.y));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
-                Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
+                Physics.Instantiate(new Vector2(Mouse.x, Mouse.y), selectedParticleType);
+            }
+            else if (Mouse.MouseDown[1]) // Place multiple particles.
+            {
+                Physics.Instantiate(new Vector2(Mouse.x, Mouse.y), selectedParticleType);
+                Physics.Instantiate(new Vector2(Mouse.x - 1, Mouse.y), selectedParticleType);
+                Physics.Instantiate(new Vector2(Mouse.x + 1, Mouse.y), selectedParticleType);
+                Physics.Instantiate(new Vector2(Mouse.x, Mouse.y + 1), selectedParticleType);
+                Physics.Instantiate(new Vector2(Mouse.x, Mouse.y - 1), selectedParticleType);
                 // Lavet af Patrick
-            }
-            else if (Mouse.MouseDown[1])
-            {
-                if (!(selectedParticleType is null))
-                {
-                    Physics.Instantiate(new Vector2(Mouse.x, Mouse.y), selectedParticleType);
-                }
-            }
-            else if (Mouse.MouseDown[2])
-            {
-                Physics.Instantiate<Block>(new Vector2(Mouse.x, Mouse.y));
             }
 
             base.UpdateButtonState();

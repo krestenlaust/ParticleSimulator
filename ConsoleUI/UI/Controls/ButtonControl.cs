@@ -35,12 +35,13 @@ namespace ConsoleUI.UI.Controls
             borderColor = borderDefaultColor;
         }
 
-        public ButtonControl(PixelColor borderHoverColor, PixelColor borderDefaultColor, char borderChar='\u26db') : base(0, 5)
+        public ButtonControl(PixelColor borderDefaultColor, PixelColor borderHoverColor, PixelColor borderPressedColor, char borderChar='\u26db') : base(0, 5)
         {
             text = new LabelControl("");
             this.borderChar = borderChar;
             this.borderHoverColor = borderHoverColor;
             this.borderDefaultColor = borderDefaultColor;
+            this.borderPressedColor = borderPressedColor;
             borderColor = this.borderDefaultColor;
         }
 
