@@ -94,6 +94,7 @@ namespace GameImplementation
                 Physics.Instantiate<Sand>(new Vector2(Mouse.x + 1, Mouse.y));
                 Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y + 1));
                 Physics.Instantiate<Sand>(new Vector2(Mouse.x, Mouse.y - 1));
+                // Lavet af Patrick
             }
             else if (Mouse.MouseDown[1])
             {
@@ -110,17 +111,17 @@ namespace GameImplementation
             base.UpdateButtonState();
         }
 
-        private static void InstantiateBorders()
+        private void InstantiateBorders()
         {
-            for (int n = 0; n < UIManager.Width; n++)
+            for (int n = 0; n < Width; n++)
             {
-                Physics.Instantiate<Block>(new Vector2(n, UIManager.Height - 1));
+                Physics.Instantiate<Block>(new Vector2(n, Height - 1));
                 Physics.Instantiate<Block>(new Vector2(n, 0));
             }
 
-            for (int n = 0; n < UIManager.Height; n++)
+            for (int n = 0; n < Height; n++)
             {
-                Physics.Instantiate<Block>(new Vector2(UIManager.Width - 1, n));
+                Physics.Instantiate<Block>(new Vector2(Width - 1, n));
                 Physics.Instantiate<Block>(new Vector2(0, n));
             }
         }
