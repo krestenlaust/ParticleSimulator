@@ -11,12 +11,12 @@ namespace ConsoleUI.UI
             None,
             Enter,
             Stay,
-            Exit,
+            Exit
         }
         
         public int Zindex;
         public int X, Y;
-        public int Width = 1, Height = 1;
+        public int Width, Height;
         public event HoverStateChanged OnHoverStateChanged;
         /// <summary>
         /// Kaldt mens musen er over en kontrol. Brug <c>Mouse</c>-klassen for at tilgå musens tilstand.
@@ -28,6 +28,12 @@ namespace ConsoleUI.UI
         public abstract void Draw(ScreenSegment segment);
         public delegate void HoverStateChanged(Control source, HoverState newState);
         public delegate void MouseButtonStateChanged(Control source);
+
+        public Control(int width, int height)
+        {
+            Width = width;
+            Height = height;
+        }
 
         public bool IsPointInside(int pointX, int pointY)
         {

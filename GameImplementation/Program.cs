@@ -112,11 +112,7 @@ namespace GameImplementation
 
             // Set up game scene
             gameScene = new Scene();
-            gameScene.Controls.Add(new GameControl(true)
-            {
-                Width = UIManager.Width,
-                Height = UIManager.Height - 20
-            });
+            gameScene.Controls.Add(new GameControl(true, UIManager.Width, UIManager.Height - 15));
 
             ButtonControl testButton = new ButtonControl()
             {

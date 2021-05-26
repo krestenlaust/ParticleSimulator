@@ -13,7 +13,7 @@ namespace GameImplementation
         public const char DOT_REPRESENTATION = '\u26db';
         private ParticleGroup selectedParticleType;
 
-        public GameControl(bool borders)
+        public GameControl(bool borders, int width, int height) : base(width, height)
         {
             if (borders)
             {

@@ -15,7 +15,7 @@ namespace ConsoleUI.UI.Controls
         private readonly PixelColor borderHoverColor;
         private readonly PixelColor borderDefaultColor;
         private readonly PixelColor borderPressedColor;
-        private readonly LabelControl text = new LabelControl();
+        private readonly LabelControl text;
         private PixelColor borderColor;
         private bool pressed;
 
@@ -25,10 +25,9 @@ namespace ConsoleUI.UI.Controls
             set { text.Text = value; }
         }
 
-        public ButtonControl()
+        public ButtonControl() : base(0, 5)
         {
-            Height = 5;
-            text.Height = 1;
+            text = new LabelControl("");
             borderChar = '\u26db';
             borderHoverColor = new PixelColor(ConsoleColor.DarkBlue);
             borderDefaultColor = new PixelColor(ConsoleColor.Blue);
@@ -36,10 +35,9 @@ namespace ConsoleUI.UI.Controls
             borderColor = borderDefaultColor;
         }
 
-        public ButtonControl(PixelColor borderHoverColor, PixelColor borderDefaultColor, char borderChar='\u26db')
+        public ButtonControl(PixelColor borderHoverColor, PixelColor borderDefaultColor, char borderChar='\u26db') : base(0, 5)
         {
-            Height = 5;
-            text.Height = 1;
+            text = new LabelControl("");
             this.borderChar = borderChar;
             this.borderHoverColor = borderHoverColor;
             this.borderDefaultColor = borderDefaultColor;

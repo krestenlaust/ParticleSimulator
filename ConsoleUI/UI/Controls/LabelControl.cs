@@ -6,12 +6,7 @@ namespace ConsoleUI.UI.Controls
     {
         public string Text;
 
-        public LabelControl()
-        {
-
-        }
-
-        public LabelControl(string text)
+        public LabelControl(string text) : base(text.Length, 1)
         {
             Width = text.Length;
             Text = text;
