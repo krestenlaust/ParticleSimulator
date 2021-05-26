@@ -15,8 +15,8 @@ namespace ConsoleUI
 
         public static void Setup(int width, int height)
         {
-            Width = width;
-            Height = height;
+            Width = Math.Min(width, Console.LargestWindowWidth - 1);
+            Height = Math.Min(height, Console.LargestWindowHeight - 1);
 
             buffer = new WinAPI.CharInfo[Width * Height];
             
@@ -28,7 +28,7 @@ namespace ConsoleUI
 
             // Call Windows API to enable our specific console needs.
             WinAPI.EnableANSIProcessing();
-            WinAPI.SetFontSize(16, 16);
+            WinAPI.SetFontSize(15, 15);
             WinAPI.SetConsoleOutputCP(437);
 
             // Set up the window style
