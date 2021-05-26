@@ -170,7 +170,7 @@ namespace GameImplementation
         static void Main(string[] args)
         {
             // Define console screen sizes to allow easy line wrapping.
-            UIManager.Setup(90, 40);
+            UIManager.Setup(90, 45);
             // Call console input library.
             Input.Setup(false);
 
