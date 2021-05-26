@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleInput;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,8 +66,21 @@ namespace ConsoleUI.UI.Controls
             base.UpdateHoverState(newState);
         }
 
-        protected internal override void UpdateButtonState(MouseButtonState newState)
+        protected internal override void UpdateButtonState()
         {
+            if (Mouse.MousePress[0])
+            {
+                pressed = true;
+
+                borderColor = borderPressedColor;
+            }
+            else if (Mouse.MouseUp[0])
+            {
+                pressed = false;
+
+                OnClick?.Invoke();
+            }
+            /*
             switch (newState)
             {
                 case MouseButtonState.Down:
@@ -82,9 +96,9 @@ namespace ConsoleUI.UI.Controls
                     break;
                 default:
                     break;
-            }
+            }*/
 
-            base.UpdateButtonState(newState);
+            base.UpdateButtonState();
         }
 
         public override void Draw(ScreenSegment segment)

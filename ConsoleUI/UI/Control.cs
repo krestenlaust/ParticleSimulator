@@ -19,7 +19,7 @@ namespace ConsoleUI.UI
         public int Width = 1, Height = 1;
         public event HoverStateChanged OnHoverStateChanged;
         /// <summary>
-        /// Kaldt når <c>Mouse</c>-klassen ændrer tilstand; når en knap opdatereres (klip, hold, løft).
+        /// Kaldt mens musen er over en kontrol. Brug <c>Mouse</c>-klassen for at tilgå musens tilstand.
         /// </summary>
         public event MouseButtonStateChanged OnMouseButtonStateChanged;
 

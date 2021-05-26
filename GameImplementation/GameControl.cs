@@ -11,6 +11,7 @@ namespace GameImplementation
     public class GameControl : Control
     {
         public const char DOT_REPRESENTATION = '\u26db';
+        private ParticleGroup selectedParticleType;
 
         public GameControl(bool borders)
         {
@@ -18,6 +19,11 @@ namespace GameImplementation
             {
                 InstantiateBorders();
             }
+        }
+
+        public void SelectParticleType<T>() where T : ParticleGroup, new()
+        {
+            selectedParticleType = Physics.GetParticleGroup<T>();
         }
 
         public override void Draw(ScreenSegment segment)
@@ -91,7 +97,10 @@ namespace GameImplementation
             }
             else if (Mouse.MouseDown[1])
             {
-                Physics.Instantiate<Water>(new Vector2(Mouse.x, Mouse.y));
+                if (!(selectedParticleType is null))
+                {
+                    Physics.Instantiate(new Vector2(Mouse.x, Mouse.y), selectedParticleType);
+                }
             }
             else if (Mouse.MouseDown[2])
             {

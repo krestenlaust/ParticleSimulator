@@ -238,14 +238,13 @@ namespace ParticleEngine
         public static void Instantiate<T>(Vector2 position) where T : ParticleGroup, new()
         {
             ParticleGroup group = GetParticleGroup<T>();
-            
-            if (group is null)
-            {
-                group = new T();
-                ParticleGroups.Add(group);
-            }
 
             group.Particles.Add(position);
+        }
+
+        public static void Instantiate(Vector2 position, ParticleGroup particleGroup)
+        {
+            particleGroup.Particles.Add(position);
         }
 
         /// <summary>
@@ -253,11 +252,19 @@ namespace ParticleEngine
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup
+        public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup, new()
         {
-            return (from particleGroup in ParticleGroups
-                    where particleGroup is T
-                    select particleGroup).FirstOrDefault();
+            var group = (from particleGroup in ParticleGroups
+                        where particleGroup is T
+                        select particleGroup).FirstOrDefault();
+
+            if (group is null)
+            {
+                group = new T();
+                ParticleGroups.Add(group);
+            }
+
+            return group;
         }
     }
 }
