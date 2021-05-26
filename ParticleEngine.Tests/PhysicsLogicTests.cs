@@ -24,20 +24,22 @@ namespace ParticleEngine.Tests
 
             // Logic
             Physics.Update();
-            Assert.AreEqual(new Vector2(0, Physics.GRAVITATIONAL_CONSTANT), sandGroup.Particles[0]);
+            Assert.AreEqual(new Vector2(0, 1), sandGroup.Particles[0]);
 
             Physics.Update();
-            Assert.AreEqual(new Vector2(0, Physics.GRAVITATIONAL_CONSTANT * 2), sandGroup.Particles[0]);
+            Assert.AreEqual(new Vector2(0, 2), sandGroup.Particles[0]);
         }
 
         [TestMethod]
-        public void TestSandFallingOnBlock()
+        public void TestSandFallingOnBlocks()
         {
             // Fordi det er en statisk klasse vil ændringer blive gemt gennem tests. Derfor kan der være rester fra en anden test.
             Physics.ParticleGroups.Clear();
 
             // Setup
-            Physics.Instantiate<Block>(new Vector2(0, Physics.GRAVITATIONAL_CONSTANT * 2));
+            Physics.Instantiate<Block>(new Vector2(0, 2));
+            Physics.Instantiate<Block>(new Vector2(1, 2));
+            Physics.Instantiate<Block>(new Vector2(-1, 2));
             Physics.Instantiate<Sand>(new Vector2(0, 0));
 
             ParticleGroup blockGroup = Physics.GetParticleGroup<Block>();
@@ -46,14 +48,14 @@ namespace ParticleEngine.Tests
             // Logic
             Physics.Update();
             // Antag at blokken ikke har rykket sig.
-            Assert.AreEqual(new Vector2(0, Physics.GRAVITATIONAL_CONSTANT * 2), blockGroup.Particles[0]);
+            Assert.AreEqual(new Vector2(0, 2), blockGroup.Particles[0]);
 
             // Antag at sand er flyttet.
-            Assert.AreEqual(new Vector2(0, Physics.GRAVITATIONAL_CONSTANT), sandGroup.Particles[0]);
+            Assert.AreEqual(new Vector2(0, 1), sandGroup.Particles[0]);
 
             Physics.Update();
             // Antag at sand bliver stående, siden blokken er i vejen.
-            Assert.AreEqual(new Vector2(0, Physics.GRAVITATIONAL_CONSTANT), sandGroup.Particles[0]);
+            Assert.AreEqual(new Vector2(0, 1), sandGroup.Particles[0]);
         }
 
         [TestMethod]
@@ -63,14 +65,17 @@ namespace ParticleEngine.Tests
             Physics.ParticleGroups.Clear();
 
             // Water and sand holder of blocks
-            Physics.Instantiate<Block>(new Vector2(0, -1));
-            Physics.Instantiate<Block>(new Vector2(1, 0));
+            Physics.Instantiate<Block>(new Vector2(-1, -1));
+            Physics.Instantiate<Block>(new Vector2(1, -1));
             Physics.Instantiate<Block>(new Vector2(-1, 0));
-            Physics.Instantiate<Block>(new Vector2(1, 1));
+            Physics.Instantiate<Block>(new Vector2(1, 0));
             Physics.Instantiate<Block>(new Vector2(-1, 1));
+            Physics.Instantiate<Block>(new Vector2(0, 1));
+            Physics.Instantiate<Block>(new Vector2(1, 1));
+
 
             // Sand and water particles
-            Vector2 sandStartingPlace = new Vector2(0, 1);
+            Vector2 sandStartingPlace = new Vector2(0, -1);
             Vector2 waterStartingPlace = new Vector2(0, 0);
             Physics.Instantiate<Sand>(sandStartingPlace);
             Physics.Instantiate<Water>(waterStartingPlace);
