@@ -210,8 +210,8 @@ namespace ConsoleUI
         public static void SwitchCusor(int resId)
         {
             IntPtr handle = Marshal.GetHINSTANCE(Assembly.GetEntryAssembly().GetModules()[0]);
-            IntPtr hCursor = LoadImage(handle, "#" + resId, 1, 32, 32, 0);
-            SetCursor(hCursor);
+            IntPtr hCursor = LoadImage(handle, "#" + resId, 2, 32, 32, 0);
+            SetCursor(hCursor);  
         }
     }
 }
