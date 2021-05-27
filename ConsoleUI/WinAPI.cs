@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace ConsoleUI
@@ -194,6 +195,23 @@ namespace ConsoleUI
             IntPtr outHandle = GetStdHandle((int)StdHandle.OutputHandle);
 
             return SetCurrentConsoleFontEx(outHandle, false, ref fontInfo);
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetCursor(IntPtr handle);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern IntPtr LoadImage(IntPtr hinst, string lpszName, uint uType,
+        int cxDesired, int cyDesired, uint fuLoad);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int DestroyIcon(IntPtr hIcon);
+
+        public static void SwitchCusor(int resId)
+        {
+            IntPtr handle = Marshal.GetHINSTANCE(Assembly.GetEntryAssembly().GetModules()[0]);
+            IntPtr hCursor = LoadImage(handle, "#" + resId, 1, 32, 32, 0);
+            SetCursor(hCursor);
         }
     }
 }

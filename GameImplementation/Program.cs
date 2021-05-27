@@ -67,6 +67,18 @@ namespace GameImplementation
                     running = false;
                 }
             });
+            mainMenu.Controls.Add(new ButtonControl
+            {
+                Height = 5,
+                Width = 15,
+                X = UIManager.Width / 2 - 15,
+                Y = UIManager.Height / 5 * 4 + 5,
+                Text = "Cursor test",
+                OnClick = () =>
+                {
+                    //WinAPI.SwitchCusor();
+                }
+            });
 
             // Set up pause scene
             pauseMenu = new Scene();
