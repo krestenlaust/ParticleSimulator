@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace ParticleEngine
@@ -7,11 +8,11 @@ namespace ParticleEngine
     {
         public readonly int Mass;
         public readonly float AngleOfReposeRad;
-        public readonly List<Vector2> Particles;
+        public readonly HashSet<Vector2> Particles;
 
         public ParticleGroup(int mass, float angleOfReposeRad)
         {
-            Particles = new List<Vector2>();
+            Particles = new HashSet<Vector2>();
             Mass = mass;
             AngleOfReposeRad = angleOfReposeRad;
         }

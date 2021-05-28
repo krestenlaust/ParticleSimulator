@@ -4,6 +4,7 @@ using ConsoleUI.UI;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;
+using System.Linq;
 using System.Numerics;
 
 namespace GameImplementation
@@ -27,6 +28,16 @@ namespace GameImplementation
         public void SelectParticleType<T>() where T : ParticleGroup, new()
         {
             selectedParticleType = Physics.GetParticleGroup<T>();
+        }
+
+        public void TryPlaceParticle<T>(Vector2 position) where T : ParticleGroup, new()
+        {
+            if (Physics.IsOccupied(position))
+            {
+                return;
+            }
+
+            Physics.Instantiate<T>(position);
         }
 
         public override void Draw(ScreenSegment segment)
@@ -94,7 +105,7 @@ namespace GameImplementation
             }
 
             // Place 1 particle.
-            if (Mouse.MouseDown[0])
+            if (Mouse.MousePress[0])
             {
                 Physics.Instantiate(new Vector2(Mouse.x, Mouse.y), selectedParticleType);
             }

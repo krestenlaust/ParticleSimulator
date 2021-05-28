@@ -8,6 +8,7 @@ using System;
 using ConsoleUI.UI.Controls;
 using ConsoleUI.UI;
 using ConsoleUI;
+using System.Resources;
 
 namespace GameImplementation
 {
@@ -27,7 +28,7 @@ namespace GameImplementation
         /// <summary>
         /// Kan bl.a. bruges til at opsætte scener.
         /// </summary>
-        static void Start()
+        static void SetupScenes()
         {
             // Set up menu scene
             mainMenu = new Scene();
@@ -76,7 +77,7 @@ namespace GameImplementation
                 Text = "Cursor test",
                 OnClick = () =>
                 {
-                    //WinAPI.SwitchCusor();
+                    //ResourceManager rm = new ResourceManager("GameImplementation.Resources", typeof(Program).Assembly);
                 }
             });
 
@@ -186,7 +187,7 @@ namespace GameImplementation
             // Call console input library.
             Input.Setup(false);
 
-            Start();
+            SetupScenes();
 
             // Continue setting up engine
             // Stopwatch to measure game loop time.

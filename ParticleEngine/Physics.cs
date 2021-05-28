@@ -8,27 +8,76 @@ namespace ParticleEngine
     public static class Physics
     {
         public const float GRAVITATIONAL_CONSTANT = 1;
+        
         public static readonly List<ParticleGroup> ParticleGroups = new List<ParticleGroup>();
-
-        private static readonly Dictionary<Vector2, ParticleGroup> collisionMap = new Dictionary<Vector2, ParticleGroup>();
+        private static readonly Dictionary<Vector2, ParticleGroup> particleMap = new Dictionary<Vector2, ParticleGroup>();
         private static readonly Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)> collisions = 
             new Queue<(Vector2 original, ParticleGroup originalGroup, Vector2 other, ParticleGroup otherGroup)>();
 
         private static Vector2 updraftVector;
         private static readonly Random randomNumber = new Random(42352352);
+        private static bool updateInitialized = false;
+
+        /// <summary>
+        /// Instantiates a particle of type <c>T</c>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="position"></param>
+        public static void Instantiate<T>(Vector2 position) where T : ParticleGroup, new()
+        {
+            ParticleGroup group = GetParticleGroup<T>();
+
+            group.Particles.Add(position);
+        }
+
+        public static void Instantiate(Vector2 position, ParticleGroup particleGroup)
+        {
+            particleGroup.Particles.Add(position);
+        }
+
+        /// <summary>
+        /// Brug IsColliding hvis du kan.
+        /// </summary>
+        /// <param name="checkPosition"></param>
+        /// <returns></returns>
+        public static bool IsOccupied(Vector2 checkPosition) => particleMap.ContainsKey(checkPosition);
+
+        /// <summary>
+        /// Gets a particlegroup of type <c>T</c>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup, new()
+        {
+            var group = (from particleGroup in ParticleGroups
+                         where particleGroup is T
+                         select particleGroup).FirstOrDefault();
+
+            if (group is null)
+            {
+                group = new T();
+                ParticleGroups.Add(group);
+            }
+
+            return group;
+        }
+
+        /// <summary>
+        /// Removes all particles and resets internal state.
+        /// </summary>
+        public static void ResetPhysics()
+        {
+            ParticleGroups.Clear();
+            updateInitialized = false;
+        }
 
         public static void Update()
         {
-            // Draw new collision map.
-            collisionMap.Clear();
-
-            // Generates collection of all particle positions to check collision and handle reactions.
-            foreach (var particleGroup in ParticleGroups)
+            // Draw new collision map if not drawn in previous loop.
+            if (!updateInitialized)
             {
-                foreach (var particle in particleGroup.Particles)
-                {
-                    collisionMap[particle] = particleGroup;
-                }
+                UpdateParticleMap();
+                updateInitialized = true;
             }
 
             // Collection of parameters to call OnCollision, afterwards, using. They have to be executed at once since
@@ -39,7 +88,7 @@ namespace ParticleEngine
             // Iterate all particles to perform physics.
             foreach (var particleGroup in ParticleGroups)
             {
-                for (int i = 0; i < particleGroup.Particles.Count; i++)
+                foreach (Vector2 particle in particleGroup.Particles.ToList())
                 {
                     //Stops blocks from doing physics
                     if (particleGroup is Particles.Block)
@@ -54,7 +103,7 @@ namespace ParticleEngine
                     resultingForce += new Vector2(0, GRAVITATIONAL_CONSTANT);
 
                     //Removes it again if it shouldn't have been applied
-                    if (IsColliding(particleGroup.Particles[i] + resultingForce, particleGroup.Particles[i], particleGroup))
+                    if (IsColliding(particle + resultingForce, particle, particleGroup))
                     {
                         resultingForce -= new Vector2(0, GRAVITATIONAL_CONSTANT);
                     }
@@ -66,12 +115,11 @@ namespace ParticleEngine
                     //resultingForce += CheckRepose(i, particleGroup);
 
                     // Sedimentary force being calculated which also checks repose
-                    resultingForce += SedimentaryForce(i, particleGroup);
+                    resultingForce += SedimentaryForce(particle, particleGroup);
 
                     //Applies the resulting force
-                    particleGroup.Particles[i] += resultingForce;
-
-
+                    particleGroup.Particles.Remove(particle);
+                    particleGroup.Particles.Add(particle + resultingForce);
                 }
             }
 
@@ -89,9 +137,12 @@ namespace ParticleEngine
             {
                 group.OnUpdate(ParticleGroups);
             }
+
+            // redraw particlemap after updating particles.
+            UpdateParticleMap();
         }
 
-        private static Vector2 SedimentaryForce(int i, ParticleGroup particleGroup)
+        private static Vector2 SedimentaryForce(Vector2 particle, ParticleGroup particleGroup)
         {
             int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); //Calculates the length blocks can move to the side when going down
             
@@ -118,19 +169,19 @@ namespace ParticleEngine
                 Vector2 checkVector = new Vector2(dir * n, 1);
 
                 // Checks that this particle is on a particle and can actually move other places than straight down
-                if (!IsColliding(particleGroup.Particles[i] + new Vector2(0, 1), particleGroup.Particles[i], particleGroup))
+                if (!IsColliding(particle + new Vector2(0, 1), particle, particleGroup))
                 {
                     break;
                 }
 
                 // Checks if the spot have another particle ontop of it that blocks the particle and stops checking the direction if it does, if it checks directly underneath then it skips
-                if (IsColliding(new Vector2(particleGroup.Particles[i].X + checkVector.X, particleGroup.Particles[i].Y), particleGroup.Particles[i], particleGroup) && n != 0)
+                if (IsColliding(new Vector2(particle.X + checkVector.X, particle.Y), particle, particleGroup) && n != 0)
                 {
                     break;
                 }
 
                 // Checks if the new position have a particle
-                if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup))
+                if (!IsColliding(particle + checkVector, particle, particleGroup))
                 {
                     // Moves particle to empty space since its empty
                     return checkVector;
@@ -141,7 +192,7 @@ namespace ParticleEngine
                 foreach (ParticleGroup checkParticleGroup in ParticleGroups)
                 {
                     //If this particular particle group does not have a particle placed where it is checking
-                    if (!checkParticleGroup.Particles.Contains(particleGroup.Particles[i] + checkVector))
+                    if (!checkParticleGroup.Particles.Contains(particle + checkVector))
                     {
                         continue;
                     }
@@ -150,7 +201,7 @@ namespace ParticleEngine
                     if (checkParticleGroup.Mass < particleGroup.Mass && checkParticleGroup.Mass != 0)
                     {
                         // Swaps the particles
-                        SwapParticles(particleGroup.Particles[i], particleGroup.Particles[i] + checkVector, particleGroup, checkParticleGroup);
+                        //SwapParticles(particle, particle + checkVector, particleGroup, checkParticleGroup);
                     }
                 }
                 continue;
@@ -159,25 +210,26 @@ namespace ParticleEngine
             //Switches the direction
             dir *= -1;
 
+            // skal fikses så der ikke er så meget kodedublikation. Kan laves til en metode.
             for (int n = 0; n < maxLengthAway * 2; n++) // Checking one spot further out each time for the first direction
             {
                 // Two vectors so it can check both in one loop instead of going through a whole loop once more
                 Vector2 checkVector = new Vector2(dir * n, 1);
 
                 // Checks that this particle is on a particle and can actually move other places than straight down
-                if (!IsColliding(particleGroup.Particles[i] + new Vector2(0, 1), particleGroup.Particles[i], particleGroup))
+                if (!IsColliding(particle + new Vector2(0, 1), particle, particleGroup))
                 {
                     break;
                 }
 
                 // Checks if the spot have another particle ontop of it that blocks the particle and stops checking the direction if it does, if it checks directly underneath then it skips
-                if (IsColliding(new Vector2(particleGroup.Particles[i].X + checkVector.X, particleGroup.Particles[i].Y), particleGroup.Particles[i], particleGroup) && n != 0)
+                if (IsColliding(new Vector2(particle.X + checkVector.X, particle.Y), particle, particleGroup) && n != 0)
                 {
                     break;
                 }
 
                 // Checks if the new position have a particle
-                if (!IsColliding(particleGroup.Particles[i] + checkVector, particleGroup.Particles[i], particleGroup))
+                if (!IsColliding(particle + checkVector, particle, particleGroup))
                 {
                     // Moves particle to empty space since its empty
                     return checkVector;
@@ -188,7 +240,7 @@ namespace ParticleEngine
                 foreach (ParticleGroup checkParticleGroup in ParticleGroups)
                 {
                     //If this particular particle group does not have a particle placed where it is checking
-                    if (!checkParticleGroup.Particles.Contains(particleGroup.Particles[i] + checkVector))
+                    if (!checkParticleGroup.Particles.Contains(particle + checkVector))
                     {
                         continue;
                     }
@@ -197,7 +249,7 @@ namespace ParticleEngine
                     if (checkParticleGroup.Mass < particleGroup.Mass && checkParticleGroup.Mass != 0)
                     {
                         // Swaps the particles
-                        SwapParticles(particleGroup.Particles[i], particleGroup.Particles[i] + checkVector, particleGroup, checkParticleGroup);
+                        //SwapParticles(particle, particle + checkVector, particleGroup, checkParticleGroup);
                     }
                 }
                 continue;
@@ -215,7 +267,7 @@ namespace ParticleEngine
         /// <returns></returns>
         private static bool IsColliding(Vector2 checkPosition, Vector2 originalParticlePosition, ParticleGroup originalParticleGroup)
         {
-            if (collisionMap.TryGetValue(checkPosition, out ParticleGroup otherGroup))
+            if (particleMap.TryGetValue(checkPosition, out ParticleGroup otherGroup))
             {
                 // Queue if a collision has occured.
                 collisions.Enqueue((originalParticlePosition, originalParticleGroup, checkPosition, otherGroup));
@@ -226,12 +278,19 @@ namespace ParticleEngine
             return false;
         }
 
-        /// <summary>
-        /// Brug IsColliding hvis du kan.
-        /// </summary>
-        /// <param name="checkPosition"></param>
-        /// <returns></returns>
-        public static bool IsOccupied(Vector2 checkPosition) => collisionMap.ContainsKey(checkPosition);
+        private static void UpdateParticleMap()
+        {
+            particleMap.Clear();
+
+            // Generates collection of all particle positions to check collision and handle reactions.
+            foreach (var particleGroup in ParticleGroups)
+            {
+                foreach (var particle in particleGroup.Particles)
+                {
+                    particleMap[particle] = particleGroup;
+                }
+            }
+        }
 
         /// <summary>
         /// Swaps two particles.
@@ -240,49 +299,12 @@ namespace ParticleEngine
         /// <param name="particle2"></param>
         /// <param name="group1"></param>
         /// <param name="group2"></param>
-        public static void SwapParticles(Vector2 particle1, Vector2 particle2, ParticleGroup group1, ParticleGroup group2)
+        private static void SwapParticles(Vector2 particle1, Vector2 particle2, ParticleGroup group1, ParticleGroup group2)
         {
             group1.Particles.Remove(particle1);
             group2.Particles.Remove(particle2);
             group1.Particles.Add(particle2);
             group2.Particles.Add(particle1);
-        }
-
-        /// <summary>
-        /// Instantiates a particle of type <c>T</c>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="position"></param>
-        public static void Instantiate<T>(Vector2 position) where T : ParticleGroup, new()
-        {
-            ParticleGroup group = GetParticleGroup<T>();
-
-            group.Particles.Add(position);
-        }
-
-        public static void Instantiate(Vector2 position, ParticleGroup particleGroup)
-        {
-            particleGroup.Particles.Add(position);
-        }
-
-        /// <summary>
-        /// Gets a particlegroup of type <c>T</c>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static ParticleGroup GetParticleGroup<T>() where T : ParticleGroup, new()
-        {
-            var group = (from particleGroup in ParticleGroups
-                        where particleGroup is T
-                        select particleGroup).FirstOrDefault();
-
-            if (group is null)
-            {
-                group = new T();
-                ParticleGroups.Add(group);
-            }
-
-            return group;
         }
     }
 }
