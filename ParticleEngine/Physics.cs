@@ -115,7 +115,16 @@ namespace ParticleEngine
                     //resultingForce += CheckRepose(i, particleGroup);
 
                     // Sedimentary force being calculated which also checks repose
-                    resultingForce += SedimentaryForce(particle, particleGroup);
+                    (Vector2 vec1, Vector2 vec2, ParticleGroup vec2Group) = SedimentaryForce(particle, particleGroup);
+                    if (vec2 == Vector2.Zero)
+                    {
+                        resultingForce += vec1;
+                    }
+                    else
+                    {
+                        SwapParticles(vec1, vec1 + vec2, particleGroup, vec2Group);
+                        continue;
+                    }
 
                     //Applies the resulting force
                     particleGroup.Particles.Remove(particle);
@@ -142,16 +151,11 @@ namespace ParticleEngine
             UpdateParticleMap();
         }
 
-        private static Vector2 SedimentaryForce(Vector2 particle, ParticleGroup particleGroup)
+        private static (Vector2, Vector2, ParticleGroup) SedimentaryForce(Vector2 particle, ParticleGroup particleGroup)
         {
-            int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); //Calculates the length blocks can move to the side when going down
+            //Calculates the length blocks can move to the side when going down
+            int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad)); 
             
-            // Midlertidig
-            if (!(particleGroup is Particles.Block))
-            {
-
-            }
-
             int dir;
             // Chooses the direction it should check first
             if (randomNumber.Next(2) == 1)
@@ -163,19 +167,23 @@ namespace ParticleEngine
                 dir = -1;
             }
 
-            for (int n = 0; n < maxLengthAway * 2; n++) // Checking one spot further out each time for the first direction
+            return SedimentaryCalculation(maxLengthAway, dir, particle, particleGroup);
+        }
+
+        private static (Vector2, Vector2, ParticleGroup) SedimentaryCalculation(int maxLengthAway, int dir, Vector2 particle, ParticleGroup particleGroup)
+        {
+            for (int n = 1; n < maxLengthAway * 2; n++) // Checking one spot further out each time for the first direction
             {
-                // Two vectors so it can check both in one loop instead of going through a whole loop once more
                 Vector2 checkVector = new Vector2(dir * n, 1);
 
-                // Checks that this particle is on a particle and can actually move other places than straight down
+                // If this particle doesn't have another one under it, then it it will just be moved by gravity and it breaks so it doesn't do all the other checks
                 if (!IsColliding(particle + new Vector2(0, 1), particle, particleGroup))
                 {
                     break;
                 }
 
-                // Checks if the spot have another particle ontop of it that blocks the particle and stops checking the direction if it does, if it checks directly underneath then it skips
-                if (IsColliding(new Vector2(particle.X + checkVector.X, particle.Y), particle, particleGroup) && n != 0)
+                // Makes sure that there isn't a particle above where it wants to go
+                if (IsColliding(new Vector2(particle.X + checkVector.X, particle.Y), particle, particleGroup) && n != 1)
                 {
                     break;
                 }
@@ -184,78 +192,27 @@ namespace ParticleEngine
                 if (!IsColliding(particle + checkVector, particle, particleGroup))
                 {
                     // Moves particle to empty space since its empty
-                    return checkVector;
-                    
+                    return (particle, Vector2.Zero, null);
                 }
 
-                // Checks if the particle is lighter than the one that checks
-                foreach (ParticleGroup checkParticleGroup in ParticleGroups)
-                {
-                    //If this particular particle group does not have a particle placed where it is checking
-                    if (!checkParticleGroup.Particles.Contains(particle + checkVector))
-                    {
-                        continue;
-                    }
+                // Gets the particle group of checkvector particel
+                particleMap.TryGetValue(particle + checkVector, out ParticleGroup checkParticleGroup);
 
-                    // If this type of particle is lighter
-                    if (checkParticleGroup.Mass < particleGroup.Mass && checkParticleGroup.Mass != 0)
-                    {
-                        // Swaps the particles
-                        //SwapParticles(particle, particle + checkVector, particleGroup, checkParticleGroup);
-                    }
+                //If this particular particle group does not have a particle placed where it is checking
+                if (!checkParticleGroup.Particles.Contains(particle + checkVector))
+                {
+                    continue;
+                }
+
+                // If this type of particle is lighter
+                if (checkParticleGroup.Mass < particleGroup.Mass && checkParticleGroup.Mass != 0)
+                {
+                    // Swaps the particles
+                    return (particle, checkVector, checkParticleGroup);
                 }
                 continue;
             }
-            
-            //Switches the direction
-            dir *= -1;
-
-            // skal fikses så der ikke er så meget kodedublikation. Kan laves til en metode.
-            for (int n = 0; n < maxLengthAway * 2; n++) // Checking one spot further out each time for the first direction
-            {
-                // Two vectors so it can check both in one loop instead of going through a whole loop once more
-                Vector2 checkVector = new Vector2(dir * n, 1);
-
-                // Checks that this particle is on a particle and can actually move other places than straight down
-                if (!IsColliding(particle + new Vector2(0, 1), particle, particleGroup))
-                {
-                    break;
-                }
-
-                // Checks if the spot have another particle ontop of it that blocks the particle and stops checking the direction if it does, if it checks directly underneath then it skips
-                if (IsColliding(new Vector2(particle.X + checkVector.X, particle.Y), particle, particleGroup) && n != 0)
-                {
-                    break;
-                }
-
-                // Checks if the new position have a particle
-                if (!IsColliding(particle + checkVector, particle, particleGroup))
-                {
-                    // Moves particle to empty space since its empty
-                    return checkVector;
-
-                }
-
-                // Checks if the particle is lighter than the one that checks
-                foreach (ParticleGroup checkParticleGroup in ParticleGroups)
-                {
-                    //If this particular particle group does not have a particle placed where it is checking
-                    if (!checkParticleGroup.Particles.Contains(particle + checkVector))
-                    {
-                        continue;
-                    }
-
-                    // If this type of particle is lighter
-                    if (checkParticleGroup.Mass < particleGroup.Mass && checkParticleGroup.Mass != 0)
-                    {
-                        // Swaps the particles
-                        //SwapParticles(particle, particle + checkVector, particleGroup, checkParticleGroup);
-                    }
-                }
-                continue;
-            }
-            // Returns nothing if there is nothing to move
-            return Vector2.Zero;
+            return (Vector2.Zero, Vector2.Zero, null);
         }
 
         /// <summary>
