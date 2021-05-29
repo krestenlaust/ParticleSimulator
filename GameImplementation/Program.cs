@@ -77,7 +77,7 @@ namespace GameImplementation
                 Text = "Cursor test",
                 OnClick = () =>
                 {
-                    //ResourceManager rm = new ResourceManager("GameImplementation.Resources", typeof(Program).Assembly);
+                    WinAPI.SwitchCusor((int)WinAPI.IDC_STANDARD_CURSORS.IDC_HELP);
                 }
             });
 

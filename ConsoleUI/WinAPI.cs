@@ -200,18 +200,33 @@ namespace ConsoleUI
         [DllImport("user32.dll")]
         public static extern IntPtr SetCursor(IntPtr handle);
 
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern IntPtr LoadImage(IntPtr hinst, string lpszName, uint uType,
-        int cxDesired, int cyDesired, uint fuLoad);
+        [DllImport("user32.dll")]
+        static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int DestroyIcon(IntPtr hIcon);
-
-        public static void SwitchCusor(int resId)
+        public enum IDC_STANDARD_CURSORS
         {
-            IntPtr handle = Marshal.GetHINSTANCE(Assembly.GetEntryAssembly().GetModules()[0]);
-            IntPtr hCursor = LoadImage(handle, "#" + resId, 2, 32, 32, 0);
-            SetCursor(hCursor);  
+            IDC_ARROW = 32512,
+            IDC_IBEAM = 32513,
+            IDC_WAIT = 32514,
+            IDC_CROSS = 32515,
+            IDC_UPARROW = 32516,
+            IDC_SIZE = 32640,
+            IDC_ICON = 32641,
+            IDC_SIZENWSE = 32642,
+            IDC_SIZENESW = 32643,
+            IDC_SIZEWE = 32644,
+            IDC_SIZENS = 32645,
+            IDC_SIZEALL = 32646,
+            IDC_NO = 32648,
+            IDC_HAND = 32649,
+            IDC_APPSTARTING = 32650,
+            IDC_HELP = 32651
+        }
+
+        public static void SwitchCusor(int cursor)
+        {
+            IntPtr handle = LoadCursor(IntPtr.Zero, cursor);
+            SetCursor(handle);  
         }
     }
 }
