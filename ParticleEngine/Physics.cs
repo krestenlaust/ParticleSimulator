@@ -130,12 +130,6 @@ namespace ParticleEngine
                 otherGroup.OnCollide(particle, group, otherParticle);
             }
 
-            List<ParticleGroup> groups = ParticleGroups.ToList();
-            foreach (var group in groups)
-            {
-                group.OnUpdate(ParticleGroups);
-            }
-
             // redraw particlemap after updating particles.
             UpdateParticleMap();
         }
@@ -221,7 +215,12 @@ namespace ParticleEngine
             if (particleMap.TryGetValue(checkPosition, out ParticleGroup otherGroup))
             {
                 // Queue if a collision has occured.
-                collisions.Enqueue((collisionParameters.originalParticlePosition, collisionParameters.originalParticleGroup, checkPosition, otherGroup));
+                collisions.Enqueue((
+                    collisionParameters.originalParticlePosition, 
+                    collisionParameters.originalParticleGroup, 
+                    checkPosition, 
+                    otherGroup
+                    ));
             }
         }
 

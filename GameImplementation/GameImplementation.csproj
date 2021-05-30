@@ -56,9 +56,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleUI\ConsoleUI.csproj">
+    <ProjectReference Include="..\ConsoleUI\ConsoleInteraction.csproj">
       <Project>{cdef7f71-0e57-4597-b61e-9097a5cb8888}</Project>
-      <Name>ConsoleUI</Name>
+      <Name>ConsoleInteraction</Name>
     </ProjectReference>
     <ProjectReference Include="..\ParticleEngine\ParticleEngine.csproj">
       <Project>{9e5900f9-ecd8-4cd1-8a48-169e6b580905}</Project>

@@ -20,10 +20,5 @@ namespace ParticleEngine.Particles
             otherParticleGroup.Particles.Remove(otherParticle);
             Particles.Add(otherParticle);
         }
-
-        public override void OnUpdate(List<ParticleGroup> particleGroups)
-        {
-
-        }
     }
 }
