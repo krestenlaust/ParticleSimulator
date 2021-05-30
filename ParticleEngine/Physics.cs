@@ -89,13 +89,7 @@ namespace ParticleEngine
                 List<Vector2> particleList = particleGroup.Particles.ToList();
                 foreach (Vector2 particle in particleList)
                 {
-                    // Stops blocks from doing physics
-                    /*if (particleGroup is Particles.Block)
-                    {
-                        continue;
-                    }*/
-
-                    ////The vector that will take all the physics in and move the particle each frame the resulting force at what ever direction it should go
+                    // The vector that will take all the physics in and move the particle each frame the resulting force at what ever direction it should go
                     Vector2 resultingForce = new Vector2();
 
                     // Sedimentary force being calculated which also checks repose
@@ -117,9 +111,13 @@ namespace ParticleEngine
                         }
                     }
 
+                    Vector2 newParticle = particle + resultingForce;
+
                     // Moves the particle the amount of the resulting force
                     particleGroup.Particles.Remove(particle);
-                    particleGroup.Particles.Add(particle + resultingForce);
+                    particleGroup.Particles.Add(newParticle);
+                    particleMap.Remove(particle);
+                    particleMap.Add(newParticle, particleGroup);
                 }
             }
 
@@ -154,7 +152,7 @@ namespace ParticleEngine
             for (int j = 0; j < 2; j++)
             {
                 direction = -direction;
-                
+
                 // Checking one spot further out each time for both directions alternately
                 for (int i = 0; i < maxLengthAway * 2; i++)
                 {
@@ -175,27 +173,18 @@ namespace ParticleEngine
 
                     RegisterCollision(particle + checkVector, (particle, particleGroup));
 
-                    // If this particle doesn't have another one under it, then it it will just be moved by gravity and it breaks so it doesn't do all the other checks
-                    /*if (!particleMap.ContainsKey(particle + new Vector2(0, 1)))
-                    {
-                        break;
-                    }*/
-
                     // Wheter it have found the particle above the checkvector
                     bool found = particleMap.TryGetValue(particle + new Vector2(checkVector.X, 0), out ParticleGroup sideCheckGroup);
-                    
-                    // Makes sure that there isn't a particle above where it wants to go that is same or higher density, and ignores if first iteration
-                    // If there is a particle above which is denser or block
-                    if (found && sideCheckGroup.Density > particleGroup.Density && i != 0/* || sideCheckGroup.Density == 0*/) // Fiks i morgen
-                    {
-                        // Break so it stops checking this direction
-                        break;
-                    }
 
-                    // If there is a block with lighter density, then swap them
-                    if (found && sideCheckGroup.Density < particleGroup.Density && i != 0)
+                    // Makes sure that there isn't a particle above where it wants to go that is same or higher density, and ignores if first iteration
+                    if (found)
                     {
-                        return (particle, particle + new Vector2(checkVector.X, 0), sideCheckGroup);
+                        // If there is a particle above checkposition which is denser or a block
+                        if (sideCheckGroup.Density > particleGroup.Density && i != 0 || sideCheckGroup.Density == 0)
+                        {
+                            // Break so it stops checking this direction
+                            break;
+                        }
                     }
 
                     // Gets the particle group of the checkVector particel that we need to swap out with the primary particle
@@ -213,14 +202,7 @@ namespace ParticleEngine
                         // Swaps the particles by returning our particle and the particle and group of the one to swap with
                         return (particle, particle + checkVector, checkParticleGroup);
                     }
-                    //break;
                 }
-                
-                /*
-                if (maxLengthAway > 5 && !particleMap.ContainsKey(particle + new Vector2(direction, 0)))
-                {
-                    return (particle + new Vector2(direction, 0), null, null);
-                }*/
             }
 
             //Returns empty so nothing gets moved

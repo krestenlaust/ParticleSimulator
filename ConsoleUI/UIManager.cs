@@ -78,7 +78,7 @@ namespace ConsoleUI
         private static void HandleEvents(Control control)
         {
             bool cursorInside = control.IsPointInside(Mouse.x, Mouse.y);
-            
+
             // Sætter newState til ingen-værdi.
             Control.HoverState? newState = null;
 

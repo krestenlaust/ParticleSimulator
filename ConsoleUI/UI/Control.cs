@@ -1,6 +1,4 @@
-﻿using static ConsoleUI.WinAPI;
-
-namespace ConsoleUI.UI
+﻿namespace ConsoleUI.UI
 {
     public abstract class Control
     {
