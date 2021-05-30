@@ -180,6 +180,20 @@ namespace GameImplementation
                 X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
                 Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
             });
+            buttonCount++;
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Red), new PixelColor(ConsoleColor.Yellow), pressedColor)
+            {
+                OnClick = () => 
+                {
+                    Physics.ResetPhysics();
+                    gameControl.InstantiateBorders();
+                },
+                Text = "Reset",
+                Width = ButtonWidth,
+                Height = ButtonHeight,
+                X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
+                Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
+            });
 
             UIManager.ChangeScene(mainMenu);
         }

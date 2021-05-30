@@ -126,7 +126,7 @@ namespace GameImplementation
             base.UpdateButtonState();
         }
 
-        private void InstantiateBorders()
+        public void InstantiateBorders()
         {
             for (int n = 0; n < Width; n++)
             {
