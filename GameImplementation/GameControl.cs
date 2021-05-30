@@ -11,7 +11,11 @@ namespace GameImplementation
 {
     public class GameControl : Control
     {
-        public const char DOT_REPRESENTATION = '\u26db';
+
+        // U+2588 - Full block
+        // For some reason the hexadecimal value 153 must be added to the unicode hex value to get the correct character
+        // This probably has something to do with the codepage being weird ¯\_(ツ)_/¯
+        public const char DOT_REPRESENTATION = '\u26db'; // Full block + hex 153
         private ParticleGroup selectedParticleType;
 
         public GameControl(bool borders, int width, int height) : base(width, height)
@@ -105,7 +109,7 @@ namespace GameImplementation
             }
 
             // Place 1 particle.
-            if (Mouse.MousePress[0])
+            if (Mouse.MouseDown[0])
             {
                 Physics.Instantiate(new Vector2(Mouse.x, Mouse.y), selectedParticleType);
             }

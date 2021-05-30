@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Numerics;
 
 namespace ParticleEngine.Particles
@@ -9,7 +7,7 @@ namespace ParticleEngine.Particles
     {
         public Virus() : base(1, 1)
         {
-            
+
         }
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)

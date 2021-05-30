@@ -1,7 +1,6 @@
-﻿using ConsoleUI;
+﻿using ConsoleUI.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using ConsoleUI.UI;
 
 namespace ConsoleUI.Tests
 {

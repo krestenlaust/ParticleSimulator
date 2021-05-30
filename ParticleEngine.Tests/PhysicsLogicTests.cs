@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Numerics;
 using ParticleEngine.Particles;
 using System.Linq;
+using System.Numerics;
 
 namespace ParticleEngine.Tests
 {
@@ -86,7 +85,7 @@ namespace ParticleEngine.Tests
 
             // Logic
             Physics.Update();
-            
+
             // Antag at sand og vand er byttet.
             // Test om sandet er hvor vandet startede:
             Assert.AreEqual(waterStartingPlace, sandGroup.Particles.First());

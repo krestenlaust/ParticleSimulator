@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="ScreenSegmentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinAPITests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

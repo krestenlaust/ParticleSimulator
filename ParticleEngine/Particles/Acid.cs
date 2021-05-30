@@ -9,7 +9,7 @@ namespace ParticleEngine.Particles
         private static Random randomNumber = new Random(42352351);
 
         public Acid() : base(
-            1, 
+            1,
             0 * 34f / 180f * (float)Math.PI)
         {
 
@@ -17,6 +17,7 @@ namespace ParticleEngine.Particles
 
         public override void OnCollide(Vector2 otherParticle, ParticleGroup otherParticleGroup, Vector2 particle)
         {
+            /*
             if (otherParticleGroup is Block || otherParticleGroup is Acid)
             {
                 Queue<(Vector2, Vector2)> flytteDimser = new Queue<(Vector2, Vector2)>();
@@ -47,7 +48,7 @@ namespace ParticleEngine.Particles
                 }
 
                 return;
-            }
+            }*/
 
             otherParticleGroup.Particles.Remove(otherParticle);
             Particles.Remove(particle);

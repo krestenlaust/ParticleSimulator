@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using static ConsoleUI.WinAPI;
 
 namespace ConsoleUI.UI
 {
@@ -13,10 +11,24 @@ namespace ConsoleUI.UI
             Stay,
             Exit
         }
-        
+
         public int Zindex;
         public int X, Y;
         public int Width, Height;
+        protected IDC_STANDARD_CURSORS Cursor
+        {
+            get
+            {
+                return cursor;
+            }
+            set
+            {
+                updatedCursor = true;
+                cursor = value;
+            }
+        }
+        internal bool updatedCursor;
+        internal IDC_STANDARD_CURSORS cursor = IDC_STANDARD_CURSORS.IDC_NO;
         public event HoverStateChanged OnHoverStateChanged;
         /// <summary>
         /// Kaldt mens musen er over en kontrol. Brug <c>Mouse</c>-klassen for at tilgå musens tilstand.

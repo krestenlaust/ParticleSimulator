@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ConsoleInput;
+﻿using ConsoleInput;
 using ConsoleUI.UI;
+using System;
+using System.Linq;
 
 namespace ConsoleUI
 {
@@ -19,7 +18,7 @@ namespace ConsoleUI
             Height = Math.Min(height, Console.LargestWindowHeight - 1);
 
             buffer = new WinAPI.CharInfo[Width * Height];
-            
+
             Console.WindowWidth = Width;
             Console.WindowHeight = Height + 1;
             Console.BufferWidth = Width;
@@ -73,18 +72,20 @@ namespace ConsoleUI
         }
 
         /// <summary>
-        /// Håndtér klik og hover events for et givent ui-element.
+        /// Håndtér klik og hover events for et givent ui-element, bl.a. ved at ændre.
         /// </summary>
         /// <param name="control"></param>
         private static void HandleEvents(Control control)
         {
             bool cursorInside = control.IsPointInside(Mouse.x, Mouse.y);
+            bool updateCursorIcon = false;
 
             switch (control.InternalHoverState)
             {
                 case Control.HoverState.Enter:
                     if (cursorInside)
                     {
+                        updateCursorIcon = true;
                         control.UpdateHoverState(Control.HoverState.Stay);
                     }
                     else
@@ -103,11 +104,18 @@ namespace ConsoleUI
                     }
                     break;
                 case Control.HoverState.Exit when !cursorInside:
+                    updateCursorIcon = true;
                     control.UpdateHoverState(Control.HoverState.None);
                     break;
                 case Control.HoverState.None when cursorInside:
                     control.UpdateHoverState(Control.HoverState.Enter);
                     break;
+            }
+
+            if (updateCursorIcon || control.updatedCursor)
+            {
+                //WinAPI.SwitchCusor((int)control.cursor);
+                control.updatedCursor = false;
             }
 
             if (!cursorInside)

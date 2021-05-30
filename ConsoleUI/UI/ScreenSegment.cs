@@ -53,7 +53,7 @@ namespace ConsoleUI.UI
                 }
 
                 int calculatedIndex = CalculateIndex(x, y);
-                
+
                 // Hvis det faktiske indeks er udenfor. Dette sker fx. når et element er ude i siden.
                 if (calculatedIndex < 0 || calculatedIndex >= internalArray.Length)
                 {

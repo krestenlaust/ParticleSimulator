@@ -1,14 +1,12 @@
-﻿using System.Numerics;
-using System.Diagnostics;
-using System.Threading;
-using ConsoleInput;
+﻿using ConsoleInput;
+using ConsoleUI;
+using ConsoleUI.UI;
+using ConsoleUI.UI.Controls;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;
-using ConsoleUI.UI.Controls;
-using ConsoleUI.UI;
-using ConsoleUI;
-using System.Resources;
+using System.Diagnostics;
+using System.Threading;
 
 namespace GameImplementation
 {
@@ -18,6 +16,7 @@ namespace GameImplementation
         const int ControlHorizontalMargin = 2;
         const int ButtonVerticalMargin = 2;
         const int ButtonWidth = 10;
+        const int ButtonHeight = 3;
         static Scene mainMenu;
         static Scene gameScene;
         static Scene pauseMenu;
@@ -77,7 +76,7 @@ namespace GameImplementation
                 Text = "Cursor test",
                 OnClick = () =>
                 {
-                    WinAPI.SwitchCusor((int)WinAPI.IDC_STANDARD_CURSORS.IDC_HELP);
+                    WinAPI.SwitchCusor((int)WinAPI.IDC_STANDARD_CURSORS.IDC_ARROW);
                 }
             });
 
@@ -131,18 +130,20 @@ namespace GameImplementation
             gameScene = new Scene();
             gameControl = new GameControl(true, UIManager.Width, UIManager.Height - 10);
             gameScene.Controls.Add(gameControl);
-            gameScene.Controls.Add(new LabelControl("Use left mouse button to place 1 particle, and right to place many.") { 
+            gameScene.Controls.Add(new LabelControl("Use left mouse button to place 1 particle, and right to place many.")
+            {
                 X = ControlHorizontalMargin,
                 Y = gameControl.Height
             });
             PixelColor pressedColor = new PixelColor(ConsoleColor.Gray);
             int buttonCount = 0;
             // - Sand
-            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Yellow), new PixelColor(ConsoleColor.DarkYellow), pressedColor) {
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Yellow), new PixelColor(ConsoleColor.DarkYellow), pressedColor)
+            {
                 OnClick = () => gameControl.SelectParticleType<Sand>(),
                 Text = "Sand",
-                Width = 10,
-                Height = 3,
+                Width = ButtonWidth,
+                Height = ButtonHeight,
                 X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
                 Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
             });
@@ -152,8 +153,8 @@ namespace GameImplementation
             {
                 OnClick = () => gameControl.SelectParticleType<Water>(),
                 Text = "Water",
-                Width = 10,
-                Height = 3,
+                Width = ButtonWidth,
+                Height = ButtonHeight,
                 X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
                 Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
             });
@@ -163,8 +164,30 @@ namespace GameImplementation
             {
                 OnClick = () => gameControl.SelectParticleType<Block>(),
                 Text = "Block",
-                Width = 10,
-                Height = 3,
+                Width = ButtonWidth,
+                Height = ButtonHeight,
+                X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
+                Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
+            });
+            // - Acid
+            buttonCount++;
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Green), new PixelColor(ConsoleColor.DarkGreen), pressedColor)
+            {
+                OnClick = () => gameControl.SelectParticleType<Acid>(),
+                Text = "Acid",
+                Width = ButtonWidth,
+                Height = ButtonHeight,
+                X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
+                Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
+            });
+            // - Virus
+            buttonCount++;
+            gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Magenta), new PixelColor(ConsoleColor.DarkMagenta), pressedColor)
+            {
+                OnClick = () => gameControl.SelectParticleType<Virus>(),
+                Text = "Virus",
+                Width = ButtonWidth,
+                Height = ButtonHeight,
                 X = ControlHorizontalMargin + ControlHorizontalMargin * buttonCount * 2 + ButtonWidth * buttonCount,
                 Y = gameControl.Y + gameControl.Height + ButtonVerticalMargin
             });
