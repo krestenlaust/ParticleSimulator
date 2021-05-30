@@ -12,7 +12,9 @@ namespace ConsoleUI.Tests
         [TestMethod]
         public void TestGetStdHandle()
         {
-            Assert.IsNotNull(WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle));
+            const int OutputHandle = (int)WinAPI.StdHandle.OutputHandle; // constant indicating StdOut handle
+            IntPtr handle = WinAPI.GetStdHandle(OutputHandle); // Try to get the handle
+            Assert.IsNotNull(handle); // Make sure the handle returned is not null
         }
     }
 }
