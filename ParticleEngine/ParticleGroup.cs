@@ -7,7 +7,7 @@ namespace ParticleEngine
     {
         public readonly float Density;
         /// <summary>
-        /// Den vinkel en bloktype tjekker, om den kan rykke hen ved. I radianer.
+        /// The angle of repose that determines how much to the side particles can slide when ontop of other particles. Measured in radians.
         /// </summary>
         public readonly float ReposeAngle;
         public readonly HashSet<Vector2> Particles;
