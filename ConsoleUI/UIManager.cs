@@ -78,41 +78,35 @@ namespace ConsoleUI
         private static void HandleEvents(Control control)
         {
             bool cursorInside = control.IsPointInside(Mouse.x, Mouse.y);
+            
+            // Sætter newState til ingen-værdi.
+            Control.HoverState? newState = null;
 
             switch (control.InternalHoverState)
             {
                 case Control.HoverState.Enter:
-                    if (cursorInside)
-                    {
-                        control.UpdateHoverState(Control.HoverState.Stay);
-                    }
-                    else
-                    {
-                        control.UpdateHoverState(Control.HoverState.Exit);
-                    }
+                    newState = cursorInside ? Control.HoverState.Stay : Control.HoverState.Exit;
                     break;
                 case Control.HoverState.Stay:
-                    if (cursorInside)
-                    {
-                        control.UpdateHoverState(Control.HoverState.Stay);
-                    }
-                    else
-                    {
-                        control.UpdateHoverState(Control.HoverState.Exit);
-                    }
+                    newState = cursorInside ? Control.HoverState.Stay : Control.HoverState.Exit;
                     break;
                 case Control.HoverState.Exit when !cursorInside:
-                    control.UpdateHoverState(Control.HoverState.None);
+                    newState = Control.HoverState.None;
                     break;
                 case Control.HoverState.None when cursorInside:
-                    control.UpdateHoverState(Control.HoverState.Enter);
+                    newState = Control.HoverState.Enter;
                     break;
             }
 
-            if (!cursorInside)
+            // Notificerer kontrollen om musens tilstand, hvis newState er blevet tildelt en værdi.
+            if (newState.HasValue)
             {
-                return;
+                control.UpdateHoverState(newState.Value);
             }
+
+            // Hvis musen ikke er indenfor kontrollens rammer, er det ikke relevant at tjekke museknapperne.
+            if (!cursorInside)
+                return;
 
             control.UpdateButtonState();
         }

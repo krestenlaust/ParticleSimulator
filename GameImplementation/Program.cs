@@ -6,6 +6,7 @@ using ParticleEngine;
 using ParticleEngine.Particles;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace GameImplementation
@@ -229,8 +230,11 @@ namespace GameImplementation
                 UIManager.Draw();
                 UIManager.RenderBuffer();
 
+                // Udregn antallet af partikler.
+                int particleCount = Physics.ParticleGroups.Sum(p => p.Particles.Count);
+
                 // Sat før timeout for at måle den potentielle FPS.
-                Console.Title = $"FPS: {Math.Floor(1 / stopwatch.Elapsed.TotalSeconds)}";
+                Console.Title = $"Particles: {particleCount}, FPS: {Math.Floor(1 / stopwatch.Elapsed.TotalSeconds)}";
 
                 // Når man sætter Thread.Sleep's parameter til 0 sætter den tråden i en kø og så vender den tilbage når den "har tid".
                 // Det vil give en mere nøjagtig tid end hvis man bare indtastede det antal milisekunder man ville vente, 

@@ -17,13 +17,19 @@ namespace ConsoleUI.UI.Controls
         private PixelColor borderColor;
         private bool pressed;
 
+        /// <summary>
+        /// Ændrer teksten inde i tekst elementet.
+        /// </summary>
         public string Text
         {
             get { return text.Text; }
             set { text.Text = value; }
         }
 
-        public ButtonControl() : base(0, 5)
+        /// <summary>
+        /// Instantiates a <i>blue</i> button control with a default size of (10, 5) and </i>no text</i>.
+        /// </summary>
+        public ButtonControl() : base(10, 5)
         {
             text = new LabelControl("");
             borderChar = '\u26db';
@@ -33,6 +39,13 @@ namespace ConsoleUI.UI.Controls
             borderColor = borderDefaultColor;
         }
 
+        /// <summary>
+        /// Instantiates a button control
+        /// </summary>
+        /// <param name="borderDefaultColor"></param>
+        /// <param name="borderHoverColor"></param>
+        /// <param name="borderPressedColor"></param>
+        /// <param name="borderChar"></param>
         public ButtonControl(PixelColor borderDefaultColor, PixelColor borderHoverColor, PixelColor borderPressedColor, char borderChar = '\u26db') : base(0, 5)
         {
             text = new LabelControl("");
@@ -65,7 +78,7 @@ namespace ConsoleUI.UI.Controls
 
         protected internal override void UpdateButtonState()
         {
-            if (Mouse.MousePress[0])
+            if ((Mouse.MouseDown[0] || Mouse.MousePress[0]) && !pressed)
             {
                 pressed = true;
 
@@ -77,23 +90,6 @@ namespace ConsoleUI.UI.Controls
 
                 OnClick?.Invoke();
             }
-            /*
-            switch (newState)
-            {
-                case MouseButtonState.Down:
-                    pressed = true;
-
-                    borderColor = borderPressedColor;
-                    break;
-                case MouseButtonState.Release:
-                    pressed = false;
-
-                    OnClick?.Invoke();
-                    //borderColor = borderPressedColor;
-                    break;
-                default:
-                    break;
-            }*/
 
             base.UpdateButtonState();
         }
