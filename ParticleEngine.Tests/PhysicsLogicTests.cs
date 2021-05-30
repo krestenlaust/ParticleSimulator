@@ -59,7 +59,7 @@ namespace ParticleEngine.Tests
         }
 
         [TestMethod]
-        public void TestParticlesSwapsWhenHeavyParticleOverLighterParticle() //Patricks :)
+        public void TestParticlesSwapsWhenHeavyParticleOverLighterParticle() 
         {
             // Fordi det er en statisk klasse vil ændringer blive gemt gennem tests. Derfor kan der være rester fra en anden test.
             Physics.ResetPhysics();

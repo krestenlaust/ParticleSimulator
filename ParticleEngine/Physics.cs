@@ -171,24 +171,15 @@ namespace ParticleEngine
                     bool found = particleMap.TryGetValue(particle + new Vector2(checkVector.X, 0), out ParticleGroup sideCheckGroup);
 
                     // Makes sure that there isn't a particle above where it wants to go that is same or higher density, and ignores if first iteration
-                    if (found)
+                    // If there is a particle above checkposition which is denser or a block
+                    if (found && (sideCheckGroup.Density > particleGroup.Density && i != 0 || sideCheckGroup.Density == 0))
                     {
-                        // If there is a particle above checkposition which is denser or a block
-                        if (sideCheckGroup.Density > particleGroup.Density && i != 0 || sideCheckGroup.Density == 0)
-                        {
-                            // Break so it stops checking this direction
-                            break;
-                        }
+                        // Break so it stops checking this direction
+                        break;
                     }
 
                     // Gets the particle group of the checkVector particel that we need to swap out with the primary particle
                     particleMap.TryGetValue(particle + checkVector, out ParticleGroup checkParticleGroup);
-
-                    //If this particular particle group does not have a particle placed where it is checking
-                    if (!checkParticleGroup.Particles.Contains(particle + checkVector))
-                    {
-                        break;
-                    }
 
                     // If this type of particle is lighter then swap and density is not 0 which means that it's a block
                     if (checkParticleGroup.Density < particleGroup.Density && checkParticleGroup.Density != 0)
