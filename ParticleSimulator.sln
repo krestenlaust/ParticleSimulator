@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleEngine", "ParticleEngine\ParticleEngine.csproj", "{9E5900F9-ECD8-4CD1-8A48-169E6B580905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{CDEF7F71-0E57-4597-B61E-9097A5CB8888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleInteraction", "ConsoleUI\ConsoleInteraction.csproj", "{CDEF7F71-0E57-4597-B61E-9097A5CB8888}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI.Tests", "ConsoleUI.Tests\ConsoleUI.Tests.csproj", "{4DEEE8D9-BAB1-41FD-B309-545A571F7F67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleInteraction.Tests", "ConsoleUI.Tests\ConsoleInteraction.Tests.csproj", "{4DEEE8D9-BAB1-41FD-B309-545A571F7F67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleEngine.Tests", "ParticleEngine.Tests\ParticleEngine.Tests.csproj", "{E2FEAA7D-94C3-4AEB-B04B-DC1F34D0E975}"
 EndProject
