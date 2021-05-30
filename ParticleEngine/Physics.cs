@@ -145,7 +145,7 @@ namespace ParticleEngine
         private static (Vector2? primaryParticle, Vector2? swapParticle, ParticleGroup swapParticleGroup) SedimentaryForce(Vector2 particle, ParticleGroup particleGroup)
         {
             //Calculates the length blocks can move to either side when going down
-            int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.AngleOfReposeRad));
+            int maxLengthAway = (int)Math.Ceiling(Math.Tan(particleGroup.ReposeAngle));
 
             // Chooses the direction it should check first
             int direction = randomNumber.Next(2) == 1 ? 1 : -1;
@@ -181,12 +181,21 @@ namespace ParticleEngine
                         break;
                     }*/
 
+                    // Wheter it have found the particle above the checkvector
                     bool found = particleMap.TryGetValue(particle + new Vector2(checkVector.X, 0), out ParticleGroup sideCheckGroup);
                     
                     // Makes sure that there isn't a particle above where it wants to go that is same or higher density, and ignores if first iteration
-                    if (found && sideCheckGroup.Density > particleGroup.Density && i != 0 && sideCheckGroup.Density != 0) // Fiks i morgen
+                    // If there is a particle above which is denser or block
+                    if (found && sideCheckGroup.Density > particleGroup.Density && i != 0/* || sideCheckGroup.Density == 0*/) // Fiks i morgen
                     {
+                        // Break so it stops checking this direction
                         break;
+                    }
+
+                    // If there is a block with lighter density, then swap them
+                    if (found && sideCheckGroup.Density < particleGroup.Density && i != 0)
+                    {
+                        return (particle, particle + new Vector2(checkVector.X, 0), sideCheckGroup);
                     }
 
                     // Gets the particle group of the checkVector particel that we need to swap out with the primary particle

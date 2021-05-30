@@ -6,14 +6,17 @@ namespace ParticleEngine
     public abstract class ParticleGroup
     {
         public readonly float Density;
-        public readonly float AngleOfReposeRad;
+        /// <summary>
+        /// Den vinkel en bloktype tjekker, om den kan rykke hen ved. I radianer.
+        /// </summary>
+        public readonly float ReposeAngle;
         public readonly HashSet<Vector2> Particles;
 
-        public ParticleGroup(float density, float angleOfReposeRad)
+        public ParticleGroup(float density, float reposeAngleRadian)
         {
             Particles = new HashSet<Vector2>();
             Density = density;
-            AngleOfReposeRad = angleOfReposeRad;
+            ReposeAngle = reposeAngleRadian;
         }
 
         public abstract void OnUpdate(List<ParticleGroup> particleGroups);

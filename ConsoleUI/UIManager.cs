@@ -78,14 +78,12 @@ namespace ConsoleUI
         private static void HandleEvents(Control control)
         {
             bool cursorInside = control.IsPointInside(Mouse.x, Mouse.y);
-            bool updateCursorIcon = false;
 
             switch (control.InternalHoverState)
             {
                 case Control.HoverState.Enter:
                     if (cursorInside)
                     {
-                        updateCursorIcon = true;
                         control.UpdateHoverState(Control.HoverState.Stay);
                     }
                     else
@@ -104,18 +102,11 @@ namespace ConsoleUI
                     }
                     break;
                 case Control.HoverState.Exit when !cursorInside:
-                    updateCursorIcon = true;
                     control.UpdateHoverState(Control.HoverState.None);
                     break;
                 case Control.HoverState.None when cursorInside:
                     control.UpdateHoverState(Control.HoverState.Enter);
                     break;
-            }
-
-            if (updateCursorIcon || control.updatedCursor)
-            {
-                //WinAPI.SwitchCusor((int)control.cursor);
-                control.updatedCursor = false;
             }
 
             if (!cursorInside)

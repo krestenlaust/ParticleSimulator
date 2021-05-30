@@ -49,18 +49,12 @@ namespace ConsoleUI.UI.Controls
             {
                 case HoverState.Enter:
                     borderColor = borderHoverColor;
-
-                    // Skift markør til link-markør.
-                    Cursor = WinAPI.IDC_STANDARD_CURSORS.IDC_HAND;
                     break;
                 case HoverState.Stay when !pressed:
                     borderColor = borderHoverColor;
                     break;
                 case HoverState.Exit:
                     borderColor = borderDefaultColor;
-
-                    // skift markør tilbage til standard-markør.
-                    Cursor = WinAPI.IDC_STANDARD_CURSORS.IDC_NO;
                     break;
                 default:
                     break;
