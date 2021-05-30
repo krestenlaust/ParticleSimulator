@@ -1,6 +1,4 @@
 ﻿using ConsoleInput;
-using ConsoleInteraction;
-using ConsoleInteraction.UI;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;

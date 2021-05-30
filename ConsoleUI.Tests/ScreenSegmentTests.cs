@@ -1,5 +1,4 @@
-﻿using ConsoleInteraction.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace ConsoleInteraction.Tests

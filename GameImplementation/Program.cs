@@ -1,7 +1,4 @@
 ﻿using ConsoleInput;
-using ConsoleInteraction;
-using ConsoleInteraction.UI;
-using ConsoleInteraction.UI.Controls;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;
@@ -183,7 +180,7 @@ namespace GameImplementation
             buttonCount++;
             gameScene.Controls.Add(new ButtonControl(new PixelColor(ConsoleColor.Red), new PixelColor(ConsoleColor.Yellow), pressedColor)
             {
-                OnClick = () => 
+                OnClick = () =>
                 {
                     Physics.ResetPhysics();
                     gameControl.InstantiateBorders();

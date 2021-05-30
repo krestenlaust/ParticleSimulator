@@ -207,9 +207,9 @@ namespace ParticleEngine
             {
                 // Queue if a collision has occured.
                 collisions.Enqueue((
-                    collisionParameters.originalParticlePosition, 
-                    collisionParameters.originalParticleGroup, 
-                    checkPosition, 
+                    collisionParameters.originalParticlePosition,
+                    collisionParameters.originalParticleGroup,
+                    checkPosition,
                     otherGroup
                     ));
             }
