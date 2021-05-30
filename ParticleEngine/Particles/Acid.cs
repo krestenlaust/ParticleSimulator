@@ -6,11 +6,9 @@ namespace ParticleEngine.Particles
 {
     public class Acid : ParticleGroup
     {
-        private static Random randomNumber = new Random(42352351);
-
         public Acid() : base(
             1,
-            0 * 34f / 180f * (float)Math.PI)
+            34f / 180f * (float)Math.PI)
         {
 
         }

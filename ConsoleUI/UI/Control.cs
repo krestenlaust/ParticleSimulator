@@ -15,20 +15,6 @@ namespace ConsoleUI.UI
         public int Zindex;
         public int X, Y;
         public int Width, Height;
-        protected IDC_STANDARD_CURSORS Cursor
-        {
-            get
-            {
-                return cursor;
-            }
-            set
-            {
-                updatedCursor = true;
-                cursor = value;
-            }
-        }
-        internal bool updatedCursor;
-        internal IDC_STANDARD_CURSORS cursor = IDC_STANDARD_CURSORS.IDC_NO;
         public event HoverStateChanged OnHoverStateChanged;
         /// <summary>
         /// Kaldt mens musen er over en kontrol. Brug <c>Mouse</c>-klassen for at tilgå musens tilstand.
@@ -56,7 +42,7 @@ namespace ConsoleUI.UI
             }
 
             // Er punktet indenfor bredden og højden af elementet.
-            if (pointX - X > Width || pointY - Y > Height)
+            if (pointX - X >= Width || pointY - Y >= Height)
             {
                 return false;
             }

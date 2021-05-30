@@ -85,7 +85,7 @@ namespace ConsoleUI
         public static void WriteConsoleNative(string characters)
         {
             IntPtr outHandle = GetStdHandle((int)StdHandle.OutputHandle);
-            WriteConsoleOutputCharacter(outHandle, characters, (uint)characters.Length, new COORD(0, 0), out uint writtenChars);
+            WriteConsoleOutputCharacter(outHandle, characters, (uint)characters.Length, new COORD(0, 0), out uint _);
         }
 
         /* Hurtigere console write */
