@@ -1,19 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace ConsoleUI.Tests
 {
-    /// <summary>
-    /// Summary description for WinAPI
-    /// </summary>
     [TestClass]
     public class WinAPITests
     {
+        /// <summary>
+        /// Det forventes at GetStdHandle returnerer et "Handle", hvis værdi ikke er nul
+        /// </summary>
         [TestMethod]
-        public void TestMethod1()
+        public void TestGetStdHandle()
         {
-            //
-            // TODO: Add test logic here
-            //
+            Assert.IsNotNull(WinAPI.GetStdHandle((int)WinAPI.StdHandle.OutputHandle));
         }
     }
 }
