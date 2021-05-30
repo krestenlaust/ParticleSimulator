@@ -1,7 +1,7 @@
 ﻿using ConsoleInput;
 using System;
 
-namespace ConsoleUI.UI.Controls
+namespace ConsoleInteraction.UI.Controls
 {
     public class ButtonControl : Control
     {

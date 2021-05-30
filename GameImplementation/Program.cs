@@ -1,7 +1,7 @@
 ﻿using ConsoleInput;
-using ConsoleUI;
-using ConsoleUI.UI;
-using ConsoleUI.UI.Controls;
+using ConsoleInteraction;
+using ConsoleInteraction.UI;
+using ConsoleInteraction.UI.Controls;
 using ParticleEngine;
 using ParticleEngine.Particles;
 using System;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ConsoleUI.UI
+namespace ConsoleInteraction.UI
 {
     /// <summary>
     /// En scene er en samling af ui-elementer.

@@ -1,9 +1,9 @@
 ﻿using ConsoleInput;
-using ConsoleUI.UI;
+using ConsoleInteraction.UI;
 using System;
 using System.Linq;
 
-namespace ConsoleUI
+namespace ConsoleInteraction
 {
     public static class UIManager
     {
@@ -85,8 +85,6 @@ namespace ConsoleUI
             switch (control.InternalHoverState)
             {
                 case Control.HoverState.Enter:
-                    newState = cursorInside ? Control.HoverState.Stay : Control.HoverState.Exit;
-                    break;
                 case Control.HoverState.Stay:
                     newState = cursorInside ? Control.HoverState.Stay : Control.HoverState.Exit;
                     break;
