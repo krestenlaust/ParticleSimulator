@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace ConsoleUI.UI
+namespace ConsoleInteraction.UI
 {
     /// <summary>
     /// En struktur, der beskriver en begrænset tabel af en 1-dimensionel array.

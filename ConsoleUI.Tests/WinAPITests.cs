@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace ConsoleUI.Tests
+namespace ConsoleInteraction.Tests
 {
     [TestClass]
     public class WinAPITests

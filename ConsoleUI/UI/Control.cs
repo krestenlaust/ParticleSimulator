@@ -1,4 +1,4 @@
-﻿namespace ConsoleUI.UI
+﻿namespace ConsoleInteraction.UI
 {
     public abstract class Control
     {
